@@ -1,0 +1,28 @@
+{
+  "name": "create-sld-app",
+  "version": "1.0.1",
+  "description": "A interactive cli that generates the boilerplate as per your projects requirement",
+  "type": "module",
+  "main": "lib/index.js",
+  "bin": "lib/index.js",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "build": "tsc && (concurrently \"tsc -w\" \"tsc-alias -w\")"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@inquirer/prompts": "^3.1.1",
+    "@inquirer/select": "^1.2.11",
+    "chalk": "^5.3.0",
+    "ora": "^7.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.2",
+    "tsc-alias": "^1.8.8",
+    "typescript": "^5.2.2"
+  }
+}
