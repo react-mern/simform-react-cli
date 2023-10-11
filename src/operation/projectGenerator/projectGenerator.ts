@@ -113,6 +113,6 @@ async function initNextJsProject(
 }
 
 export async function reactRouterAdder() {
-  await writeFileFromConfig(ReactRouterDomReactPlugin, "react-vite");
+  await writeFileFromConfig(ReactRouterDomReactPlugin);
   logger("yellow", "Successfully added react-router-dom with routing !");
 }

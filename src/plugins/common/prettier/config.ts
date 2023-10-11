@@ -19,7 +19,7 @@ const PrettierPlugin: PluginConfigType = {
   ],
   scripts: function (isTsProject: boolean) {
     return {
-      prettier: `prettier --write ${
+      format: `prettier --write ${
         isTsProject ? "--parser typescript '**/*.{ts,tsx}'" : "'**/*.{js,jsx}'"
       }`,
     };

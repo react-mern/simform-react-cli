@@ -24,6 +24,7 @@ import { changeDirAndDetectProject, pluginEntryAdder } from "@/utils/file";
 import logger from "@/utils/logger";
 import i18nAdder from "@/operation/i18n";
 import { pluginDependencyAdder } from "@/utils/file";
+import initGitRepo from "@/operation/initGit";
 
 /**
  * current we are storing the config with code but if we increase the number of features then we can have plugin dir that has it's own config file
@@ -71,6 +72,9 @@ async function main() {
 
     //changing directory and checking project exists or not (if exist from child process then starting boilerplate is not there)
     await changeDirAndDetectProject();
+
+    //git init and add git ignore file
+    await initGitRepo();
 
     //getting project types if react then add react router dom
     const projectType = getCurrentProject();

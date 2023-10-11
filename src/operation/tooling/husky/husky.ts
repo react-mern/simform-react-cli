@@ -11,11 +11,7 @@ async function addHuskyInProject(currentPackageManager: NodePackageManager) {
   initiatorLog("Adding Husky, Please wait !");
 
   const projectType = getCurrentProject();
-  const isGitInitialized = isFileExists(process.cwd(), ".git");
 
-  if (isGitInitialized) {
-    await cmdRunner("git", ["init"]);
-  }
   await cmdRunner(currentPackageManager, [
     currentPackageManager === "npm" ? "install" : "add",
     "-D",
