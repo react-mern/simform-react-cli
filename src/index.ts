@@ -89,11 +89,11 @@ async function main() {
     //antD or material ui
     await uiLibraryAdder(selectedLibrary);
 
-    //i18
-    await i18nAdder(addI18n);
-
     //adds Provider in layout or index files
     await pluginEntryAdder();
+
+    //i18
+    await i18nAdder(addI18n);
 
     //install dependencies of the plugins
     await pluginDependencyAdder();

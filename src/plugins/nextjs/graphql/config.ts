@@ -1,5 +1,9 @@
 import { PluginConfigType } from "@/types";
 
+const envExFileContent = "NEXT_PUBLIC_BASE_URL";
+
+const envFileContent = `${envExFileContent}=https://rickandmortyapi.com/graphql`;
+
 const getApolloWrapperNext = (isTsProject: boolean) => `"use client";
 
 //reference => https://www.apollographql.com/blog/apollo-client/next-js/how-to-use-apollo-client-with-next-js-13/
@@ -14,7 +18,7 @@ import {
 function makeClient() {
   const httpLink = new HttpLink({
     // you can add link in env
-    uri: "https://rickandmortyapi.com/graphql",
+    uri: process.env.NEXT_PUBLIC_BASE_URL,
   });
 
   return new NextSSRApolloClient({
@@ -45,7 +49,7 @@ export const { getClient } = registerApolloClient(() => {
   return new NextSSRApolloClient({
     cache: new NextSSRInMemoryCache(),
     link: new HttpLink({
-      uri: "https://rickandmortyapi.com/graphql",
+      uri: process.env.NEXT_PUBLIC_BASE_URL,
       // you can disable result caching here if you want to
       // (this does not work if you are rendering your page with "export const dynamic = "force-static"
       // fetchOptions: { cache: "no-store" },
@@ -95,6 +99,18 @@ const GraphQlNextPlugin: PluginConfigType = {
   initializingMessage: "Adding GraphQL ! Please wait.. ",
   dependencies: "@apollo/client@rc @apollo/experimental-nextjs-app-support",
   files: [
+    {
+      content: envFileContent,
+      fileName: ".env",
+      fileType: "simple",
+      path: [],
+    },
+    {
+      content: envExFileContent,
+      fileName: ".env.example",
+      fileType: "simple",
+      path: [],
+    },
     {
       content: getApolloWrapperNext,
       fileName: "ApolloWrapper",

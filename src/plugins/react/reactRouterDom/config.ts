@@ -35,6 +35,7 @@ export default App;
 export const LayoutReact = (isTsProject: boolean) => `import React from "react";
 import { Link } from "react-router-dom";
 
+${!isTsProject ? "// eslint-disable-next-line react/prop-types" : ""}
 const Layout = ({ children }${
   isTsProject ? ": { children: React.ReactNode }" : ""
 }) => {

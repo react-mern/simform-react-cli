@@ -1,7 +1,8 @@
-import GlobalStateUtility from "@/global";
 import { PluginConfigType } from "@/types";
 
-const envContent = `NEXT_PUBLIC_BASE_URL=https://jsonplaceholder.typicode.com`;
+const envExFileContent = "NEXT_PUBLIC_BASE_URL";
+
+const envFileContent = `NEXT_PUBLIC_BASE_URL=https://jsonplaceholder.typicode.com`;
 
 function getStoreConfig(isTsProject: boolean) {
   return `
@@ -81,8 +82,6 @@ export default counterSlice.reducer;
 }
 
 function getUserApi(isTsProject: boolean) {
-  const projectType =
-    GlobalStateUtility.getInstance().getCurrentProjectGenType();
   return `import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import cookies from "js-cookie";
 
@@ -115,18 +114,9 @@ ${
 }
 
 export const USER_API_REDUCER_KEY = "userApi";
-${projectType === "react-vite" ? "const environment = import.meta.env;" : ""}
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: ${
-    projectType === "react-vite"
-      ? "environment.VITE_APP_BASE_URL"
-      : projectType === "react-cra"
-      ? "process.env.REACT_APP_BASE_URL"
-      : projectType === "next"
-      ? "process.env.NEXT_PUBLIC_BASE_URL"
-      : ""
-  },
+  baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     console.log(getState());
@@ -198,8 +188,8 @@ export const userApi = createApi({
 
 export const StoreProviderConfig = (isTsProject: boolean) => `"use client";
 import React from "react";
+import { store } from "./index${""}";
 import { Provider } from "react-redux";
-import { store } from "./index";
 
 export default function StoreProvider({
   children,
@@ -245,8 +235,14 @@ const RtkQueryNextPlugin: PluginConfigType = {
   initializingMessage: "Adding Rtk Query with Redux Store, Please wait !",
   files: [
     {
-      content: envContent,
+      content: envFileContent,
       fileName: ".env",
+      fileType: "simple",
+      path: [],
+    },
+    {
+      content: envExFileContent,
+      fileName: ".env.example",
       fileType: "simple",
       path: [],
     },

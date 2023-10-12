@@ -1,26 +1,15 @@
-import { PluginConfigType, SupportedProjectGenerator } from "@/types";
+import { PluginConfigType } from "@/types";
 
-const envFileContent = `NEXT_PUBLIC_BASE_URL=https://jsonplaceholder.typicode.com/`;
+const envExFileContent = "NEXT_PUBLIC_BASE_URL";
 
-const axiosApiReact = (
-  isTsProject: boolean,
-  projectType?: SupportedProjectGenerator
-) =>
+const envFileContent = `${envExFileContent}=https://jsonplaceholder.typicode.com/`;
+
+const axiosApiReact = (isTsProject: boolean) =>
   `import axios from "axios";
 import Cookies from "js-cookie";
 
-${projectType === "react-vite" ? "const environment = import.meta.env;" : ""}
 export const API = axios.create({
-  baseURL: ${
-    projectType === "react-vite"
-      ? "environment.VITE_APP_BASE_URL"
-      : projectType === "react-cra"
-      ? "process.env.REACT_APP_BASE_URL"
-      : projectType === "next"
-      ? "process.env.NEXT_PUBLIC_BASE_URL"
-      : ""
-  },
-  withCredentials: true,
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL
 });
 
 /**
@@ -277,7 +266,13 @@ const ReactQueryNextPlugin: PluginConfigType = {
     {
       content: envFileContent,
       fileName: ".env",
-      fileType: "native",
+      fileType: "simple",
+      path: [],
+    },
+    {
+      content: envExFileContent,
+      fileName: ".env.example",
+      fileType: "simple",
       path: [],
     },
     {

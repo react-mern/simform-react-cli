@@ -1,12 +1,14 @@
 import { PluginConfigType, SupportedProjectGenerator } from "@/types";
 import { isFileExists } from "@/utils/file";
 
-const isViteProject = isFileExists(process.cwd(), "vite.config");
+const envExFile = (isTsProject: boolean) => {
+  const isViteProject = isFileExists(process.cwd(), "vite.config");
+  return `${isViteProject ? "VITE_APP" : "REACT_APP"}_BASE_URL`;
+};
 
 const getEnvConfig = (isTsProject: boolean) => {
-  return `${
-    isViteProject ? "VITE_APP" : "REACT_APP"
-  }_BASE_URL=https://jsonplaceholder.typicode.com/`;
+  const prefix = envExFile(isTsProject);
+  return prefix + "=https://jsonplaceholder.typicode.com/";
 };
 
 const reactQueryConfig = `
@@ -39,8 +41,6 @@ export const API = axios.create({
       ? "environment.VITE_APP_BASE_URL"
       : projectType === "react-cra"
       ? "process.env.REACT_APP_BASE_URL"
-      : projectType === "next"
-      ? "process.env.NEXT_PUBLIC_BASE_URL"
       : ""
   },
   withCredentials: true,
@@ -186,6 +186,12 @@ const ReactQueryReactPlugin: PluginConfigType = {
     {
       content: getEnvConfig,
       fileName: ".env",
+      fileType: "simple",
+      path: [],
+    },
+    {
+      content: envExFile,
+      fileName: ".env.example",
       fileType: "simple",
       path: [],
     },

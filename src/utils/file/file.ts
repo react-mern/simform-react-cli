@@ -41,6 +41,15 @@ export function deleteFile(filepath: string, file: string) {
   });
 }
 
+export function detectFile(filePath: string, fileName: string) {
+  const detectedFile = readdirSync(filePath).filter((val: string) => {
+    if (val.includes(fileName)) {
+      return val;
+    }
+  });
+  return detectedFile[0];
+}
+
 //writes file with given content
 export function writeFile(fileName: string, content: any, filePath?: string) {
   const writeFilePath = filePath
@@ -231,17 +240,13 @@ export async function pluginEntryAdder() {
 }
 
 async function pluginEntryAdderInReact(pluginConfigArr: ReactPluginEntry[]) {
-  // if(pluginConfigArr)
-  const isTsProject = isFileExists(process.cwd(), "tsconfig.json");
   const isViteProject = isFileExists(process.cwd(), "vite.config");
 
-  const rootComponent = `${isTsProject ? "App.tsx" : "App.jsx"}`;
+  const rootPath = path.join(process.cwd(), "src");
 
-  const rootEntry = `${
-    isViteProject
-      ? `${isTsProject ? "main.tsx" : "main.jsx"}`
-      : `${isTsProject ? "index.tsx" : "index.jsx"}`
-  }`;
+  const rootComponent = detectFile(rootPath, "App");
+
+  const rootEntry = detectFile(rootPath, `${isViteProject ? "main" : "index"}`);
 
   const regex = getRegexForRootComponent(
     rootComponent.substring(0, rootComponent.indexOf("."))
@@ -273,10 +278,13 @@ async function pluginEntryAdderInReact(pluginConfigArr: ReactPluginEntry[]) {
 }
 
 async function pluginEntryAdderInNext(pluginConfigArr: NextPluginEntry[]) {
-  const isTsProject = isFileExists(process.cwd(), "tsconfig.json");
-  const rootLayoutName = `${isTsProject ? "layout.tsx" : "layout.js"}`;
+  const rootLayoutName = detectFile(
+    path.join(process.cwd(), "src", "app"),
+    "layout"
+  );
 
   const regex = getRegexForRootComponent("html");
+
   const initialValue: ReactIndexConfig = {
     importStatements: "",
     addAfterMatch: "",
@@ -292,6 +300,8 @@ async function pluginEntryAdderInNext(pluginConfigArr: NextPluginEntry[]) {
 
     return prev;
   }, initialValue);
+
+  logger("red", `${importAndProviderValues}`);
 
   addProviderAndImports(
     path.join(process.cwd(), "src", "app", rootLayoutName),

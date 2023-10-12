@@ -1,9 +1,31 @@
-import { PluginConfigType } from "@/types";
+import { PluginConfigType, SupportedProjectGenerator } from "@/types";
+import { isFileExists } from "@/utils/file";
 
-const reactGraphqlClientConfig = `import { ApolloClient, InMemoryCache } from "@apollo/client";
+const envExFile = (isTsProject: boolean) => {
+  const isViteProject = isFileExists(process.cwd(), "vite.config");
+  return `${isViteProject ? "VITE_APP" : "REACT_APP"}_BASE_URL`;
+};
+
+const getEnvConfig = (isTsProject: boolean) => {
+  const prefix = envExFile(isTsProject);
+  return prefix + "=https://rickandmortyapi.com/graphql";
+};
+
+const reactGraphqlClientConfig = (
+  isTsProject: boolean,
+  projectType?: SupportedProjectGenerator
+) => `import { ApolloClient, InMemoryCache } from "@apollo/client";
+
+${projectType === "react-vite" ? "const environment = import.meta.env;" : ""}
 
 const client = new ApolloClient({
-  uri: "https://rickandmortyapi.com/graphql",
+  uri: ${
+    projectType === "react-vite"
+      ? "environment.VITE_APP_BASE_URL"
+      : projectType === "react-cra"
+      ? "process.env.REACT_APP_BASE_URL"
+      : ""
+  },
   cache: new InMemoryCache(),
 });
 
@@ -48,6 +70,18 @@ export default Characters;
 const GraphQlReactPlugin: PluginConfigType = {
   initializingMessage: "Adding GraphQL ! Please wait.. ",
   files: [
+    {
+      content: getEnvConfig,
+      fileName: ".env",
+      fileType: "simple",
+      path: [],
+    },
+    {
+      content: envExFile,
+      fileName: ".env.example",
+      fileType: "simple",
+      path: [],
+    },
     {
       content: reactGraphqlClientConfig,
       fileName: "client",

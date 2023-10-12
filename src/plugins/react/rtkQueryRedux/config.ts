@@ -2,12 +2,15 @@ import GlobalStateUtility from "@/global";
 import { PluginConfigType } from "@/types";
 import { isFileExists } from "@/utils/file";
 
-function getEnvContent() {
+const envExFile = (isTsProject: boolean) => {
   const isViteProject = isFileExists(process.cwd(), "vite.config");
-  return `${
-    isViteProject ? "VITE_APP" : "REACT_APP"
-  }_BASE_URL=https://jsonplaceholder.typicode.com`;
-}
+  return `${isViteProject ? "VITE_APP" : "REACT_APP"}_BASE_URL`;
+};
+
+const getEnvConfig = (isTsProject: boolean) => {
+  const prefix = envExFile(isTsProject);
+  return prefix + "=https://jsonplaceholder.typicode.com/";
+};
 
 function getStoreConfig(isTsProject: boolean) {
   return `
@@ -129,8 +132,6 @@ const baseQuery = fetchBaseQuery({
       ? "environment.VITE_APP_BASE_URL"
       : projectType === "react-cra"
       ? "process.env.REACT_APP_BASE_URL"
-      : projectType === "next"
-      ? "process.env.NEXT_PUBLIC_BASE_URL"
       : ""
   },
   credentials: "include",
@@ -232,8 +233,14 @@ const RtkReduxReactPlugin: PluginConfigType = {
   initializingMessage: "Adding Rtk Query with Redux Store, Please wait !",
   files: [
     {
-      content: getEnvContent,
+      content: getEnvConfig,
       fileName: ".env",
+      fileType: "simple",
+      path: [],
+    },
+    {
+      content: envExFile,
+      fileName: ".env.example",
       fileType: "simple",
       path: [],
     },

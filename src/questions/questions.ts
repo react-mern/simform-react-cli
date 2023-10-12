@@ -10,7 +10,7 @@ import GlobalStateUtility from "@/global/global";
 
 export async function getSelectedLanguage() {
   const selectedLanguage = await select<SupportedLanguage>({
-    message: "Select project langugage",
+    message: "Select project language",
     choices: [
       {
         name: "Typescript (Recommended)",
@@ -29,7 +29,7 @@ export async function getSelectedLanguage() {
 export async function getSupportedProjectGen() {
   //get the project type from the user
   const selectedProjectType = await select<SupportedProjectGenerator>({
-    message: "Select from the option",
+    message: "Select the Generator",
     choices: [
       {
         name: "React + Vite (Recommended)",
@@ -50,16 +50,16 @@ export async function getSupportedProjectGen() {
 
 export async function getSelectedTooling() {
   const addPrettier = await confirm({
-    message: "Want to add Prettier in the project ?",
+    message: "Do you want to add Prettier to the project?",
     default: true,
   });
 
   const addStoryBook = await confirm({
-    message: "Want to add Storybook in the project ?",
+    message: "Do you want to add Storybook to the project?",
     default: true,
   });
   const addHusky = await confirm({
-    message: "Want to add Husky in the project ?",
+    message: "Do you want to add Husky to the project?",
     default: true,
   });
 
@@ -68,18 +68,18 @@ export async function getSelectedTooling() {
 
 export async function getSelectedStateManagementAndCachingSol() {
   const cachingOption = await select<SupportedStateManagementAndCachingSol>({
-    message: "Select to continue",
+    message: "Select the state management and caching solution",
     choices: [
       {
-        name: "Add Rtk-Query with Redux in the project",
+        name: "Add Rtk-Query with Redux to the project",
         value: "rtk-query-redux",
       },
       {
-        name: "Add React-Query with Axios in the project",
+        name: "Add React-Query with Axios to the project",
         value: "react-query",
       },
       {
-        name: "Add Apollo Graphql Client in the project",
+        name: "Add Apollo Graphql Client to the project",
         value: "graphql",
       },
       {
@@ -95,14 +95,14 @@ export async function getSelectedUiLibrary(
   selectedProjectType: SupportedProjectGenerator
 ) {
   const selectedLibrary = await select<SupportedUILibrary>({
-    message: "Select to continue",
+    message: "Select the UI Library",
     choices: [
       {
-        name: "Add Material UI in the project",
+        name: "Add Material UI to the project",
         value: "mui",
       },
       {
-        name: "Add Ant Design in the project",
+        name: "Add Ant Design to the project",
         value: "antd",
       },
       {
@@ -115,7 +115,7 @@ export async function getSelectedUiLibrary(
   let selectStylingEngine;
   let addMuiIcons;
 
-  if (selectedProjectType !== "next" && selectedLibrary) {
+  if (selectedProjectType !== "next" && selectedLibrary === "mui") {
     selectStylingEngine = await select<StylingEngineInMui>({
       message: "Which styling engine you want to use for Material UI ?",
       choices: [
@@ -131,7 +131,7 @@ export async function getSelectedUiLibrary(
     });
 
     addMuiIcons = await confirm({
-      message: "Would you like to install Material Icons ?",
+      message: "Do you want to install Material Icons?",
       default: true,
     });
 
@@ -148,7 +148,7 @@ export async function getSelectedUiLibrary(
 
 export async function getI18n() {
   const addI18n = await confirm({
-    message: "Want to add i18n in the project ?",
+    message: "Do you want to add i18n to the project?",
     default: true,
   });
   return addI18n;

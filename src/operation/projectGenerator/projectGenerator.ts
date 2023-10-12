@@ -1,9 +1,10 @@
 import { NodePackageManager, SupportedLanguage } from "@/types";
 import cmdRunner from "@/utils/cmdRunner";
 import logger, { initiatorLog } from "@/utils/logger";
-import { writeFileFromConfig } from "@/utils/file";
+import { deleteFile, writeFileFromConfig } from "@/utils/file";
 import GlobalStateUtility from "@/global";
 import ReactRouterDomReactPlugin from "@/plugins/react/reactRouterDom";
+import path from "path";
 
 //Main function to init project generation
 export default async function projectGenerator() {
@@ -74,16 +75,12 @@ async function initReactCraProject(
   packageManager: NodePackageManager,
   selectedLanguage: SupportedLanguage
 ) {
-  const currentLanguage =
-    selectedLanguage === "ts" ? "typescript" : "javascript";
+  const commandLine = ["create-react-app", projectName];
+
+  if (selectedLanguage === "ts") commandLine.push("--template", "typescript");
 
   try {
-    await cmdRunner("npx", [
-      "create-react-app",
-      projectName,
-      `--template`,
-      currentLanguage,
-    ]);
+    await cmdRunner("npx", commandLine);
   } catch (error) {
     process.exit(1);
   }
@@ -113,6 +110,13 @@ async function initNextJsProject(
 }
 
 export async function reactRouterAdder() {
+  const globalState = GlobalStateUtility.getInstance();
+  const getCurrentLanguage = globalState.getCurrentLanguage();
+
+  if (getCurrentLanguage === "js") {
+    deleteFile(path.join(process.cwd(), "src"), "App.js");
+  }
+
   await writeFileFromConfig(ReactRouterDomReactPlugin);
   logger("yellow", "Successfully added react-router-dom with routing !");
 }
