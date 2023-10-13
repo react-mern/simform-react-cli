@@ -140,6 +140,8 @@ export default PrivateRoutes;
 `;
 
 const ReactRouterDomReactPlugin: PluginConfigType = {
+  initializingMessage: "Adding React Router Dom ! Please Wait !",
+  dependencies: "react-router-dom",
   files: [
     {
       path: ["src"],
@@ -196,9 +198,7 @@ const ReactRouterDomReactPlugin: PluginConfigType = {
       fileType: "component",
     },
   ],
-  dependencies: "react-router-dom",
-  initializingMessage: "Adding React Router Dom ! Please Wait !",
-  successMessage: "React Router Dom added successfully !",
+  successMessage: "Successfully added React Router Dom !",
 };
 
 export default ReactRouterDomReactPlugin;

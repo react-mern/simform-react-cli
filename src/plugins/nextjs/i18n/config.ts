@@ -248,7 +248,11 @@ export default async function About({
 
 const i18nNextPlugin: PluginConfigType = {
   initializingMessage: "Adding i18n, Please wait !",
-  dependencies: "negotiator @formatjs/intl-localematcher",
+  dependencies: function (isTsProject: boolean) {
+    return `negotiator @formatjs/intl-localematcher ${
+      isTsProject ? "@types/negotiator" : ""
+    }`;
+  },
   files: [
     {
       content: i18nDeDictionary,
@@ -319,10 +323,11 @@ const i18nNextPlugin: PluginConfigType = {
 import Header from "@/components/header";`,
       addAfterMatch: "",
       addBeforeMatch: "<Header lang={params.lang} />",
+      regex: /{children}/,
     },
     Page: {},
   },
-  successMessage: "Successfully added i18n in your NextJs application",
+  successMessage: "Successfully added i18n with language routes !",
 };
 
 export default i18nNextPlugin;

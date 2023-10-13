@@ -274,15 +274,15 @@ const RtkReduxReactPlugin: PluginConfigType = {
       isTsProject ? "@types/js-cookie" : ""
     }`;
   },
-  successMessage: "Successfully added rtk-query with redux !",
   fileModification: {
     App: {},
     Index: {
       importStatements: `import { Provider } from "react-redux";
-import { store } from "./store";`,
+      import { store } from "./store";`,
       addBeforeMatch: "<Provider store={store}>",
       addAfterMatch: "</Provider>",
     },
   },
+  successMessage: "Successfully added rtk-query with redux !",
 };
 export default RtkReduxReactPlugin;

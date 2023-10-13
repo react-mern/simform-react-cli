@@ -1,4 +1,5 @@
 import { PluginConfigType } from "@/types";
+import { getRegexForRootComponent } from "@/utils/fileManipulation";
 
 const emotionCacheConfig = (isTsProject: boolean) =>
   `"use client";
@@ -138,9 +139,11 @@ const MuiNextPlugin: PluginConfigType = {
       importStatements: `import ThemeRegistry from "@/theme/ThemeRegistry";`,
       addAfterMatch: `</ThemeRegistry>`,
       addBeforeMatch: `<ThemeRegistry>`,
+      regex: getRegexForRootComponent("body"),
     },
     Page: {},
   },
+  successMessage: "Successfully added Material UI with theme config !",
 };
 
 export default MuiNextPlugin;

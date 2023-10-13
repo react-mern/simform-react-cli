@@ -1,4 +1,5 @@
 import { PluginConfigType } from "@/types";
+import { getRegexForRootComponent } from "@/utils/fileManipulation";
 
 const envExFileContent = "NEXT_PUBLIC_BASE_URL";
 
@@ -329,9 +330,11 @@ const ReactQueryNextPlugin: PluginConfigType = {
       importStatements: `import { Providers } from "@/components/Providers/Providers.client";`,
       addAfterMatch: "</Providers>",
       addBeforeMatch: "<Providers>",
+      regex: getRegexForRootComponent("body"),
     },
     Page: {},
   },
+  successMessage: "Successfully added React Query with Provider config !",
 };
 
 export default ReactQueryNextPlugin;

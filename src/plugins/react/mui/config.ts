@@ -30,6 +30,7 @@ const theme = createTheme({
 export default theme;`;
 
 const MuiReactPlugin: PluginConfigType = {
+  initializingMessage: "Adding Material UI ! Please Wait !",
   files: [
     {
       path: ["src", "theme"],
@@ -39,8 +40,6 @@ const MuiReactPlugin: PluginConfigType = {
     },
   ],
   dependencies: "@mui/material",
-  initializingMessage: "Adding Material UI ! Please Wait !",
-  successMessage: "Material UI added successfully !",
   fileModification: {
     Index: {
       importStatements: `import { ThemeProvider } from "@mui/material"; \nimport theme from "./theme/theme"; `,
@@ -49,6 +48,7 @@ const MuiReactPlugin: PluginConfigType = {
     },
     App: {},
   },
+  successMessage: "Successfully added Material UI with theme config !",
 };
 
 export default MuiReactPlugin;

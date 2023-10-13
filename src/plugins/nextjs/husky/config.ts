@@ -25,6 +25,7 @@ function getLintStatedRcContent(isTsProject: boolean) {
   );
 }
 const HuskyNextPlugin: PluginConfigType = {
+  initializingMessage: "Adding Husky ! Please wait.. ",
   files: [
     {
       content: getLintStatedRcContent,
@@ -33,6 +34,7 @@ const HuskyNextPlugin: PluginConfigType = {
       path: [],
     },
   ],
+  successMessage: "Successfully added Husky !",
 };
 
 export default HuskyNextPlugin;

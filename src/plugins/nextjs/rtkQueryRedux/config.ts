@@ -1,4 +1,5 @@
 import { PluginConfigType } from "@/types";
+import { getRegexForRootComponent } from "@/utils/fileManipulation";
 
 const envExFileContent = "NEXT_PUBLIC_BASE_URL";
 
@@ -289,6 +290,7 @@ const RtkQueryNextPlugin: PluginConfigType = {
       importStatements: `import StoreProvider from "@/store/StoreProvider";`,
       addBeforeMatch: "<StoreProvider>",
       addAfterMatch: "</StoreProvider>",
+      regex: getRegexForRootComponent("html"),
     },
   },
 };

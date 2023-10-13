@@ -39,6 +39,7 @@ export type NextLayoutConfig = {
   addBeforeMatch: string;
   addAfterMatch: string;
   innerHooks?: string;
+  regex: RegExp;
 };
 
 export type NextPageConfig = {

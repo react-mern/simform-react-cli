@@ -225,6 +225,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";`,
       addBeforeMatch: `<QueryClientProvider client={queryClient}>`,
     },
   },
+  successMessage: "Successfully added React Query with query client config !",
 };
 
 export default ReactQueryReactPlugin;

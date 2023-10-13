@@ -92,7 +92,7 @@ import theme from "./theme/themeAntd";`,
       addAfterMatch: `</ConfigProvider>`,
     },
   },
-  successMessage: "Successfully added theme config for ant design !",
+  successMessage: "Successfully added Ant Design with theme config !",
 };
 
 export default AntDReactPlugin;

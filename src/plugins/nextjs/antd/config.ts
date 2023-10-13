@@ -82,6 +82,7 @@ const AntDNextPlugin: PluginConfigType = {
       importStatements: `import StyledComponentsRegistry from "@/lib/AntdRegistry";`,
       addAfterMatch: `</StyledComponentsRegistry>`,
       addBeforeMatch: `<StyledComponentsRegistry>`,
+      regex: /{children}/,
     },
     Page: {},
   },

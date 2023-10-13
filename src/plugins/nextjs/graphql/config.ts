@@ -1,4 +1,5 @@
 import { PluginConfigType } from "@/types";
+import { getRegexForRootComponent } from "@/utils/fileManipulation";
 
 const envExFileContent = "NEXT_PUBLIC_BASE_URL";
 
@@ -135,9 +136,11 @@ const GraphQlNextPlugin: PluginConfigType = {
       importStatements: `import { ApolloWrapper } from "@/lib/ApolloWrapper";`,
       addAfterMatch: "</ApolloWrapper>",
       addBeforeMatch: "<ApolloWrapper>",
+      regex: getRegexForRootComponent("body"),
     },
     Page: {},
   },
+  successMessage: "Successfully added graphql with Apollo Wrapper !",
 };
 
 export default GraphQlNextPlugin;

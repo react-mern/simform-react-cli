@@ -25,7 +25,7 @@ const PrettierPlugin: PluginConfigType = {
     };
   },
   devDependencies: "prettier",
-  successMessage: "Prettier added successfully !",
+  successMessage: "Successfully added Prettier !",
 };
 
 export default PrettierPlugin;

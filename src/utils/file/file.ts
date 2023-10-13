@@ -41,13 +41,28 @@ export function deleteFile(filepath: string, file: string) {
   });
 }
 
-export function detectFile(filePath: string, fileName: string) {
-  const detectedFile = readdirSync(filePath).filter((val: string) => {
-    if (val.includes(fileName)) {
-      return val;
+export function findFileRecursively(
+  directory: string,
+  fileName: string
+): { filePath: string; file: string } | null {
+  const files = fs.readdirSync(directory);
+
+  for (const file of files) {
+    const filePath = path.join(directory, file);
+    const stats = fs.statSync(filePath);
+
+    if (stats.isDirectory()) {
+      // If it's a directory, recursively search inside it
+      const foundFile = findFileRecursively(filePath, fileName);
+      if (foundFile) {
+        return foundFile;
+      }
+    } else if (file.includes(fileName)) {
+      return { filePath, file };
     }
-  });
-  return detectedFile[0];
+  }
+
+  return null; // File not found in the directory or its subdirectories
 }
 
 //writes file with given content
@@ -228,11 +243,11 @@ export async function pluginEntryAdder() {
 
   switch (currentProjectType) {
     case "next":
-      pluginEntryAdderInNext(pluginConfigArr.next);
+      await pluginEntryAdderInNext(pluginConfigArr.next);
       break;
     case "react-cra":
     case "react-vite":
-      pluginEntryAdderInReact(pluginConfigArr.react);
+      await pluginEntryAdderInReact(pluginConfigArr.react);
       break;
     default:
       break;
@@ -244,9 +259,16 @@ async function pluginEntryAdderInReact(pluginConfigArr: ReactPluginEntry[]) {
 
   const rootPath = path.join(process.cwd(), "src");
 
-  const rootComponent = detectFile(rootPath, "App");
+  const detectRootComponentFile = findFileRecursively(rootPath, "App");
 
-  const rootEntry = detectFile(rootPath, `${isViteProject ? "main" : "index"}`);
+  const detectEntryFile = findFileRecursively(
+    rootPath,
+    `${isViteProject ? "main" : "index"}`
+  );
+  if (!detectRootComponentFile || !detectEntryFile) return;
+
+  const rootComponent = detectRootComponentFile.file;
+  const rootEntryFilePath = detectEntryFile.filePath;
 
   const regex = getRegexForRootComponent(
     rootComponent.substring(0, rootComponent.indexOf("."))
@@ -268,8 +290,8 @@ async function pluginEntryAdderInReact(pluginConfigArr: ReactPluginEntry[]) {
     return prev;
   }, initialValue);
 
-  addProviderAndImports(
-    path.join(process.cwd(), "src", rootEntry),
+  await addProviderAndImports(
+    rootEntryFilePath,
     importAndProviderValues.importStatements,
     regex,
     importAndProviderValues.addBeforeMatch,
@@ -278,36 +300,22 @@ async function pluginEntryAdderInReact(pluginConfigArr: ReactPluginEntry[]) {
 }
 
 async function pluginEntryAdderInNext(pluginConfigArr: NextPluginEntry[]) {
-  const rootLayoutName = detectFile(
+  const detectedFile = findFileRecursively(
     path.join(process.cwd(), "src", "app"),
     "layout"
   );
 
-  const regex = getRegexForRootComponent("html");
+  if (!detectedFile) return;
 
-  const initialValue: ReactIndexConfig = {
-    importStatements: "",
-    addAfterMatch: "",
-    addBeforeMatch: "",
-  };
-
-  const importAndProviderValues = pluginConfigArr.reduce((prev, curr) => {
-    const { importStatements, addAfterMatch, addBeforeMatch } = curr.Layout;
-
-    prev.importStatements = prev?.importStatements + importStatements + "\n";
-    prev.addAfterMatch = addAfterMatch + "\n" + prev?.addAfterMatch;
-    prev.addBeforeMatch = prev?.addBeforeMatch + addBeforeMatch + "\n";
-
-    return prev;
-  }, initialValue);
-
-  logger("red", `${importAndProviderValues}`);
-
-  addProviderAndImports(
-    path.join(process.cwd(), "src", "app", rootLayoutName),
-    importAndProviderValues.importStatements,
-    regex,
-    importAndProviderValues.addBeforeMatch,
-    importAndProviderValues.addAfterMatch
-  );
+  pluginConfigArr.forEach(async curr => {
+    const { importStatements, addAfterMatch, addBeforeMatch, regex } =
+      curr.Layout;
+    await addProviderAndImports(
+      detectedFile.filePath,
+      importStatements ?? "",
+      regex,
+      addBeforeMatch,
+      addAfterMatch
+    );
+  });
 }

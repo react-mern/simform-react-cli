@@ -1,7 +1,7 @@
-import fs from "fs";
+import { readFileSync, writeFileSync } from "fs";
 import logger from "@/utils/logger";
 
-export function addProviderAndImports(
+export async function addProviderAndImports(
   fileName: string,
   importStatements: string,
   regex: RegExp,
@@ -10,23 +10,23 @@ export function addProviderAndImports(
   errorMsg: string = "",
   addAfterContent: string = ""
 ) {
-  fs.readFile(fileName, "utf8", function (err, data: string) {
-    if (err) {
-      return logger("red", errorMsg);
-    }
+  try {
+    const data: string = readFileSync(fileName, "utf8");
     const matchedOutput = data.match(regex);
+
     if (!matchedOutput?.[0].length) {
       logger("yellow", errorMsg);
       return;
     }
+
     const replaceString = `${addBeforeMatch}${matchedOutput[0]}${addAfterMatch}`;
     let result = importStatements + "\n" + data.replace(regex, replaceString);
-
     result += addAfterContent;
-    fs.writeFile(fileName, result, "utf8", function (err) {
-      if (err) return console.log(err);
-    });
-  });
+
+    writeFileSync(fileName, result, "utf8");
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 //give the regex that detects the embedded root component in root file
