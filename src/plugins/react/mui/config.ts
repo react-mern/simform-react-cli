@@ -42,7 +42,7 @@ const MuiReactPlugin: PluginConfigType = {
   dependencies: "@mui/material",
   fileModification: {
     Index: {
-      importStatements: `import { ThemeProvider } from "@mui/material"; \nimport theme from "./theme/theme"; `,
+      importStatements: `import { ThemeProvider } from "@mui/material"; \nimport theme from "src/theme/theme"; `,
       addBeforeMatch: "<ThemeProvider theme={theme}>",
       addAfterMatch: "</ThemeProvider>",
     },

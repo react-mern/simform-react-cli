@@ -2,7 +2,6 @@ import { PluginConfigType } from "@/types";
 
 //config for the prettier
 let prettierInitialConfig = {
-  singleQuote: false,
   bracketSpacing: true,
   printWidth: 120,
 };

@@ -1,36 +1,13 @@
 import { PluginConfigType } from "@/types";
 
-export const RootComponentReact = `import { createBrowserRouter, RouterProvider, createRoutesFromElements, Route } from "react-router-dom";
-import Home from "./components/home/Home";
-import Contact from "./components/contact/Contact";
-import About from "./components/about/About";
-import PrivateRoutes from "./utils/PrivateRouter";
-import LayoutAuth from "./components/layoutAuth/LayoutAuth";
-import Register from "./components/register/Register";
-import Login from "./components/login/Login";
+export const RootComponentReact = `import { RouterProvider } from "react-router-dom";
+import router from "src/routes/router";
 
 function App() {
-  const router = createBrowserRouter(
-    createRoutesFromElements(
-      <>
-        <Route path="/" element={<PrivateRoutes />}>
-          <Route index element={<Home />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/about" element={<About />} />
-        </Route>
-        <Route path="auth/*" element={<LayoutAuth />}>
-          <Route index path="signup" element={<Register />} />
-          <Route path="signin" element={<Login />} />
-          <Route />
-        </Route>
-      </>,
-    ),
-  );
   return <RouterProvider router={router} />;
 }
 
-export default App;
-`;
+export default App;`;
 
 export const LayoutReact = (isTsProject: boolean) => `import React from "react";
 import { Link } from "react-router-dom";
@@ -101,11 +78,11 @@ export default LayoutAuth;
 `;
 
 export const privateRouter = `import { Outlet, Navigate } from "react-router-dom";
-import Layout from "../components/layout/Layout";
+import Layout from "src/components/layout/Layout";
 
 const PrivateRoutes = () => {
   /**
-   * something like this you can check if user is logged in or not
+   * you can check if user is logged in or not
    * if you don't have user auth then hit GET request to server with token and get user logged in status
   *  const authenticated = useAppSelector((state) => state.auth.isAuth);
   const navigate = useNavigate();
@@ -137,6 +114,149 @@ const PrivateRoutes = () => {
 };
 
 export default PrivateRoutes;
+`;
+
+const router = `import { lazy } from "react";
+import { createBrowserRouter, createRoutesFromElements, Route } from "react-router-dom";
+import { SuspenseErrorBoundary } from "./SuspenseErrorBoundary";
+
+//lazy imports
+const Home = lazy(() => import("../components/home/Home"));
+const About = lazy(() => import("../components/about/About"));
+const Contact = lazy(() => import("../components/contact/Contact"));
+const LayoutAuth = lazy(() => import("../components/layoutAuth/LayoutAuth"));
+const Login = lazy(() => import("../components/login/Login"));
+const Register = lazy(() => import("../components/register/Register"));
+const PrivateRoutes = lazy(() => import("./PrivateRouter"));
+
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <>
+      <Route
+        path="/"
+        element={
+          <SuspenseErrorBoundary>
+            <PrivateRoutes />
+          </SuspenseErrorBoundary>
+        }
+      >
+        <Route
+          index
+          element={
+            <SuspenseErrorBoundary>
+              <Home />
+            </SuspenseErrorBoundary>
+          }
+        />
+        <Route
+          path="/contact"
+          element={
+            <SuspenseErrorBoundary>
+              <Contact />
+            </SuspenseErrorBoundary>
+          }
+        />
+        <Route
+          path="/about"
+          element={
+            <SuspenseErrorBoundary>
+              <About />
+            </SuspenseErrorBoundary>
+          }
+        />
+      </Route>
+      <Route
+        path="auth/*"
+        element={
+          <SuspenseErrorBoundary>
+            <LayoutAuth />
+          </SuspenseErrorBoundary>
+        }
+      >
+        <Route
+          index
+          path="signup"
+          element={
+            <SuspenseErrorBoundary>
+              <Register />
+            </SuspenseErrorBoundary>
+          }
+        />
+        <Route
+          path="signin"
+          element={
+            <SuspenseErrorBoundary>
+              <Login />
+            </SuspenseErrorBoundary>
+          }
+        />
+        <Route />
+      </Route>
+    </>,
+  ),
+);
+
+export default router;
+`;
+
+const SuspenseErrorBoundary = (isTsProject: boolean) => `import React${
+  isTsProject ? ", { ReactNode }" : ""
+} from "react";
+${
+  isTsProject
+    ? `
+type ErrorBoundaryProps = {
+  children: ReactNode;
+};
+
+type ErrorBoundaryState = {
+  hasError: boolean;
+};`
+    : ""
+}
+
+//replace it with your own custom loader
+const Loader = () => {
+  return <div>Loading...</div>;
+};
+
+//replace it with your own custom error page
+const ErrorPage = () => {
+  return <div>Ohh ! An Error Occurred !</div>;
+};
+
+export class SuspenseErrorBoundary extends React.Component${
+  isTsProject ? "<ErrorBoundaryProps, ErrorBoundaryState>" : ""
+} {
+  constructor(props${isTsProject ? ": ErrorBoundaryProps" : ""}) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error${isTsProject ? ": Error" : ""}) {
+    /*
+    Here you can call any third party monitor system API
+    like sentry.io to log errors in third party service.
+    */
+    // eslint-disable-next-line
+    console.error("Uncaught error:", error);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <React.Suspense fallback={<Loader />}>
+          <ErrorPage />
+        </React.Suspense>
+      );
+    }
+     ${isTsProject ? "" : "// eslint-disable-next-line react/prop-types"}
+    return <React.Suspense fallback={<Loader />}>{this.props.children}</React.Suspense>;
+  }
+}
 `;
 
 const ReactRouterDomReactPlugin: PluginConfigType = {
@@ -192,9 +312,21 @@ const ReactRouterDomReactPlugin: PluginConfigType = {
       fileType: "component",
     },
     {
-      path: ["src", "utils"],
+      path: ["src", "routes"],
       content: privateRouter,
       fileName: "PrivateRouter",
+      fileType: "component",
+    },
+    {
+      path: ["src", "routes"],
+      content: router,
+      fileName: "router",
+      fileType: "component",
+    },
+    {
+      path: ["src", "routes"],
+      content: SuspenseErrorBoundary,
+      fileName: "SuspenseErrorBoundary",
       fileType: "component",
     },
   ],

@@ -25,6 +25,7 @@ import logger from "@/utils/logger";
 import i18nAdder from "@/operation/i18n";
 import { pluginDependencyAdder } from "@/utils/file";
 import initGitRepo from "@/operation/initGit";
+import { absolutePathConfigAdderInReact } from "./operation/projectGenerator/projectGenerator";
 
 /**
  * current we are storing the config with code but if we increase the number of features then we can have plugin dir that has it's own config file
@@ -76,9 +77,12 @@ async function main() {
     //git init and add git ignore file
     await initGitRepo();
 
-    //getting project types if react then add react router dom
+    //getting project types if react then config related to react projects
     const projectType = getCurrentProject();
-    if (projectType === "react") await reactRouterAdder();
+    if (projectType === "react") {
+      absolutePathConfigAdderInReact(selectedLanguage, selectedProjectType);
+      await reactRouterAdder();
+    }
 
     // ESLint or Prettier or Storybook or Husky
     await addTooling(addPrettier, addStoryBook, addHusky);

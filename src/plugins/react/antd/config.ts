@@ -87,7 +87,7 @@ const AntDReactPlugin: PluginConfigType = {
     App: {},
     Index: {
       importStatements: `import { ConfigProvider } from "antd";
-import theme from "./theme/themeAntd";`,
+import theme from "src/theme/themeAntd";`,
       addBeforeMatch: `<ConfigProvider theme={theme}>`,
       addAfterMatch: `</ConfigProvider>`,
     },

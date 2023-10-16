@@ -35,7 +35,7 @@ export default client;
 export const getExampleComponentReact = (isTsProject: boolean) =>
   `import React from "react";
 import { useQuery${isTsProject ? "" : ", gql"} } from "@apollo/client";
-${isTsProject ? `import { gql } from "../../__generated__";` : ""}
+${isTsProject ? `import { gql } from "src/__generated__";` : ""}
 
 const GET_CHARACTERS = gql${isTsProject ? "(/* GraphQL */ " : ""}+=+
   query Get_Characters {
@@ -100,7 +100,7 @@ const GraphQlReactPlugin: PluginConfigType = {
     App: {},
     Index: {
       importStatements: `import { ApolloProvider } from "@apollo/client";
-import client from "./config/client";`,
+import client from "src/config/client";`,
       addAfterMatch: "</ApolloProvider>",
       addBeforeMatch: "<ApolloProvider client={client}>",
     },

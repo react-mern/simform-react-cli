@@ -284,8 +284,8 @@ async function pluginEntryAdderInReact(pluginConfigArr: ReactPluginEntry[]) {
     const { importStatements, addAfterMatch, addBeforeMatch } = curr.Index;
 
     prev.importStatements = prev?.importStatements + importStatements + "\n";
-    prev.addAfterMatch = addAfterMatch + "\n" + prev?.addAfterMatch;
-    prev.addBeforeMatch = prev?.addBeforeMatch + addBeforeMatch + "\n";
+    prev.addAfterMatch = addAfterMatch + prev?.addAfterMatch;
+    prev.addBeforeMatch = prev?.addBeforeMatch + addBeforeMatch;
 
     return prev;
   }, initialValue);

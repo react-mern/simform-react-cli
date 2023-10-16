@@ -126,7 +126,7 @@ const i18NReactPlugin: PluginConfigType = {
   fileModification: {
     App: {},
     Index: {
-      importStatements: `import "./utils/i18n";`,
+      importStatements: `import "src/utils/i18n";`,
       addAfterMatch: "",
       addBeforeMatch: "",
     },

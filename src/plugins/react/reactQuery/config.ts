@@ -11,8 +11,7 @@ const getEnvConfig = (isTsProject: boolean) => {
   return prefix + "=https://jsonplaceholder.typicode.com/";
 };
 
-const reactQueryConfig = `
-import { QueryClient } from "@tanstack/react-query";
+const reactQueryConfig = `import { QueryClient } from "@tanstack/react-query";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -154,7 +153,7 @@ export const imageKitUpload = (body${
     .replaceAll("+=+", "`");
 
 const reactQueryExample = `import { useQuery } from "@tanstack/react-query";
-import { getPosts } from "../../utils/api";
+import { getPosts } from "src/utils/api";
 
 const ReactQueryExample = () => {
   const { data, error, isLoading } = useQuery(["posts"], getPosts);
@@ -218,7 +217,7 @@ const ReactQueryReactPlugin: PluginConfigType = {
     App: {},
     Index: {
       importStatements: `import { QueryClientProvider } from "@tanstack/react-query";
-import queryClient from "./client/queryClient";
+import queryClient from "src/client/queryClient";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";`,
       addAfterMatch: `<ReactQueryDevtools />
     </QueryClientProvider>`,

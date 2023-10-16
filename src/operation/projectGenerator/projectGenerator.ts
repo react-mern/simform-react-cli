@@ -1,10 +1,15 @@
-import { NodePackageManager, SupportedLanguage } from "@/types";
+import path from "path";
+import fs from "fs";
+import {
+  NodePackageManager,
+  SupportedLanguage,
+  SupportedProjectGenerator,
+} from "@/types";
 import cmdRunner from "@/utils/cmdRunner";
 import logger, { initiatorLog } from "@/utils/logger";
-import { deleteFile, writeFileFromConfig } from "@/utils/file";
+import { deleteFile, writeFile, writeFileFromConfig } from "@/utils/file";
 import GlobalStateUtility from "@/global";
 import ReactRouterDomReactPlugin from "@/plugins/react/reactRouterDom";
-import path from "path";
 
 //Main function to init project generation
 export default async function projectGenerator() {
@@ -61,9 +66,6 @@ async function initReactViteProject(
       `--template`,
       tsProjectOrNot,
     ]);
-    console.log(
-      `Now install dependencies with ${packageManager} \n run : ${packageManager} install`
-    );
   } catch (error) {
     process.exit(1);
   }
@@ -118,5 +120,80 @@ export async function reactRouterAdder() {
   }
 
   await writeFileFromConfig(ReactRouterDomReactPlugin);
-  logger("yellow", "Successfully added react-router-dom with routing !");
+}
+
+//adds absolute path config in tsconfig.json or creates jsconfig.json if js project
+export function absolutePathConfigAdderInReact(
+  selectedLanguage: SupportedLanguage,
+  selectedProjectType: SupportedProjectGenerator
+) {
+  try {
+    if (selectedProjectType === "react-vite") {
+      const extraConfig = `
+    // additional configuration for absolute path
+    resolve: {
+      alias: {
+      src: "/src",
+    },
+  },
+`;
+
+      const viteConfigFileName = `vite.config.${
+        selectedLanguage === "ts" ? "ts" : "js"
+      }`;
+
+      const viteConfigPath = path.join(process.cwd(), viteConfigFileName);
+      const viteConfig = fs.readFileSync(viteConfigPath, "utf8");
+
+      const modifiedConfigString = viteConfig.replace(/(\}\s*\))/s, match => {
+        return extraConfig + match;
+      });
+
+      writeFile(viteConfigFileName, modifiedConfigString);
+    }
+
+    if (selectedLanguage === "ts") {
+      const tsConfigPath = path.join(process.cwd(), "tsconfig.json");
+      const tsConfig = parseJsonWithComments(
+        fs.readFileSync(tsConfigPath, "utf8")
+      );
+
+      tsConfig["compilerOptions"]["baseUrl"] = "./";
+      tsConfig["compilerOptions"]["paths"] = {
+        "src/*": ["./src/*"],
+      };
+
+      fs.writeFileSync(
+        tsConfigPath,
+        JSON.stringify(tsConfig, null, 2),
+        "utf-8"
+      );
+    }
+
+    if (selectedProjectType === "react-cra" && selectedLanguage === "js") {
+      const absolutePathConfigForJs = {
+        compilerOptions: {
+          baseUrl: "./",
+          paths: {
+            "src/*": ["./src/*"],
+          },
+        },
+      };
+
+      writeFile("jsconfig.json", JSON.stringify(absolutePathConfigForJs));
+    }
+  } catch (error) {
+    console.log(error);
+    logger(
+      "red",
+      "An Error occurred while adding setup related to absolute path !"
+    );
+  }
+}
+
+//JSON Parser that parse the json with comments
+function parseJsonWithComments(jsonString: string) {
+  const commentsRegExp = /\/\/.*|\/\*[^]*?\*\//g;
+  const cleanedJsonString = jsonString.replace(commentsRegExp, "");
+  return JSON.parse(cleanedJsonString);
 }

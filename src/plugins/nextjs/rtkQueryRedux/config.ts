@@ -283,7 +283,6 @@ const RtkQueryNextPlugin: PluginConfigType = {
       isTsProject ? "@types/js-cookie" : ""
     }`;
   },
-  successMessage: "Successfully added rtk-query with redux !",
   fileModification: {
     Page: {},
     Layout: {
@@ -293,5 +292,6 @@ const RtkQueryNextPlugin: PluginConfigType = {
       regex: getRegexForRootComponent("html"),
     },
   },
+  successMessage: "Successfully added rtk-query with redux !",
 };
 export default RtkQueryNextPlugin;

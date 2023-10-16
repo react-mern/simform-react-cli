@@ -15,8 +15,8 @@ const getEnvConfig = (isTsProject: boolean) => {
 function getStoreConfig(isTsProject: boolean) {
   return `
 import { configureStore } from "@reduxjs/toolkit";
-import counterSlice from "./features/counterSlice";
-import { userApi } from "./api/userApi";
+import counterSlice from "src/store/features/counterSlice";
+import { userApi } from "src/store/api/userApi";
 ${
   isTsProject
     ? `import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";`
@@ -204,7 +204,7 @@ export const userApi = createApi({
 }
 
 const rtkQueryExample = `import React from "react";
-import { userApi } from "../../store/api/userApi";
+import { userApi } from "src/store/api/userApi";
 
 const RtkQueryExample = () => {
   const { data, isLoading } = userApi.useGetUsersQuery();
@@ -278,7 +278,7 @@ const RtkReduxReactPlugin: PluginConfigType = {
     App: {},
     Index: {
       importStatements: `import { Provider } from "react-redux";
-      import { store } from "./store";`,
+import { store } from "src/store";`,
       addBeforeMatch: "<Provider store={store}>",
       addAfterMatch: "</Provider>",
     },
