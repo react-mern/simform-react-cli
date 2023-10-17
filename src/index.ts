@@ -25,7 +25,8 @@ import logger from "@/utils/logger";
 import i18nAdder from "@/operation/i18n";
 import { pluginDependencyAdder } from "@/utils/file";
 import initGitRepo from "@/operation/initGit";
-import { absolutePathConfigAdderInReact } from "./operation/projectGenerator/projectGenerator";
+import { absolutePathConfigAdderInReact } from "@/operation/projectGenerator/projectGenerator";
+import readmeGenerator from "@/operation/readme";
 
 /**
  * current we are storing the config with code but if we increase the number of features then we can have plugin dir that has it's own config file
@@ -101,6 +102,20 @@ async function main() {
 
     //install dependencies of the plugins
     await pluginDependencyAdder();
+
+    //generating readme file
+    await readmeGenerator({
+      currentProjectType: selectedProjectType,
+      cachingOption: cachingOption,
+      currentPackageManager: currentPackageManager,
+      eslint: true,
+      husky: addHusky,
+      i18n: addI18n,
+      language: selectedLanguage,
+      prettier: addPrettier,
+      selectedLibrary: selectedLibrary,
+      storybook: addPrettier,
+    });
 
     logger("green", "\n ☺️ Happy Coding !");
   } catch (e: unknown) {
