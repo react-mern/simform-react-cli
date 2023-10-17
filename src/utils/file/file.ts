@@ -218,20 +218,30 @@ export async function pluginDependencyAdder() {
 
   const devDependencies = globalInstance.getDevDependencies();
 
-  if (dependencies) {
-    await cmdRunner(currentPackageManager, [
-      `${currentPackageManager === "npm" ? "install" : "add"}`,
-      ...dependencies.split(" "),
-    ]);
-  }
+  try {
+    if (dependencies) {
+      const dependenciesArr = dependencies.split(" ").filter(str => {
+        if (str) return str;
+      });
 
-  if (devDependencies) {
-    await cmdRunner(currentPackageManager, [
-      `${currentPackageManager === "npm" ? "install" : "add"}`,
-      "-D",
-      ...devDependencies.split(" "),
-    ]);
-  }
+      await cmdRunner(currentPackageManager, [
+        `${currentPackageManager === "npm" ? "install" : "add"}`,
+        ...dependenciesArr,
+      ]);
+    }
+
+    if (devDependencies) {
+      const devDependenciesArr = devDependencies.split(" ").filter(str => {
+        if (str) return str;
+      });
+
+      await cmdRunner(currentPackageManager, [
+        `${currentPackageManager === "npm" ? "install" : "add"}`,
+        "-D",
+        ...devDependenciesArr,
+      ]);
+    }
+  } catch (error) {}
 }
 
 export async function pluginEntryAdder() {

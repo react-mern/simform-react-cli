@@ -249,8 +249,8 @@ export default async function About({
 const i18nNextPlugin: PluginConfigType = {
   initializingMessage: "Adding i18n, Please wait !",
   dependencies: function (isTsProject: boolean) {
-    return `negotiator @formatjs/intl-localematcher ${
-      isTsProject ? "@types/negotiator" : ""
+    return `negotiator @formatjs/intl-localematcher${
+      isTsProject ? " @types/negotiator" : ""
     }`;
   },
   files: [
