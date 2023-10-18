@@ -29,6 +29,51 @@ const theme = createTheme({
 
 export default theme;`;
 
+//gives react example components based on project type
+const getExampleComponent = (
+  isTsProject: boolean
+) => `import { Box, Button, Rating, TextField, Typography } from "@mui/material";
+import { useState } from "react";
+
+function MuiExample() {
+  const [ratingValue, setRatingValue] = useState${
+    isTsProject ? "<number | null>" : ""
+  }(null);
+  const [comment, setComment] = useState("");
+  const isDisabled = ratingValue === null || comment === "";
+  return (
+      <Box
+        sx={{
+          width: "300px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Typography variant="h2" color="primary.main">
+          How would you rate this experience ?
+        </Typography>
+        <Rating
+          value={ratingValue}
+          onChange={(_, val) => setRatingValue(val)}
+          sx={{ m: 2 }}
+        />
+        <Typography>Tell us how it went</Typography>
+        <TextField
+          multiline
+          maxRows={4}
+          value={comment}
+          onChange={e => setComment(e.target.value)}
+        />
+        <Button disabled={isDisabled} sx={{ mt: 1 }} variant="contained">
+          Submit
+        </Button>
+      </Box>
+  );
+}
+export default MuiExample;
+`;
+
 const MuiReactPlugin: PluginConfigType = {
   initializingMessage: "Adding Material UI ! Please Wait !",
   files: [
@@ -38,6 +83,12 @@ const MuiReactPlugin: PluginConfigType = {
       fileName: "theme",
       fileType: "native",
     },
+    {
+      path: ["src", "components", "muiExample"],
+      content: getExampleComponent,
+      fileName: "MuiExample",
+      fileType: "component",
+    },
   ],
   dependencies: "@mui/material",
   fileModification: {
@@ -46,7 +97,11 @@ const MuiReactPlugin: PluginConfigType = {
       addBeforeMatch: "<ThemeProvider theme={theme}>",
       addAfterMatch: "</ThemeProvider>",
     },
-    App: {},
+    App: {
+      importStatement: `import MuiExample from "src/components/muiExample/MuiExample"`,
+      name: "Material UI",
+      component: "<MuiExample/>",
+    },
   },
   successMessage: "Successfully added Material UI with theme config !",
 };

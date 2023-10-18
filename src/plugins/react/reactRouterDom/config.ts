@@ -11,34 +11,67 @@ export default App;`;
 
 export const LayoutReact = (isTsProject: boolean) => `import React from "react";
 import { Link } from "react-router-dom";
+import styles from "./Layout.module.css";
 
 ${!isTsProject ? "// eslint-disable-next-line react/prop-types" : ""}
 const Layout = ({ children }${
   isTsProject ? ": { children: React.ReactNode }" : ""
 }) => {
   return (
-    <>
-      <div style={{ margin: "1rem" }}>
+     <main className={styles.main}>
+      <nav className={styles.nav}>
         <div>
-          <ul>
-            <li>
-              <Link to={"/"}>Home</Link>
-            </li>
-            <li>
-              <Link to={"/contact"}>Contact</Link>
-            </li>
-            <li>
-              <Link to={"/about"}>About</Link>
-            </li>
-          </ul>
+          <img src="https://ik.imagekit.io/ashishkk22/simform_logo.svg?updatedAt=1697020836220" alt="simform_logo" />
         </div>
-      </div>
+        <div>
+          <div>
+            <ul className={styles.nav_ul}>
+              <li>
+                <Link to={"/"} className={styles.nav_link}>
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link to={"/contact"} className={styles.nav_link}>
+                  Contact
+                </Link>
+              </li>
+              <li>
+                <Link to={"/about"} className={styles.nav_link}>
+                  About
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
       {children}
-    </>
+    </main>
   );
 };
 
 export default Layout;
+`;
+
+const layoutCss = `.nav {
+  background-color: #ea495c;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+.nav_ul {
+  list-style-type: none;
+  display: flex;
+  justify-content: space-around;
+  width: 20rem;
+}
+
+.nav_link {
+  text-decoration: none;
+  color: white;
+}
 `;
 
 export const getPagesComponentReact = (
@@ -259,6 +292,33 @@ export class SuspenseErrorBoundary extends React.Component${
 }
 `;
 
+const indexCssReset = `@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Poppins:wght@200;300;400;500&family=Roboto:wght@300;400;500&display=swap");
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins";
+}
+
+html,
+body {
+  height: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+`;
+
 const ReactRouterDomReactPlugin: PluginConfigType = {
   initializingMessage: "Adding React Router Dom ! Please Wait !",
   dependencies: "react-router-dom",
@@ -274,6 +334,12 @@ const ReactRouterDomReactPlugin: PluginConfigType = {
       content: LayoutReact,
       fileName: "Layout",
       fileType: "component",
+    },
+    {
+      path: ["src", "components", "layout"],
+      content: layoutCss,
+      fileName: "Layout.module.css",
+      fileType: "simple",
     },
     {
       path: ["src", "components", "about"],
@@ -328,6 +394,12 @@ const ReactRouterDomReactPlugin: PluginConfigType = {
       content: SuspenseErrorBoundary,
       fileName: "SuspenseErrorBoundary",
       fileType: "component",
+    },
+    {
+      path: ["src"],
+      content: indexCssReset,
+      fileName: "index.css",
+      fileType: "simple",
     },
   ],
   successMessage: "Successfully added React Router Dom !",

@@ -19,13 +19,14 @@ export type SupportedStateManagementAndCachingSol =
 export type StylingEngineInMui = "emotion" | "styled-components";
 
 export type ReactAppConfig = {
-  import?: string[];
+  importStatement?: string;
+  name?: string;
   localImport?: string[];
   relativeImport?: string[];
   afterImport?: string[];
   innerHooks?: string[];
   inner?: string[];
-  component?: string[];
+  component?: string;
 };
 
 export type ReactIndexConfig = {

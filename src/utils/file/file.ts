@@ -1,7 +1,6 @@
 import fs, { readdirSync, unlinkSync } from "fs";
 import path from "path";
 import {
-  SupportedProjectGenerator,
   PluginConfigType,
   ReactIndexConfig,
   ReactPluginEntry,
@@ -12,6 +11,7 @@ import GlobalStateUtility from "@/global";
 import logger, { initiatorLog } from "@/utils/logger";
 import { addProviderAndImports } from "@/utils/fileManipulation";
 import { getRegexForRootComponent } from "@/utils/fileManipulation";
+import { homePageContent, homePageCss } from "./reactPluginConfig";
 
 //gives directory empty or not
 export function isEmptyDir(path: string) {
@@ -256,6 +256,8 @@ export async function pluginEntryAdder() {
       await pluginEntryAdderInNext(pluginConfigArr.next);
       break;
     case "react-cra":
+      await pluginEntryAdderInReact(pluginConfigArr.react);
+      break;
     case "react-vite":
       await pluginEntryAdderInReact(pluginConfigArr.react);
       break;
@@ -267,14 +269,17 @@ export async function pluginEntryAdder() {
 async function pluginEntryAdderInReact(pluginConfigArr: ReactPluginEntry[]) {
   const isViteProject = isFileExists(process.cwd(), "vite.config");
 
+  const isTsProject = isFileExists(process.cwd(), "tsconfig.json");
+
   const rootPath = path.join(process.cwd(), "src");
 
   const detectRootComponentFile = findFileRecursively(rootPath, "App");
 
   const detectEntryFile = findFileRecursively(
     rootPath,
-    `${isViteProject ? "main" : "index"}`
+    `${isViteProject ? "main" : `index.${isTsProject ? "tsx" : "js"}`}`
   );
+
   if (!detectRootComponentFile || !detectEntryFile) return;
 
   const rootComponent = detectRootComponentFile.file;
@@ -307,6 +312,41 @@ async function pluginEntryAdderInReact(pluginConfigArr: ReactPluginEntry[]) {
     importAndProviderValues.addBeforeMatch,
     importAndProviderValues.addAfterMatch
   );
+
+  //========== Adding generated example in home file =============//
+  const initialValueComponentValue: {
+    importStatement: string;
+    component: { name: string; component: string }[];
+  } = {
+    importStatement: "",
+    component: [],
+  };
+
+  const importAndComponentValues = pluginConfigArr.reduce((prev, curr) => {
+    const { importStatement, name, component } = curr.App;
+
+    if (importStatement && name && component) {
+      prev.importStatement += "\n" + importStatement ?? "";
+      prev.component.push({ name, component });
+    }
+
+    return prev;
+  }, initialValueComponentValue);
+
+  const HomePageContent =
+    importAndComponentValues.importStatement +
+    "\n" +
+    homePageContent(isTsProject, importAndComponentValues.component);
+
+  const homePagePath = path.join(process.cwd(), "src", "components", "home");
+
+  writeFile(
+    `Home.${isTsProject ? "tsx" : "jsx"}`,
+    HomePageContent,
+    homePagePath
+  );
+
+  writeFile("Home.module.css", homePageCss, homePagePath);
 }
 
 async function pluginEntryAdderInNext(pluginConfigArr: NextPluginEntry[]) {

@@ -137,9 +137,9 @@ export async function getSelectedUiLibrary(
 
     const dependencies = `${
       selectStylingEngine === "emotion"
-        ? "@emotion/react @emotion/styled"
+        ? "@emotion/styled"
         : "@mui/styled-engine-sc styled-components"
-    } ${addMuiIcons ? "@mui/icons-material" : ""}`;
+    } @emotion/react ${addMuiIcons ? "@mui/icons-material" : ""}`;
 
     GlobalStateUtility.getInstance().setDependencies(dependencies);
   }

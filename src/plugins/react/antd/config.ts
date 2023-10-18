@@ -78,13 +78,17 @@ const AntDReactPlugin: PluginConfigType = {
     },
     {
       content: getExampleComponent,
-      fileName: "Buttons",
+      fileName: "AntDExample",
       fileType: "component",
-      path: ["src", "components", "AntdExample"],
+      path: ["src", "components", "antDExample"],
     },
   ],
   fileModification: {
-    App: {},
+    App: {
+      importStatement: `import AntDExample from "src/components/antDExample/AntDExample"`,
+      name: "Ant Design",
+      component: "<AntDExample/>",
+    },
     Index: {
       importStatements: `import { ConfigProvider } from "antd";
 import theme from "src/theme/themeAntd";`,

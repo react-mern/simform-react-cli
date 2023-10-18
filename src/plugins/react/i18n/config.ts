@@ -124,7 +124,11 @@ const i18NReactPlugin: PluginConfigType = {
     },
   ],
   fileModification: {
-    App: {},
+    App: {
+      importStatement: `import I18Example from "src/components/i18Example/I18Example";`,
+      name: "I18n",
+      component: "<I18Example />",
+    },
     Index: {
       importStatements: `import "src/utils/i18n";`,
       addAfterMatch: "",

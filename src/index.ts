@@ -2,7 +2,7 @@
 
 //=============== main executer ==============//
 
-import GlobalStateUtility from "./global";
+import GlobalStateUtility from "@/global";
 import getCurrentPackageManager from "@/operation/getPackageManager";
 import getProjectName from "@/operation/getProjectName";
 import getCurrentProject from "@/operation/getProjectType";
@@ -27,6 +27,7 @@ import { pluginDependencyAdder } from "@/utils/file";
 import initGitRepo from "@/operation/initGit";
 import { absolutePathConfigAdderInReact } from "@/operation/projectGenerator/projectGenerator";
 import readmeGenerator from "@/operation/readme";
+import cmdRunner from "@/utils/cmdRunner";
 
 /**
  * current we are storing the config with code but if we increase the number of features then we can have plugin dir that has it's own config file
@@ -116,6 +117,13 @@ async function main() {
       selectedLibrary: selectedLibrary,
       storybook: addPrettier,
     });
+
+    //formatting the code if prettier is available
+    if (addPrettier) {
+      const formatCmd =
+        currentPackageManager === "npm" ? ["run", "format"] : ["format"];
+      await cmdRunner(currentPackageManager, formatCmd);
+    }
 
     logger("green", "\n ☺️ Happy Coding !");
   } catch (e: unknown) {

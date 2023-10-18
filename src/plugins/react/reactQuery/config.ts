@@ -156,7 +156,7 @@ const reactQueryExample = `import { useQuery } from "@tanstack/react-query";
 import { getPosts } from "src/utils/api";
 
 const ReactQueryExample = () => {
-  const { data, error, isLoading } = useQuery(["posts"], getPosts);
+  const { data, error, isLoading } = useQuery({ queryKey: ["posts"], queryFn: getPosts });
 
   if (error) return <div>An error occurred</div>;
 
@@ -214,7 +214,11 @@ const ReactQueryReactPlugin: PluginConfigType = {
     },
   ],
   fileModification: {
-    App: {},
+    App: {
+      importStatement: `import ReactQueryExample from "src/components/reactQueryExample/ReactQueryExample"`,
+      name: "React Query",
+      component: "<ReactQueryExample />",
+    },
     Index: {
       importStatements: `import { QueryClientProvider } from "@tanstack/react-query";
 import queryClient from "src/client/queryClient";

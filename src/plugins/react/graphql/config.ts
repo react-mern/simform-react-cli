@@ -97,7 +97,11 @@ const GraphQlReactPlugin: PluginConfigType = {
   ],
   dependencies: "@apollo/client graphql",
   fileModification: {
-    App: {},
+    App: {
+      importStatement: `import Characters from "src/components/character/Character"`,
+      name: "Apollo GraphQL",
+      component: "<Characters/>",
+    },
     Index: {
       importStatements: `import { ApolloProvider } from "@apollo/client";
 import client from "src/config/client";`,

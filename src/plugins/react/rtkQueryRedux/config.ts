@@ -275,7 +275,11 @@ const RtkReduxReactPlugin: PluginConfigType = {
     }`;
   },
   fileModification: {
-    App: {},
+    App: {
+      importStatement: `import RtkQueryExample from "src/components/rtkQueryExample/RtkQueryExample"`,
+      name: "RTK Query",
+      component: "<RtkQueryExample/>",
+    },
     Index: {
       importStatements: `import { Provider } from "react-redux";
 import { store } from "src/store";`,
