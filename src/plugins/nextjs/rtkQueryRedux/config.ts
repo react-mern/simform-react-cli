@@ -1,4 +1,4 @@
-import { PluginConfigType } from "@/types";
+import { PluginConfigType, FileType } from "@/types";
 import { getRegexForRootComponent } from "@/utils/fileManipulation";
 
 const envExFileContent = "NEXT_PUBLIC_BASE_URL";
@@ -238,43 +238,43 @@ const RtkQueryNextPlugin: PluginConfigType = {
     {
       content: envFileContent,
       fileName: ".env",
-      fileType: "simple",
+      fileType: FileType.SIMPLE,
       path: [],
     },
     {
       content: envExFileContent,
       fileName: ".env.example",
-      fileType: "simple",
+      fileType: FileType.SIMPLE,
       path: [],
     },
     {
       content: getStoreConfig,
       fileName: "index",
-      fileType: "native",
+      fileType: FileType.NATIVE,
       path: ["src", "store"],
     },
     {
       content: getCounterSliceConfig,
       fileName: "counterSlice",
-      fileType: "native",
+      fileType: FileType.NATIVE,
       path: ["src", "store", "features"],
     },
     {
       content: getUserApi,
       fileName: "userApi",
-      fileType: "native",
+      fileType: FileType.NATIVE,
       path: ["src", "store", "api"],
     },
     {
       content: StoreProviderConfig,
       fileName: "StoreProvider",
-      fileType: "component",
+      fileType: FileType.COMPONENT,
       path: ["src", "store"],
     },
     {
       content: rtkQueryExampleNext,
       fileName: "page",
-      fileType: "component",
+      fileType: FileType.COMPONENT,
       path: ["src", "app", "users"],
     },
   ],

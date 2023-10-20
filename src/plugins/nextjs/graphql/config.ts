@@ -1,4 +1,4 @@
-import { PluginConfigType } from "@/types";
+import { FileType, PluginConfigType } from "@/types";
 import { getRegexForRootComponent } from "@/utils/fileManipulation";
 
 const envExFileContent = "NEXT_PUBLIC_BASE_URL";
@@ -103,31 +103,31 @@ const GraphQlNextPlugin: PluginConfigType = {
     {
       content: envFileContent,
       fileName: ".env",
-      fileType: "simple",
+      fileType: FileType.SIMPLE,
       path: [],
     },
     {
       content: envExFileContent,
       fileName: ".env.example",
-      fileType: "simple",
+      fileType: FileType.SIMPLE,
       path: [],
     },
     {
       content: getApolloWrapperNext,
       fileName: "ApolloWrapper",
-      fileType: "component",
+      fileType: FileType.COMPONENT,
       path: ["src", "lib"],
     },
     {
       content: getApolloClientNext,
       fileName: "client",
-      fileType: "native",
+      fileType: FileType.NATIVE,
       path: ["src", "lib"],
     },
     {
       content: getExampleComponentNext,
       fileName: "page",
-      fileType: "component",
+      fileType: FileType.COMPONENT,
       path: ["src", "app", "characters"],
     },
   ],

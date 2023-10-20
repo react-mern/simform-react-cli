@@ -1,5 +1,5 @@
 import GlobalStateUtility from "@/global";
-import { PluginConfigType, SupportedProjectGenerator } from "@/types";
+import { FileType, PluginConfigType, SupportedProjectGenerator } from "@/types";
 import { isFileExists } from "@/utils/file";
 
 const envExFile = (isTsProject: boolean) => {
@@ -239,37 +239,37 @@ const RtkReduxReactPlugin: PluginConfigType = {
     {
       content: getEnvConfig,
       fileName: ".env",
-      fileType: "simple",
+      fileType: FileType.SIMPLE,
       path: [],
     },
     {
       content: envExFile,
       fileName: ".env.example",
-      fileType: "simple",
+      fileType: FileType.SIMPLE,
       path: [],
     },
     {
       content: getStoreConfig,
       fileName: "index",
-      fileType: "native",
+      fileType: FileType.NATIVE,
       path: ["src", "store"],
     },
     {
       content: getCounterSliceConfig,
       fileName: "counterSlice",
-      fileType: "native",
+      fileType: FileType.NATIVE,
       path: ["src", "store", "features"],
     },
     {
       content: getUserApi,
       fileName: "userApi",
-      fileType: "native",
+      fileType: FileType.NATIVE,
       path: ["src", "store", "api"],
     },
     {
       content: rtkQueryExample,
       fileName: "RtkQueryExample",
-      fileType: "component",
+      fileType: FileType.COMPONENT,
       path: ["src", "components", "rtkQueryExample"],
     },
   ],

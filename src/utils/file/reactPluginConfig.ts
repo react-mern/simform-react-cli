@@ -2,7 +2,7 @@ export const homePageContent = (
   isTsProject: boolean,
   componentArr: { name: string; component: string }[]
 ) =>
-  `import { useState } from "react";
+  `import { useState, ReactNode } from "react";
 import styles from "./Home.module.css";
 
 ${

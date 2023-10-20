@@ -30,6 +30,7 @@ import { absolutePathConfigAdderInReact } from "@/operation/projectGenerator/pro
 import readmeGenerator from "@/operation/readme";
 import cmdRunner from "@/utils/cmdRunner";
 import { NodePackageManager, SupportedProjectType } from "@/types";
+import addTestingInProject from "@/operation/testing";
 
 /**
  * current we are storing the config with code but if we increase the number of features then we can have plugin dir that has it's own config file
@@ -102,6 +103,9 @@ async function main() {
 
     //i18
     await i18nAdder(addI18n);
+
+    //Testing adder
+    addTesting && (await addTestingInProject());
 
     //adds Provider in layout or index files
     await pluginEntryAdder();

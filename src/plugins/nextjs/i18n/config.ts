@@ -1,4 +1,4 @@
-import { PluginConfigType } from "@/types";
+import { FileType, PluginConfigType } from "@/types";
 
 //dictionaries/de.json
 const i18nDeDictionary = `{
@@ -257,13 +257,13 @@ const i18nNextPlugin: PluginConfigType = {
     {
       content: i18nDeDictionary,
       fileName: "de.json",
-      fileType: "simple",
+      fileType: FileType.SIMPLE,
       path: ["src", "dictionaries"],
     },
     {
       content: i18nEnDictionary,
       fileName: "en.json",
-      fileType: "simple",
+      fileType: FileType.SIMPLE,
       path: ["src", "dictionaries"],
     },
     {
@@ -271,49 +271,49 @@ const i18nNextPlugin: PluginConfigType = {
 @tailwind components;
 @tailwind utilities;`,
       fileName: "globals.css",
-      fileType: "simple",
+      fileType: FileType.SIMPLE,
       path: ["src", "app"],
     },
     {
       content: i18DictionaryConfig,
       fileName: "dictionary",
-      fileType: "native",
+      fileType: FileType.NATIVE,
       path: ["src", "lib"],
     },
     {
       content: i18nConfig,
       fileName: "i18n.config",
-      fileType: "native",
+      fileType: FileType.NATIVE,
       path: ["src"],
     },
     {
       content: nextMiddlewareConfig,
       fileName: "middleware",
-      fileType: "native",
+      fileType: FileType.NATIVE,
       path: ["src"],
     },
     {
       content: nextHeaderComponent,
       fileName: "header",
-      fileType: "component",
+      fileType: FileType.COMPONENT,
       path: ["src", "components"],
     },
     {
       content: nextLocaleSwitcherComponent,
       fileName: "locale-switcher",
-      fileType: "component",
+      fileType: FileType.COMPONENT,
       path: ["src", "components"],
     },
     {
       content: nextRootPageComponent,
       fileName: "page",
-      fileType: "component",
+      fileType: FileType.COMPONENT,
       path: ["src", "app"],
     },
     {
       content: nextAboutPageComponent,
       fileName: "page",
-      fileType: "component",
+      fileType: FileType.COMPONENT,
       path: ["src", "app", "about"],
     },
   ],

@@ -1,4 +1,4 @@
-import { PluginConfigType } from "@/types";
+import { FileType, PluginConfigType } from "@/types";
 
 const getTheme = `import { createTheme } from "@mui/material";
 
@@ -81,13 +81,13 @@ const MuiReactPlugin: PluginConfigType = {
       path: ["src", "theme"],
       content: getTheme,
       fileName: "theme",
-      fileType: "native",
+      fileType: FileType.NATIVE,
     },
     {
       path: ["src", "components", "muiExample"],
       content: getExampleComponent,
       fileName: "MuiExample",
-      fileType: "component",
+      fileType: FileType.COMPONENT,
     },
   ],
   dependencies: "@mui/material",

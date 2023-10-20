@@ -1,4 +1,4 @@
-import { PluginConfigType } from "@/types";
+import { PluginConfigType, FileType } from "@/types";
 
 export const RootComponentReact = `import { RouterProvider } from "react-router-dom";
 import router from "src/routes/router";
@@ -327,79 +327,79 @@ const ReactRouterDomReactPlugin: PluginConfigType = {
       path: ["src"],
       content: RootComponentReact,
       fileName: "App",
-      fileType: "component",
+      fileType: FileType.COMPONENT,
     },
     {
       path: ["src", "components", "layout"],
       content: LayoutReact,
       fileName: "Layout",
-      fileType: "component",
+      fileType: FileType.COMPONENT,
     },
     {
       path: ["src", "components", "layout"],
       content: layoutCss,
       fileName: "Layout.module.css",
-      fileType: "simple",
+      fileType: FileType.SIMPLE,
     },
     {
       path: ["src", "components", "about"],
       content: getPagesComponentReact("About"),
       fileName: "About",
-      fileType: "component",
+      fileType: FileType.COMPONENT,
     },
     {
       path: ["src", "components", "home"],
       content: getPagesComponentReact("Home"),
       fileName: "Home",
-      fileType: "component",
+      fileType: FileType.COMPONENT,
     },
     {
       path: ["src", "components", "contact"],
       content: getPagesComponentReact("Contact"),
       fileName: "Contact",
-      fileType: "component",
+      fileType: FileType.COMPONENT,
     },
     {
       path: ["src", "components", "login"],
       content: getPagesComponentReact("Login"),
       fileName: "Login",
-      fileType: "component",
+      fileType: FileType.COMPONENT,
     },
     {
       path: ["src", "components", "register"],
       content: getPagesComponentReact("Register"),
       fileName: "Register",
-      fileType: "component",
+      fileType: FileType.COMPONENT,
     },
     {
       path: ["src", "components", "layoutAuth"],
       content: layoutAuth,
       fileName: "LayoutAuth",
-      fileType: "component",
+      fileType: FileType.COMPONENT,
     },
     {
       path: ["src", "routes"],
       content: privateRouter,
       fileName: "PrivateRouter",
-      fileType: "component",
+      fileType: FileType.COMPONENT,
     },
     {
       path: ["src", "routes"],
       content: router,
       fileName: "router",
-      fileType: "component",
+      fileType: FileType.COMPONENT,
     },
     {
       path: ["src", "routes"],
       content: SuspenseErrorBoundary,
       fileName: "SuspenseErrorBoundary",
-      fileType: "component",
+      fileType: FileType.COMPONENT,
     },
     {
       path: ["src"],
       content: indexCssReset,
       fileName: "index.css",
-      fileType: "simple",
+      fileType: FileType.SIMPLE,
     },
   ],
   successMessage: "Successfully added React Router Dom !",

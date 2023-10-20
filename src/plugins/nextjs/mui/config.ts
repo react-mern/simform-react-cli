@@ -1,4 +1,4 @@
-import { PluginConfigType } from "@/types";
+import { FileType, PluginConfigType } from "@/types";
 import { getRegexForRootComponent } from "@/utils/fileManipulation";
 
 const emotionCacheConfig = (isTsProject: boolean) =>
@@ -124,13 +124,13 @@ const MuiNextPlugin: PluginConfigType = {
     {
       content: emotionCacheConfig,
       fileName: "EmotionCache",
-      fileType: "component",
+      fileType: FileType.COMPONENT,
       path: ["src", "theme"],
     },
     {
       content: ThemeRegistryConfig,
       fileName: "ThemeRegistry",
-      fileType: "component",
+      fileType: FileType.COMPONENT,
       path: ["src", "theme"],
     },
   ],

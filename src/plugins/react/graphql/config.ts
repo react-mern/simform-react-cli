@@ -1,4 +1,4 @@
-import { PluginConfigType, SupportedProjectGenerator } from "@/types";
+import { FileType, PluginConfigType, SupportedProjectGenerator } from "@/types";
 import { isFileExists } from "@/utils/file";
 
 const envExFile = (isTsProject: boolean) => {
@@ -77,25 +77,25 @@ const GraphQlReactPlugin: PluginConfigType = {
     {
       content: getEnvConfig,
       fileName: ".env",
-      fileType: "simple",
+      fileType: FileType.SIMPLE,
       path: [],
     },
     {
       content: envExFile,
       fileName: ".env.example",
-      fileType: "simple",
+      fileType: FileType.SIMPLE,
       path: [],
     },
     {
       content: reactGraphqlClientConfig,
       fileName: "client",
-      fileType: "native",
+      fileType: FileType.NATIVE,
       path: ["src", "config"],
     },
     {
       content: getExampleComponentReact,
       fileName: "Character",
-      fileType: "component",
+      fileType: FileType.COMPONENT,
       path: ["src", "components", "character"],
     },
   ],

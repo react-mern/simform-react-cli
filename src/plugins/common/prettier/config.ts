@@ -1,4 +1,4 @@
-import { PluginConfigType } from "@/types";
+import { FileType, PluginConfigType } from "@/types";
 
 //config for the prettier
 let prettierInitialConfig = {
@@ -12,7 +12,7 @@ const PrettierPlugin: PluginConfigType = {
     {
       content: JSON.stringify(prettierInitialConfig),
       fileName: ".prettierrc.json",
-      fileType: "simple",
+      fileType: FileType.SIMPLE,
       path: [],
     },
   ],

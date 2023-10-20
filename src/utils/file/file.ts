@@ -7,6 +7,7 @@ import {
   NextPluginEntry,
   SupportedProjectGenerator,
   NodePackageManager,
+  FileType,
 } from "@/types";
 import cmdRunner from "@/utils/cmdRunner";
 import GlobalStateUtility from "@/global";
@@ -182,7 +183,7 @@ export async function writeFileFromConfig(baseConfig: PluginConfigType) {
         : fileDetail.content;
 
     const fileName =
-      fileDetail.fileType !== "simple"
+      fileDetail.fileType !== FileType.SIMPLE
         ? `${fileDetail.fileName}.${fileType[fileDetail.fileType]}`
         : fileDetail.fileName;
 

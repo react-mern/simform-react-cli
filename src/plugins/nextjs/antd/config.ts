@@ -1,4 +1,4 @@
-import { PluginConfigType } from "@/types";
+import { FileType, PluginConfigType } from "@/types";
 
 const themeConfigNext = (isTsProject: boolean) => `${
   isTsProject ? `import type { ThemeConfig } from "antd";` : ""
@@ -61,19 +61,19 @@ const AntDNextPlugin: PluginConfigType = {
     {
       content: themeConfigNext,
       fileName: "themeConfig",
-      fileType: "native",
+      fileType: FileType.NATIVE,
       path: ["src", "theme"],
     },
     {
       content: antdRegistryNext,
       fileName: "AntdRegistry",
-      fileType: "component",
+      fileType: FileType.COMPONENT,
       path: ["src", "lib"],
     },
     {
       content: antdExampleNext,
       fileName: "page",
-      fileType: "component",
+      fileType: FileType.COMPONENT,
       path: ["src", "app", "antd"],
     },
   ],

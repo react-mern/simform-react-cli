@@ -108,6 +108,13 @@ export type NextPluginEntry = {
   Page: NextPageConfig;
 };
 
+//FileType for file writing
+export enum FileType {
+  COMPONENT = "component",
+  NATIVE = "native",
+  SIMPLE = "simple",
+}
+
 // Configuration for Files
 export type filesConfig = {
   path: string[];
@@ -118,7 +125,8 @@ export type filesConfig = {
       ) => string)
     | string;
   fileName: string;
-  fileType: "component" | "native" | "simple"; // { component => tsx, native => ts, simple => as input }
+  fileType: FileType;
+  // { component => tsx, native => ts, simple => as input }
 }[];
 
 // Configuration for a Plugin

@@ -1,4 +1,4 @@
-import { PluginConfigType } from "@/types";
+import { FileType, PluginConfigType } from "@/types";
 
 const gitIgnore = `
 # compiled output
@@ -62,7 +62,7 @@ const gitInitPlugin: PluginConfigType = {
     {
       content: gitIgnore,
       fileName: ".gitignore",
-      fileType: "simple",
+      fileType: FileType.SIMPLE,
       path: [],
     },
   ],

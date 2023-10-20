@@ -1,4 +1,4 @@
-import { PluginConfigType } from "@/types";
+import { FileType, PluginConfigType } from "@/types";
 
 const antDConfigReact = `const theme = {
   token: {
@@ -73,13 +73,13 @@ const AntDReactPlugin: PluginConfigType = {
     {
       content: antDConfigReact,
       fileName: "themeAntd",
-      fileType: "native",
+      fileType: FileType.NATIVE,
       path: ["src", "theme"],
     },
     {
       content: getExampleComponent,
       fileName: "AntDExample",
-      fileType: "component",
+      fileType: FileType.COMPONENT,
       path: ["src", "components", "antDExample"],
     },
   ],

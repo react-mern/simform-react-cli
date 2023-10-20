@@ -1,4 +1,4 @@
-import { PluginConfigType } from "@/types";
+import { FileType, PluginConfigType } from "@/types";
 
 const i18LanguageReact = `export const languages = [
   {
@@ -95,31 +95,31 @@ const i18NReactPlugin: PluginConfigType = {
     {
       content: i18LanguageReact,
       fileName: "i18-language",
-      fileType: "native",
+      fileType: FileType.NATIVE,
       path: ["src", "utils"],
     },
     {
       content: i18nConfigReact,
       fileName: "i18n",
-      fileType: "native",
+      fileType: FileType.NATIVE,
       path: ["src", "utils"],
     },
     {
       content: i18nExampleComponentReact,
       fileName: "I18Example",
-      fileType: "component",
+      fileType: FileType.COMPONENT,
       path: ["src", "components", "i18Example"],
     },
     {
       content: i18EnTranslation,
       fileName: "translation.json",
-      fileType: "simple",
+      fileType: FileType.SIMPLE,
       path: ["public", "locales", "en"],
     },
     {
       content: i18FrTranslation,
       fileName: "translation.json",
-      fileType: "simple",
+      fileType: FileType.SIMPLE,
       path: ["public", "locales", "fr"],
     },
   ],

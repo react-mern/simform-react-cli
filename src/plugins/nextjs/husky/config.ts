@@ -1,5 +1,5 @@
 import GlobalStateUtility from "@/global";
-import { NodePackageManager, PluginConfigType } from "@/types";
+import { FileType, NodePackageManager, PluginConfigType } from "@/types";
 import { isFileExists } from "@/utils/file";
 
 function getLintStatedRcContent(isTsProject: boolean) {
@@ -30,7 +30,7 @@ const HuskyNextPlugin: PluginConfigType = {
     {
       content: getLintStatedRcContent,
       fileName: ".lintstagedrc.js",
-      fileType: "simple",
+      fileType: FileType.SIMPLE,
       path: [],
     },
   ],

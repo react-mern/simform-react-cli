@@ -1,4 +1,4 @@
-import { PluginConfigType } from "@/types";
+import { FileType, PluginConfigType } from "@/types";
 import { getRegexForRootComponent } from "@/utils/fileManipulation";
 
 const envExFileContent = "NEXT_PUBLIC_BASE_URL";
@@ -267,61 +267,61 @@ const ReactQueryNextPlugin: PluginConfigType = {
     {
       content: envFileContent,
       fileName: ".env",
-      fileType: "simple",
+      fileType: FileType.SIMPLE,
       path: [],
     },
     {
       content: envExFileContent,
       fileName: ".env.example",
-      fileType: "simple",
+      fileType: FileType.SIMPLE,
       path: [],
     },
     {
       content: axiosApiReact,
       fileName: "api",
-      fileType: "native",
+      fileType: FileType.NATIVE,
       path: ["src", "utils"],
     },
     {
       content: queryClientOptions,
       fileName: "queryClientOptions",
-      fileType: "native",
+      fileType: FileType.NATIVE,
       path: ["src", "lib"],
     },
     {
       content: getQueryClient,
       fileName: "getQueryClient",
-      fileType: "native",
+      fileType: FileType.NATIVE,
       path: ["src", "lib"],
     },
     {
       content: postClient,
       fileName: "Post.client",
-      fileType: "component",
+      fileType: FileType.COMPONENT,
       path: postLocation,
     },
     {
       content: postsClient,
       fileName: "Posts.client",
-      fileType: "component",
+      fileType: FileType.COMPONENT,
       path: postLocation,
     },
     {
       content: providers,
       fileName: "Providers.client",
-      fileType: "component",
+      fileType: FileType.COMPONENT,
       path: ["src", "components", "Providers"],
     },
     {
       content: ReactQueryHydrate,
       fileName: "ReactQueryHydrate",
-      fileType: "component",
+      fileType: FileType.COMPONENT,
       path: ["src", "components", "ReactQueryHydrate"],
     },
     {
       content: postPage,
       fileName: "page",
-      fileType: "component",
+      fileType: FileType.COMPONENT,
       path: ["src", "app", "posts"],
     },
   ],
