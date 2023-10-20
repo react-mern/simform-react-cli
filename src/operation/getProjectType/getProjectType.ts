@@ -3,7 +3,7 @@ import path from "path";
 import { SupportedProjectType } from "@/types";
 
 export default function getCurrentProject() {
-  let projectType: SupportedProjectType = "react";
+  let projectType: SupportedProjectType = SupportedProjectType.REACT;
   const packageJsonPath = path.join(process.cwd(), "package.json");
   let packageJson;
 
@@ -14,8 +14,12 @@ export default function getCurrentProject() {
 
   //detecting project type
   if (packageJson?.dependencies) {
-    projectType = packageJson?.dependencies?.["react"] ? "react" : projectType;
-    projectType = packageJson?.dependencies?.["next"] ? "next" : projectType;
+    projectType = packageJson?.dependencies?.["react"]
+      ? SupportedProjectType.REACT
+      : projectType;
+    projectType = packageJson?.dependencies?.["next"]
+      ? SupportedProjectType.NEXT
+      : projectType;
   }
   return projectType;
 }

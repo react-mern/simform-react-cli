@@ -11,7 +11,7 @@ async function addStoryBookInProject(
     logger(
       "yellow",
       `Successfully added storybook ! Run : ${currentPackageManager}${
-        currentPackageManager === "npm" ? " run" : ""
+        currentPackageManager === NodePackageManager.NPM ? " run" : ""
       } storybook after completing setup...`
     );
   } catch (error) {}

@@ -10,15 +10,15 @@ export default async function getCurrentPackageManager() {
     choices: [
       {
         name: "npm",
-        value: "npm",
+        value: NodePackageManager.NPM,
       },
       {
         name: "yarn",
-        value: "yarn",
+        value: NodePackageManager.YARN,
       },
       {
         name: "pnpm",
-        value: "pnpm",
+        value: NodePackageManager.PNPM,
       },
     ],
   });
@@ -31,5 +31,5 @@ export default async function getCurrentPackageManager() {
     );
     process.exit(1);
   }
-  return selectedPackageMng || "npm";
+  return selectedPackageMng || NodePackageManager.NPM;
 }

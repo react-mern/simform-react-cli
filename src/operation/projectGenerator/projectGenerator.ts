@@ -22,21 +22,21 @@ export default async function projectGenerator() {
   const currentPackageManager = globalState.getCurrentPackageManager();
 
   switch (selectedProjectType) {
-    case "react-vite":
+    case SupportedProjectGenerator.REACT_VITE:
       await initReactViteProject(
         projectName,
         currentPackageManager,
         selectedLanguage
       );
       break;
-    case "react-cra":
+    case SupportedProjectGenerator.REACT_CRA:
       await initReactCraProject(
         projectName,
         currentPackageManager,
         selectedLanguage
       );
       break;
-    case "next":
+    case SupportedProjectGenerator.NEXT:
       await initNextJsProject(
         projectName,
         currentPackageManager,
@@ -54,15 +54,17 @@ async function initReactViteProject(
   packageManager: NodePackageManager,
   selectedLanguage: SupportedLanguage
 ) {
-  const viteCommand = packageManager === "npm" ? "vite@latest" : "vite";
-  const tsProjectOrNot = selectedLanguage === "ts" ? "react-ts" : "react";
+  const viteCommand =
+    packageManager === NodePackageManager.NPM ? "vite@latest" : "vite";
+  const tsProjectOrNot =
+    selectedLanguage === SupportedLanguage.TS ? "react-ts" : "react";
 
   try {
     await cmdRunner(packageManager, [
       "create",
       viteCommand,
       projectName,
-      `${packageManager === "npm" ? "--" : ""}`,
+      `${packageManager === NodePackageManager.NPM ? "--" : ""}`,
       `--template`,
       tsProjectOrNot,
     ]);
@@ -115,7 +117,7 @@ export async function reactRouterAdder() {
   const globalState = GlobalStateUtility.getInstance();
   const getCurrentLanguage = globalState.getCurrentLanguage();
 
-  if (getCurrentLanguage === "js") {
+  if (getCurrentLanguage === SupportedLanguage.JS) {
     deleteFile(path.join(process.cwd(), "src"), "App.js");
   }
 
@@ -128,7 +130,7 @@ export function absolutePathConfigAdderInReact(
   selectedProjectType: SupportedProjectGenerator
 ) {
   try {
-    if (selectedProjectType === "react-vite") {
+    if (selectedProjectType === SupportedProjectGenerator.REACT_VITE) {
       const extraConfig = `
     // additional configuration for absolute path
     resolve: {
@@ -139,7 +141,7 @@ export function absolutePathConfigAdderInReact(
 `;
 
       const viteConfigFileName = `vite.config.${
-        selectedLanguage === "ts" ? "ts" : "js"
+        selectedLanguage === SupportedLanguage.TS ? "ts" : "js"
       }`;
 
       const viteConfigPath = path.join(process.cwd(), viteConfigFileName);
@@ -152,7 +154,7 @@ export function absolutePathConfigAdderInReact(
       writeFile(viteConfigFileName, modifiedConfigString);
     }
 
-    if (selectedLanguage === "ts") {
+    if (selectedLanguage === SupportedLanguage.TS) {
       const tsConfigPath = path.join(process.cwd(), "tsconfig.json");
       const tsConfig = parseJsonWithComments(
         fs.readFileSync(tsConfigPath, "utf8")
@@ -170,7 +172,10 @@ export function absolutePathConfigAdderInReact(
       );
     }
 
-    if (selectedProjectType === "react-cra" && selectedLanguage === "js") {
+    if (
+      selectedProjectType === SupportedProjectGenerator.REACT_CRA &&
+      selectedLanguage === SupportedLanguage.JS
+    ) {
       const absolutePathConfigForJs = {
         compilerOptions: {
           baseUrl: "./",

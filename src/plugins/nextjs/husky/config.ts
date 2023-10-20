@@ -1,5 +1,5 @@
 import GlobalStateUtility from "@/global";
-import { PluginConfigType } from "@/types";
+import { NodePackageManager, PluginConfigType } from "@/types";
 import { isFileExists } from "@/utils/file";
 
 function getLintStatedRcContent(isTsProject: boolean) {
@@ -7,7 +7,7 @@ function getLintStatedRcContent(isTsProject: boolean) {
     GlobalStateUtility.getInstance().getCurrentPackageManager();
 
   const prefixForCmd = `${currentPackageManager} ${
-    currentPackageManager === "npm" ? "run " : ""
+    currentPackageManager === NodePackageManager.NPM ? "run " : ""
   }`;
 
   const hasPrettier = isFileExists(process.cwd(), "prettier");

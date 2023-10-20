@@ -33,12 +33,16 @@ const axiosApiReact = (
   `import axios from "axios";
 import Cookies from "js-cookie";
 
-${projectType === "react-vite" ? "const environment = import.meta.env;" : ""}
+${
+  projectType === SupportedProjectGenerator.REACT_VITE
+    ? "const environment = import.meta.env;"
+    : ""
+}
 export const API = axios.create({
   baseURL: ${
-    projectType === "react-vite"
+    projectType === SupportedProjectGenerator.REACT_VITE
       ? "environment.VITE_APP_BASE_URL"
-      : projectType === "react-cra"
+      : projectType === SupportedProjectGenerator.REACT_CRA
       ? "process.env.REACT_APP_BASE_URL"
       : ""
   },

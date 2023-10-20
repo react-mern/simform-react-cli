@@ -1,4 +1,1 @@
-export {
-  addProviderAndImports,
-  getRegexForRootComponent,
-} from "./fileManipulation";
+export * from "./fileManipulation";

@@ -8,6 +8,7 @@ import {
 import fs from "fs";
 import i18NReactPlugin from "@/plugins/react/i18n";
 import i18nNextPlugin from "@/plugins/nextjs/i18n";
+import { SupportedProjectType } from "@/types";
 
 export default async function i18nAdder(addI18n: boolean) {
   addI18n && (await addI18nInProject());
@@ -18,10 +19,10 @@ async function addI18nInProject() {
 
   //based on the project type run the configuration
   switch (projectType) {
-    case "next":
+    case SupportedProjectType.NEXT:
       await addI18nInNext();
       break;
-    case "react":
+    case SupportedProjectType.REACT:
       await addI18nInReact();
       break;
     default:

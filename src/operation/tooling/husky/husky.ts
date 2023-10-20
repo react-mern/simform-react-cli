@@ -1,6 +1,6 @@
 import path from "path";
 import fs from "fs";
-import { NodePackageManager } from "@/types";
+import { NodePackageManager, SupportedProjectType } from "@/types";
 import { initiatorLog } from "@/utils/logger";
 import { isFileExists, writeFileFromConfig } from "@/utils/file";
 import cmdRunner from "@/utils/cmdRunner";
@@ -13,7 +13,7 @@ async function addHuskyInProject(currentPackageManager: NodePackageManager) {
   const projectType = getCurrentProject();
 
   await cmdRunner(currentPackageManager, [
-    currentPackageManager === "npm" ? "install" : "add",
+    currentPackageManager === NodePackageManager.NPM ? "install" : "add",
     "-D",
     "husky",
     "lint-staged",
@@ -30,10 +30,10 @@ async function addHuskyInProject(currentPackageManager: NodePackageManager) {
 
   //based on project type run the configuration
   switch (projectType) {
-    case "next":
+    case SupportedProjectType.NEXT:
       await addHuskyInNext();
       break;
-    case "react":
+    case SupportedProjectType.REACT:
       await addHuskyInReact(currentPackageManager);
       break;
     default:
@@ -49,7 +49,7 @@ async function addHuskyInReact(currentPackageManager: NodePackageManager) {
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
 
   const prefixForCmd = `${currentPackageManager} ${
-    currentPackageManager === "npm" ? "run " : ""
+    currentPackageManager === NodePackageManager.NPM ? "run " : ""
   }`;
 
   if (isFileExists(process.cwd(), "prettier"))

@@ -4,7 +4,7 @@ import addStoryBookInProject from "./storybook";
 import addHuskyInProject from "./husky";
 import GlobalStateUtility from "@/global";
 
-export async function addTooling(
+export async function toolingAdder(
   addPrettier: boolean,
   addStoryBook: boolean,
   addHusky: boolean

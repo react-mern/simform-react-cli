@@ -1,6 +1,6 @@
 import path from "path";
 import fs from "fs";
-import { NodePackageManager } from "@/types";
+import { NodePackageManager, SupportedProjectType } from "@/types";
 import { isFileExists, writeFile, writeFileFromConfig } from "@/utils/file";
 import getCurrentProject from "@/operation/getProjectType";
 import cmdRunner from "@/utils/cmdRunner";
@@ -18,10 +18,10 @@ export default async function addGraphQL() {
 
   //based on the project type run the configuration to install
   switch (projectType) {
-    case "next":
+    case SupportedProjectType.NEXT:
       await addGraphQLInNext();
       break;
-    case "react":
+    case SupportedProjectType.REACT:
       await addGraphQLInReact();
       break;
     default:
@@ -66,7 +66,7 @@ async function codegenAdder(currentPackageManager: NodePackageManager) {
   const codegenDependencies = `@graphql-codegen/cli @graphql-codegen/client-preset @graphql-typed-document-node/core`;
 
   await cmdRunner(currentPackageManager, [
-    `${currentPackageManager === "npm" ? "install" : "add"}`,
+    `${currentPackageManager === NodePackageManager.NPM ? "install" : "add"}`,
     "-D",
     ...codegenDependencies.split(" "),
   ]);
@@ -86,7 +86,7 @@ async function codegenAdder(currentPackageManager: NodePackageManager) {
   );
 
   const codegenCmd =
-    currentPackageManager === "npm"
+    currentPackageManager === NodePackageManager.NPM
       ? ["run", "codegen:compile"]
       : ["codegen:compile"];
 

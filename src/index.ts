@@ -10,7 +10,7 @@ import projectGenerator, {
   reactRouterAdder,
 } from "@/operation/projectGenerator";
 import stateManagementCachingSolAdder from "@/operation/stateManagementCachingSol";
-import { addTooling } from "@/operation/tooling";
+import { toolingAdder } from "@/operation/tooling";
 import { uiLibraryAdder } from "@/operation/uiLibrary";
 import {
   getI18n,
@@ -19,6 +19,7 @@ import {
   getSelectedTooling,
   getSelectedUiLibrary,
   getSupportedProjectGen,
+  getSelectedTesting,
 } from "@/questions";
 import { changeDirAndDetectProject, pluginEntryAdder } from "@/utils/file";
 import logger from "@/utils/logger";
@@ -28,6 +29,7 @@ import initGitRepo from "@/operation/initGit";
 import { absolutePathConfigAdderInReact } from "@/operation/projectGenerator/projectGenerator";
 import readmeGenerator from "@/operation/readme";
 import cmdRunner from "@/utils/cmdRunner";
+import { NodePackageManager, SupportedProjectType } from "@/types";
 
 /**
  * current we are storing the config with code but if we increase the number of features then we can have plugin dir that has it's own config file
@@ -57,6 +59,9 @@ async function main() {
       selectedProjectType
     );
 
+    //get testing status
+    const addTesting = await getSelectedTesting();
+
     //get tooling related responses
     const { addPrettier, addStoryBook, addHusky } = await getSelectedTooling();
 
@@ -81,13 +86,13 @@ async function main() {
 
     //getting project types if react then config related to react projects
     const projectType = getCurrentProject();
-    if (projectType === "react") {
+    if (projectType === SupportedProjectType.REACT) {
       absolutePathConfigAdderInReact(selectedLanguage, selectedProjectType);
       await reactRouterAdder();
     }
 
     // ESLint or Prettier or Storybook or Husky
-    await addTooling(addPrettier, addStoryBook, addHusky);
+    await toolingAdder(addPrettier, addStoryBook, addHusky);
 
     //State Management and Caching solution
     await stateManagementCachingSolAdder(cachingOption);
@@ -121,7 +126,9 @@ async function main() {
     //formatting the code if prettier is available
     if (addPrettier) {
       const formatCmd =
-        currentPackageManager === "npm" ? ["run", "format"] : ["format"];
+        currentPackageManager === NodePackageManager.NPM
+          ? ["run", "format"]
+          : ["format"];
       await cmdRunner(currentPackageManager, formatCmd);
     }
 

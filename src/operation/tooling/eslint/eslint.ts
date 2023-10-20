@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs";
 import cmdRunner from "@/utils/cmdRunner";
-import { NodePackageManager } from "@/types";
+import { NodePackageManager, SupportedProjectType } from "@/types";
 import getCurrentProject from "@/operation/getProjectType";
 import { deleteFile, isFileExists, writeFile } from "@/utils/file";
 import { eslintNextConfig, eslintReactConfig } from "./eslintConfig.js";
@@ -12,10 +12,10 @@ async function addEslintInProject(currentPackageManager: NodePackageManager) {
 
   //based on project type run the configuration
   switch (projectType) {
-    case "next":
+    case SupportedProjectType.NEXT:
       await addEslintInNext(currentPackageManager);
       break;
-    case "react":
+    case SupportedProjectType.REACT:
       await addEslintInReact(currentPackageManager);
       break;
     default:
@@ -36,7 +36,7 @@ async function addEslintInNext(currentPackageManager: NodePackageManager) {
 
   // installing necessary dependencies
   await cmdRunner(currentPackageManager, [
-    `${currentPackageManager === "npm" ? "install" : "add"}`,
+    `${currentPackageManager === NodePackageManager.NPM ? "install" : "add"}`,
     "-D",
     ...dependencies.split(" "),
   ]);
@@ -73,7 +73,7 @@ async function addEslintInReact(currentPackageManager: NodePackageManager) {
 
   // installing necessary dependencies
   await cmdRunner(currentPackageManager, [
-    `${currentPackageManager === "npm" ? "install" : "add"}`,
+    `${currentPackageManager === NodePackageManager.NPM ? "install" : "add"}`,
     "-D",
     ...dependencies.split(" "),
   ]);

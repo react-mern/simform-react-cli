@@ -16,13 +16,17 @@ const reactGraphqlClientConfig = (
   projectType?: SupportedProjectGenerator
 ) => `import { ApolloClient, InMemoryCache } from "@apollo/client";
 
-${projectType === "react-vite" ? "const environment = import.meta.env;" : ""}
+${
+  projectType === SupportedProjectGenerator.REACT_VITE
+    ? "const environment = import.meta.env;"
+    : ""
+}
 
 const client = new ApolloClient({
   uri: ${
-    projectType === "react-vite"
+    projectType === SupportedProjectGenerator.REACT_VITE
       ? "environment.VITE_APP_BASE_URL"
-      : projectType === "react-cra"
+      : projectType === SupportedProjectGenerator.REACT_CRA
       ? "process.env.REACT_APP_BASE_URL"
       : ""
   },

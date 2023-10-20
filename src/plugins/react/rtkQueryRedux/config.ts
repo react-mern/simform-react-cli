@@ -1,5 +1,5 @@
 import GlobalStateUtility from "@/global";
-import { PluginConfigType } from "@/types";
+import { PluginConfigType, SupportedProjectGenerator } from "@/types";
 import { isFileExists } from "@/utils/file";
 
 const envExFile = (isTsProject: boolean) => {
@@ -124,13 +124,17 @@ ${
 }
 
 export const USER_API_REDUCER_KEY = "userApi";
-${projectType === "react-vite" ? "const environment = import.meta.env;" : ""}
+${
+  projectType === SupportedProjectGenerator.REACT_VITE
+    ? "const environment = import.meta.env;"
+    : ""
+}
 
 const baseQuery = fetchBaseQuery({
   baseUrl: ${
-    projectType === "react-vite"
+    projectType === SupportedProjectGenerator.REACT_VITE
       ? "environment.VITE_APP_BASE_URL"
-      : projectType === "react-cra"
+      : projectType === SupportedProjectGenerator.REACT_CRA
       ? "process.env.REACT_APP_BASE_URL"
       : ""
   },

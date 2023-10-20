@@ -2,16 +2,17 @@ import getCurrentProject from "@/operation/getProjectType";
 import { writeFileFromConfig } from "@/utils/file";
 import MuiNextPlugin from "@/plugins/nextjs/mui";
 import MuiReactPlugin from "@/plugins/react/mui";
+import { SupportedProjectType } from "@/types";
 
 export default async function muiAdder() {
   const projectType = getCurrentProject();
 
   //based on the project type run the configuration to install
   switch (projectType) {
-    case "next":
+    case SupportedProjectType.NEXT:
       await addMuiInNext();
       break;
-    case "react":
+    case SupportedProjectType.REACT:
       await addMuiInReact();
       break;
     default:

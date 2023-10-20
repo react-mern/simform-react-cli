@@ -39,7 +39,11 @@ export default async function readmeGenerator({
 
   //=========== Heading ==========//
   readme.push(
-    `# ${currentProjectType === "next" ? "Next Js" : "React Js"} Boilerplate`
+    `# ${
+      currentProjectType === SupportedProjectGenerator.NEXT
+        ? "Next Js"
+        : "React Js"
+    } Boilerplate`
   );
 
   readme.push(
@@ -50,23 +54,25 @@ export default async function readmeGenerator({
   readme.push("## Tech Stack");
 
   readme.push(`**Client:** [React](react.dev), ${
-    language === "ts" ? "[Typescript](https://www.typescriptlang.org)," : ""
+    language === SupportedLanguage.TS
+      ? "[Typescript](https://www.typescriptlang.org),"
+      : ""
   } ${
-    currentProjectType === "next"
+    currentProjectType === SupportedProjectGenerator.NEXT
       ? "[Next Js](https://nextjs.org/),"
       : currentProjectType === "react-cra"
       ? "[Create-React-App](https://create-react-app.dev/),"
       : "[Vite](https://vitejs.dev/),"
   } ${
-    cachingOption === "graphql"
+    cachingOption === SupportedStateManagementAndCachingSol.GRAPHQL
       ? "[Apollo Client](https://www.apollographql.com/docs/react/),"
-      : cachingOption === "react-query"
+      : cachingOption === SupportedStateManagementAndCachingSol.REACT_QUERY
       ? "[React-Query](https://tanstack.com/query/latest),"
-      : cachingOption === "rtk-query-redux"
+      : cachingOption === SupportedStateManagementAndCachingSol.RTK_QUERY_REDUX
       ? "[Redux (RTK-Query)](https://redux.js.org/),"
       : ""
   } ${
-    currentProjectType !== "next"
+    currentProjectType !== SupportedProjectGenerator.NEXT
       ? "[React Router](https://reactrouter.com/en/main),"
       : ""
   } \n 
@@ -75,15 +81,15 @@ export default async function readmeGenerator({
   (selectedLibrary || storybook) &&
     readme.push(
       `**Styling:** ${
-        selectedLibrary === "antd"
+        selectedLibrary === SupportedUILibrary.ANT_D
           ? "[Antd](https://ant.design/),"
-          : selectedLibrary === "mui"
+          : selectedLibrary === SupportedUILibrary.MUI
           ? "[Material UI](https://mui.com/material-ui/),"
           : ""
       } ${storybook ? "[Storybook](https://storybook.js.org/)," : ""} \n`
     );
 
-  cachingOption === "react-query" &&
+  cachingOption === SupportedStateManagementAndCachingSol.REACT_QUERY &&
     readme.push(`**HTTP Client:** [axios](https://axios-http.com/) \n`);
 
   i18n &&
@@ -129,9 +135,9 @@ export default async function readmeGenerator({
 
   // ======= Useful scripts ==========//
   const prefix =
-    currentPackageManager === "npm"
+    currentPackageManager === NodePackageManager.NPM
       ? "npm run"
-      : currentPackageManager === "pnpm"
+      : currentPackageManager === NodePackageManager.PNPM
       ? "pnpm"
       : "yarn";
 
@@ -141,9 +147,7 @@ export default async function readmeGenerator({
 
   readme.push(
     `- \`${prefix} ${
-      currentProjectType === "next"
-        ? "dev"
-        : currentProjectType === "react-cra"
+      currentProjectType === SupportedProjectGenerator.REACT_CRA
         ? "start"
         : "dev"
     }\` to run (dev) a project`

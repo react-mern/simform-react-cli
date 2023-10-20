@@ -7,13 +7,13 @@ export default async function stateManagementCachingSolAdder(
   cachingOption: SupportedStateManagementAndCachingSol
 ) {
   switch (cachingOption) {
-    case "rtk-query-redux":
+    case SupportedStateManagementAndCachingSol.RTK_QUERY_REDUX:
       await addRTKQueryWithRedux();
       break;
-    case "graphql":
+    case SupportedStateManagementAndCachingSol.GRAPHQL:
       await addGraphQL();
       break;
-    case "react-query":
+    case SupportedStateManagementAndCachingSol.REACT_QUERY:
       await addReactQuery();
       break;
     default:

@@ -2,18 +2,17 @@ import { writeFileFromConfig } from "@/utils/file";
 import getCurrentProject from "@/operation/getProjectType";
 import AntDNextPlugin from "@/plugins/nextjs/antd";
 import AntDReactPlugin from "@/plugins/react/antd";
+import { SupportedProjectType } from "@/types";
 
-export default async function antDesignAdder(
-) {
-
+export default async function antDesignAdder() {
   const projectType = getCurrentProject();
 
   //based on the project type run the configuration to install
   switch (projectType) {
-    case "next":
+    case SupportedProjectType.NEXT:
       await addAntDInNext();
       break;
-    case "react":
+    case SupportedProjectType.REACT:
       await addAntDInReact();
     default:
       break;
