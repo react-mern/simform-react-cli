@@ -101,11 +101,11 @@ async function main() {
     //antD or material ui
     await uiLibraryAdder(selectedLibrary);
 
-    //i18
-    await i18nAdder(addI18n);
-
     //Testing adder
     addTesting && (await addTestingInProject());
+
+    //i18
+    await i18nAdder(addI18n);
 
     //adds Provider in layout or index files
     await pluginEntryAdder();

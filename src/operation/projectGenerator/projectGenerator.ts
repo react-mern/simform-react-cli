@@ -7,7 +7,12 @@ import {
 } from "@/types";
 import cmdRunner from "@/utils/cmdRunner";
 import logger, { initiatorLog } from "@/utils/logger";
-import { deleteFile, writeFile, writeFileFromConfig } from "@/utils/file";
+import {
+  deleteFile,
+  parseJsonWithComments,
+  writeFile,
+  writeFileFromConfig,
+} from "@/utils/file";
 import GlobalStateUtility from "@/global";
 import ReactRouterDomReactPlugin from "@/plugins/react/reactRouterDom";
 
@@ -194,11 +199,4 @@ export function absolutePathConfigAdderInReact(
       "An Error occurred while adding setup related to absolute path !"
     );
   }
-}
-
-//JSON Parser that parse the json with comments
-function parseJsonWithComments(jsonString: string) {
-  const commentsRegExp = /\/\/.*|\/\*[^]*?\*\//g;
-  const cleanedJsonString = jsonString.replace(commentsRegExp, "");
-  return JSON.parse(cleanedJsonString);
 }

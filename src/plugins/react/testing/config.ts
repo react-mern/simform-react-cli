@@ -8,6 +8,7 @@ const Button = () => {
 
 export default Button;
 `;
+
 const buttonTestComponent = `//Button/__test__/Button.test.tsx
 import React from "react";
 import { describe, expect, it } from "vitest";
@@ -42,7 +43,7 @@ expect.extend(matchers);
 export const VitestReactVitePlugin: PluginConfigType = {
   initializingMessage: "Adding Testing Configuration, Please wait !",
   devDependencies:
-    "vitest @testing-library/react jsdom @testing-library/jest-dom",
+    "vitest @testing-library/react jsdom @testing-library/jest-dom @testing-library/user-event @vitest/ui",
   files: [
     {
       content: buttonComponent,

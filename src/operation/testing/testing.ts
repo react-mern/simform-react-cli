@@ -4,21 +4,25 @@ import GlobalStateUtility from "@/global";
 import { SupportedLanguage, SupportedProjectGenerator } from "@/types";
 import { writeFile, writeFileFromConfig } from "@/utils/file";
 import { VitestReactVitePlugin } from "@/plugins/react/testing";
+import VitestNextPlugin from "@/plugins/nextjs/testing/config";
+import logger from "@/utils/logger";
 
 export default async function addTestingInProject() {
   const projectType =
     GlobalStateUtility.getInstance().getCurrentProjectGenType();
 
-  switch (projectType) {
-    case SupportedProjectGenerator.REACT_VITE:
-      await addTestingInReactViteProject();
-      break;
-    case SupportedProjectGenerator.NEXT:
-      await addTestingNextProject();
-      break;
-    default:
-      break;
-  }
+  try {
+    switch (projectType) {
+      case SupportedProjectGenerator.REACT_VITE:
+        await addTestingInReactViteProject();
+        break;
+      case SupportedProjectGenerator.NEXT:
+        await addTestingNextProject();
+        break;
+      default:
+        break;
+    }
+  } catch (error) {}
 }
 
 /**
@@ -84,4 +88,23 @@ async function addTestingInReactViteProject() {
   await writeFileFromConfig(VitestReactVitePlugin);
 }
 
-async function addTestingNextProject() {}
+/**
+ * Adding extra configuration if ts project and writing files from plugin
+ */
+async function addTestingNextProject() {
+  const globalState = GlobalStateUtility.getInstance();
+  const selectedLanguage = globalState.getCurrentLanguage();
+
+  if (selectedLanguage === SupportedLanguage.TS) {
+    const tsConfigPath = path.join(process.cwd(), "tsconfig.json");
+
+    const tsConfig = JSON.parse(fs.readFileSync(tsConfigPath, "utf8"));
+
+    //adds types for jest dom in tsconfig.json
+    tsConfig["compilerOptions"]["types"] = ["@testing-library/jest-dom"];
+
+    fs.writeFileSync(tsConfigPath, JSON.stringify(tsConfig, null, 2), "utf-8");
+  }
+
+  await writeFileFromConfig(VitestNextPlugin);
+}

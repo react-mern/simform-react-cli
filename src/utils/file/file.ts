@@ -443,3 +443,14 @@ async function pluginEntryAdderInNext(pluginConfigArr: NextPluginEntry[]) {
     );
   });
 }
+
+/**
+ * JSON parser that parses JSON with comments.
+ * @param jsonString - A string that contains a JSON object with comments.
+ * @returns - The parsed JSON object after removing comments.
+ */
+export function parseJsonWithComments(jsonString: string) {
+  const commentsRegExp = /\/\/.*|\/\*[^]*?\*\//g;
+  const cleanedJsonString = jsonString.replace(commentsRegExp, "");
+  return JSON.parse(cleanedJsonString);
+}
