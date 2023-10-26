@@ -8,7 +8,7 @@ async function getProjectName() {
   const projectName = await input({
     message: "What is the name of the project ?",
     default: ".",
-    validate: val => {
+    validate: (val) => {
       return isEmptyDir(path.join(process.cwd(), val))
         ? true
         : "Current working directory is not empty ! please enter name or remove everything from this directory";

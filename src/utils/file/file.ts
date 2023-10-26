@@ -24,7 +24,9 @@ import { homePageContent, homePageCss } from "./reactPluginConfig";
 export function isEmptyDir(path: string) {
   try {
     return fs.readdirSync(path).length === 0;
-  } catch (error) {}
+  } catch (error) {
+    /** */
+  }
   return true;
 }
 
@@ -68,7 +70,7 @@ export function deleteFile(filepath: string, file: string) {
  */
 export function findFileRecursively(
   directory: string,
-  fileName: string
+  fileName: string,
 ): { filePath: string; file: string } | null {
   // Read the contents of the current directory
   const files = fs.readdirSync(directory);
@@ -99,7 +101,11 @@ export function findFileRecursively(
  * @param content - The content that will be added to the file.
  * @param filePath - The path at which the file will be created. If the directory does not exist, it will be created; otherwise, the default path is the root directory.
  */
-export function writeFile(fileName: string, content: any, filePath?: string) {
+export function writeFile(
+  fileName: string,
+  content: string,
+  filePath?: string,
+) {
   const writeFilePath = filePath
     ? path.join(filePath, fileName)
     : path.join(process.cwd(), fileName);
@@ -122,7 +128,7 @@ export async function isProjectExists() {
   if (!isProjectDir) {
     logger(
       "red",
-      "Please initialize project in current working directory to install !"
+      "Please initialize project in current working directory to install !",
     );
     process.exit(1);
   }
@@ -142,7 +148,7 @@ export function moveAllFilesToSubDir(rootDir: string, subDir: string) {
     fs.mkdirSync(subDirPath);
   }
 
-  fs.readdirSync(rootDir).forEach(file => {
+  fs.readdirSync(rootDir).forEach((file) => {
     const oldPath = path.join(rootDir, file);
     const newPath = path.join(subDirPath, file);
 
@@ -176,7 +182,7 @@ export async function writeFileFromConfig(baseConfig: PluginConfigType) {
     : { component: "jsx", native: "js" };
 
   //writing file from base config
-  baseConfig.files.forEach(fileDetail => {
+  baseConfig.files.forEach((fileDetail) => {
     const content =
       typeof fileDetail.content === "function"
         ? fileDetail.content(isTsProject, projectType)
@@ -226,14 +232,14 @@ export async function writeFileFromConfig(baseConfig: PluginConfigType) {
         : baseConfig.scripts;
 
     for (const key in scripts) {
-      if (scripts.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(scripts, key)) {
         packageJson.scripts[key] = scripts[key];
       }
     }
     fs.writeFileSync(
       packageJsonPath,
       JSON.stringify(packageJson, null, 2),
-      "utf8"
+      "utf8",
     );
   }
 
@@ -275,7 +281,7 @@ export async function pluginDependencyAdder() {
 
   try {
     if (dependencies) {
-      const dependenciesArr = dependencies.split(" ").filter(str => {
+      const dependenciesArr = dependencies.split(" ").filter((str) => {
         if (str) return str;
       });
 
@@ -288,7 +294,7 @@ export async function pluginDependencyAdder() {
     }
 
     if (devDependencies) {
-      const devDependenciesArr = devDependencies.split(" ").filter(str => {
+      const devDependenciesArr = devDependencies.split(" ").filter((str) => {
         if (str) return str;
       });
 
@@ -300,7 +306,9 @@ export async function pluginDependencyAdder() {
         ...devDependenciesArr,
       ]);
     }
-  } catch (error) {}
+  } catch (error) {
+    /** */
+  }
 }
 
 /**
@@ -341,7 +349,7 @@ async function pluginEntryAdderInReact(pluginConfigArr: ReactPluginEntry[]) {
 
   const detectEntryFile = findFileRecursively(
     rootPath,
-    `${isViteProject ? "main" : `index.${isTsProject ? "tsx" : "js"}`}`
+    `${isViteProject ? "main" : `index.${isTsProject ? "tsx" : "js"}`}`,
   );
 
   if (!detectRootComponentFile || !detectEntryFile) return;
@@ -350,7 +358,7 @@ async function pluginEntryAdderInReact(pluginConfigArr: ReactPluginEntry[]) {
   const rootEntryFilePath = detectEntryFile.filePath;
 
   const regex = getRegexForRootComponent(
-    rootComponent.substring(0, rootComponent.indexOf("."))
+    rootComponent.substring(0, rootComponent.indexOf(".")),
   );
 
   const initialValue: ReactIndexConfig = {
@@ -376,7 +384,7 @@ async function pluginEntryAdderInReact(pluginConfigArr: ReactPluginEntry[]) {
     importAndProviderValues.importStatements,
     regex,
     importAndProviderValues.addBeforeMatch,
-    importAndProviderValues.addAfterMatch
+    importAndProviderValues.addAfterMatch,
   );
 
   //========== Adding generated example in home file =============//
@@ -413,7 +421,7 @@ async function pluginEntryAdderInReact(pluginConfigArr: ReactPluginEntry[]) {
   writeFile(
     `Home.${isTsProject ? "tsx" : "jsx"}`,
     HomePageContent,
-    homePagePath
+    homePagePath,
   );
   writeFile("Home.module.css", homePageCss, homePagePath);
 }
@@ -425,13 +433,13 @@ async function pluginEntryAdderInReact(pluginConfigArr: ReactPluginEntry[]) {
 async function pluginEntryAdderInNext(pluginConfigArr: NextPluginEntry[]) {
   const detectedFile = findFileRecursively(
     path.join(process.cwd(), "src", "app"),
-    "layout"
+    "layout",
   );
 
   if (!detectedFile) return;
 
   // Iterate through the configuration and add imports and code based on each configuration entry
-  pluginConfigArr.forEach(async curr => {
+  pluginConfigArr.forEach(async (curr) => {
     const { importStatements, addAfterMatch, addBeforeMatch, regex } =
       curr.Layout;
     await addProviderAndImports(
@@ -439,7 +447,7 @@ async function pluginEntryAdderInNext(pluginConfigArr: NextPluginEntry[]) {
       importStatements ?? "",
       regex,
       addBeforeMatch,
-      addAfterMatch
+      addAfterMatch,
     );
   });
 }

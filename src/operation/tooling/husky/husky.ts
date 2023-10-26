@@ -65,7 +65,7 @@ async function addHuskyInReact(currentPackageManager: NodePackageManager) {
   fs.writeFileSync(
     packageJsonPath,
     JSON.stringify(packageJson, null, 2),
-    "utf8"
+    "utf8",
   );
 }
 

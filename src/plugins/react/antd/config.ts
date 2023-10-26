@@ -15,7 +15,7 @@ export default theme;
 `;
 
 const getExampleComponent = (
-  isTsProject: boolean
+  isTsProject: boolean,
 ) => `import React, { useState } from "react";
 import { Button, Radio, Slider, Space } from "antd";
 ${

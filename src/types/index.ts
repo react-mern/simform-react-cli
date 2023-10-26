@@ -86,12 +86,12 @@ export type PluginAppEntryConfigType =
   | {
       App: ReactAppConfig;
       Index: ReactIndexConfig;
-      Layout?: NextLayoutConfig;
-      Page?: NextPageConfig;
+      // Layout?: NextLayoutConfig;
+      // Page?: NextPageConfig;
     }
   | {
-      App?: ReactAppConfig;
-      Index?: ReactIndexConfig;
+      // App?: ReactAppConfig;
+      // Index?: ReactIndexConfig;
       Layout: NextLayoutConfig;
       Page: NextPageConfig;
     };
@@ -121,7 +121,7 @@ export type filesConfig = {
   content:
     | ((
         isTsProject: boolean,
-        projectType?: SupportedProjectGenerator
+        projectType?: SupportedProjectGenerator,
       ) => string)
     | string;
   fileName: string;

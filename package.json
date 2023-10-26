@@ -9,7 +9,10 @@
     "lib"
   ],
   "scripts": {
-    "build": "tsc && (concurrently \"tsc -w\" \"tsc-alias -w\")"
+    "build": "tsc && (concurrently \"tsc -w\" \"tsc-alias -w\")",
+    "lint": "eslint . --ext ts,tsx",
+    "lint:fix": "eslint . --ext ts --fix",
+    "format": "prettier --write --parser typescript '**/*.ts'"
   },
   "keywords": [],
   "author": "",
@@ -22,7 +25,18 @@
   },
   "devDependencies": {
     "@types/node": "^20.8.2",
+    "@typescript-eslint/eslint-plugin": "^6.9.0",
+    "@typescript-eslint/parser": "^6.9.0",
+    "concurrently": "^8.2.2",
+    "eslint": "^8.52.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.0.2",
+    "prettier": "^3.0.3",
     "tsc-alias": "^1.8.8",
     "typescript": "^5.2.2"
+  },
+  "lint-staged": {
+    "format": "pnpm format",
+    "lint": "pnpm lint"
   }
 }

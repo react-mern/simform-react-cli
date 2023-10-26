@@ -31,7 +31,7 @@ export default theme;`;
 
 //gives react example components based on project type
 const getExampleComponent = (
-  isTsProject: boolean
+  isTsProject: boolean,
 ) => `import { Box, Button, Rating, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 

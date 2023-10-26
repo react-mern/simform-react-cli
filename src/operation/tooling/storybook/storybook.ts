@@ -3,7 +3,7 @@ import cmdRunner from "@/utils/cmdRunner";
 import logger, { initiatorLog } from "@/utils/logger";
 
 async function addStoryBookInProject(
-  currentPackageManager: NodePackageManager
+  currentPackageManager: NodePackageManager,
 ) {
   try {
     initiatorLog("Adding Storybook, Please wait !");
@@ -12,9 +12,11 @@ async function addStoryBookInProject(
       "yellow",
       `Successfully added storybook ! Run : ${currentPackageManager}${
         currentPackageManager === NodePackageManager.NPM ? " run" : ""
-      } storybook after completing setup...`
+      } storybook after completing setup...`,
     );
-  } catch (error) {}
+  } catch (error) {
+    /** */
+  }
 }
 
 export default addStoryBookInProject;

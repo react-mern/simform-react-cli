@@ -1,13 +1,13 @@
 import { FileType, PluginConfigType, SupportedProjectGenerator } from "@/types";
 import { isFileExists } from "@/utils/file";
 
-const envExFile = (isTsProject: boolean) => {
+const envExFile = () => {
   const isViteProject = isFileExists(process.cwd(), "vite.config");
   return `${isViteProject ? "VITE_APP" : "REACT_APP"}_BASE_URL`;
 };
 
-const getEnvConfig = (isTsProject: boolean) => {
-  const prefix = envExFile(isTsProject);
+const getEnvConfig = () => {
+  const prefix = envExFile();
   return prefix + "=https://jsonplaceholder.typicode.com/";
 };
 
@@ -28,10 +28,44 @@ export default queryClient;`;
 
 const axiosApiReact = (
   isTsProject: boolean,
-  projectType?: SupportedProjectGenerator
+  projectType?: SupportedProjectGenerator,
 ) =>
   `import axios from "axios";
 import Cookies from "js-cookie";
+
+
+/*
+Best practice to store access-token and refresh-token is
+cookie not a local storage. 
+
+Here I've created request interceptors to intercept
+request and add token into request header from cookie.
+You can update this logic as well create response interceptors based on project requirements.
+
+I've added custom config called withoutAuth in axios instance
+withoutAuth config value will decide whether send a token in request or not.
+if API need token in header in that case yu don't have to pass withoutAuth config
+and it will work as expected.
+EX: 
+API.get('/users')
+API.post('/posts', { title: 'foo', body: 'bar', userId: 1 })
+
+When you don't need token in header at that time you've to pass withoutAuth true.
+EX: 
+API.get('/users', { withoutAuth: true})
+API.post('/posts', { title: 'foo', body: 'bar', userId: 1 }, { withoutAuth: true })
+*/
+
+${
+  isTsProject
+    ? `
+declare module "axios" {
+  export interface AxiosRequestConfig {
+    withoutAuth?: boolean;
+  }
+}`
+    : ""
+}
 
 ${
   projectType === SupportedProjectGenerator.REACT_VITE
@@ -46,7 +80,13 @@ export const API = axios.create({
       ? "process.env.REACT_APP_BASE_URL"
       : ""
   },
-  withCredentials: true,
+  withoutAuth: false,
+  headers: {
+    "Content-Type": "application/json",
+  },
+  /*
+  you can pass common config here.
+  */
 });
 
 /**
@@ -72,7 +112,7 @@ API.interceptors.request.use(
   config => {
     const accessToken = Cookies.get("accessToken"); // Load the access token from cookies or local storage
 
-    if (accessToken) {
+    if (!config.withoutAuth && accessToken) {
       config.headers["Authorization"] = +=+Bearer \${accessToken}+=+;
     }
 
@@ -122,37 +162,15 @@ type PostType = {
 
 //get posts
 export const getPosts = async () =>
-  API.get${isTsProject ? "<PostType[]>" : ""}("/posts").then(res => res.data);
+  API.get${
+    isTsProject ? "<PostType[]>" : ""
+  }("/posts", { withoutAuth: true }).then(res => res.data);
 
 //create post
 export const createPost = (body${
     isTsProject ? ": { heading: string; content: string }" : ""
   }) =>
-  API.post("/item/create", body);
-
-//if you have to change the content type (to send the image or video)
-export const imageKitUpload = (body${
-    isTsProject
-      ? `: {
-  useUniqueFileName: boolean;
-  file: string;
-  publicKey: string;
-  fileName: string;
-}`
-      : ""
-  }) =>
-  axios.post${
-    isTsProject
-      ? `<{
-    fileId: string;
-    name: string;
-    url: string;
-  }>`
-      : ""
-  }("APP_IMAGEKIT_UPLOAD_URL_ENDPOINT", body, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
-`
+  API.post("/item/create", body);`
     .replaceAll(/\\/g, "")
     .replaceAll("+=+", "`");
 

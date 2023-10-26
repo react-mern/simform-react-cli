@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import { FileType, PluginConfigType } from "@/types";
 import { getRegexForRootComponent } from "@/utils/fileManipulation";
 

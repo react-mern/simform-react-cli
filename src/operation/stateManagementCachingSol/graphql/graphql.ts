@@ -82,7 +82,7 @@ async function codegenAdder(currentPackageManager: NodePackageManager) {
   fs.writeFileSync(
     packageJsonPath,
     JSON.stringify(packageJson, null, 2),
-    "utf-8"
+    "utf-8",
   );
 
   const codegenCmd =

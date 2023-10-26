@@ -2,7 +2,7 @@ import GlobalStateUtility from "@/global";
 import { FileType, NodePackageManager, PluginConfigType } from "@/types";
 import { isFileExists } from "@/utils/file";
 
-function getLintStatedRcContent(isTsProject: boolean) {
+function getLintStatedRcContent() {
   const currentPackageManager =
     GlobalStateUtility.getInstance().getCurrentPackageManager();
 

@@ -18,7 +18,7 @@ export async function addProviderAndImports(
   addBeforeMatch: string,
   addAfterMatch: string,
   errorMsg: string = "",
-  addAfterContent: string = ""
+  addAfterContent: string = "",
 ) {
   try {
     const data: string = readFileSync(fileName, "utf8");
@@ -49,6 +49,6 @@ export function getRegexForRootComponent(myString: string) {
   const escapedString = myString.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   return new RegExp(
     `<\\s*${escapedString}\\s*(?:[^>]+)?\\s*>(?:.*?\\n)*?.*?<\\s*\\/\\s*${escapedString}\\s*>|<\\s*${escapedString}\\s*\\/>`,
-    "g"
+    "g",
   );
 }

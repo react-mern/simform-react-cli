@@ -57,7 +57,7 @@ async function main() {
       currentPackageManager,
       projectName,
       selectedLanguage,
-      selectedProjectType
+      selectedProjectType,
     );
 
     //get testing status
@@ -70,8 +70,7 @@ async function main() {
     const cachingOption = await getSelectedStateManagementAndCachingSol();
 
     //get ui library
-    const { selectedLibrary, selectStylingEngine, addMuiIcons } =
-      await getSelectedUiLibrary(selectedProjectType);
+    const { selectedLibrary } = await getSelectedUiLibrary(selectedProjectType);
 
     //get add i18n or not
     const addI18n = await getI18n();
@@ -118,7 +117,6 @@ async function main() {
       currentProjectType: selectedProjectType,
       cachingOption: cachingOption,
       currentPackageManager: currentPackageManager,
-      eslint: true,
       husky: addHusky,
       i18n: addI18n,
       language: selectedLanguage,

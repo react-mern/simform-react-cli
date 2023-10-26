@@ -27,7 +27,7 @@ export default async function getCurrentPackageManager() {
   } catch (error) {
     logger(
       "red",
-      `${selectedPackageMng} package manager not found ! please install it or select appropriate one.`
+      `${selectedPackageMng} package manager not found ! please install it or select appropriate one.`,
     );
     process.exit(1);
   }

@@ -1,6 +1,6 @@
 export const homePageContent = (
   isTsProject: boolean,
-  componentArr: { name: string; component: string }[]
+  componentArr: { name: string; component: string }[],
 ) =>
   `import { useState, ReactNode } from "react";
 import styles from "./Home.module.css";
@@ -14,7 +14,7 @@ ${
     : ""
 }
 const Components${isTsProject ? ": ExampleComponent " : ""} = ${JSON.stringify(
-    componentArr
+    componentArr,
   )};
 
 const Home = () => {

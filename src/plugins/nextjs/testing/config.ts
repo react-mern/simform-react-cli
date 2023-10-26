@@ -1,7 +1,7 @@
 import { FileType, PluginConfigType } from "@/types";
 
 const vitestConfig = (
-  isTsProject: boolean
+  isTsProject: boolean,
 ) => `import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 
@@ -17,7 +17,7 @@ export default defineConfig({
 `;
 
 const setupTestContent = (
-  isTsProject: boolean
+  isTsProject: boolean,
 ) => `import { expect } from "vitest";
 import * as matchers from "@testing-library/jest-dom/matchers";
 import { TestingLibraryMatchers } from "@testing-library/jest-dom/matchers";

@@ -9,8 +9,48 @@ const axiosApiReact = (isTsProject: boolean) =>
   `import axios from "axios";
 import Cookies from "js-cookie";
 
+/*
+Best practice to store access-token and refresh-token is
+cookie not a local storage. 
+
+Here I've created request interceptors to intercept
+request and add token into request header from cookie.
+You can update this logic as well create response interceptors based on project requirements.
+
+I've added custom config called withoutAuth in axios instance
+withoutAuth config value will decide whether send a token in request or not.
+if API need token in header in that case yu don't have to pass withoutAuth config
+and it will work as expected.
+EX: 
+API.get('/users')
+API.post('/posts', { title: 'foo', body: 'bar', userId: 1 })
+
+When you don't need token in header at that time you've to pass withoutAuth true.
+EX: 
+API.get('/users', { withoutAuth: true})
+API.post('/posts', { title: 'foo', body: 'bar', userId: 1 }, { withoutAuth: true })
+*/
+
+${
+  isTsProject
+    ? `
+declare module "axios" {
+  export interface AxiosRequestConfig {
+    withoutAuth?: boolean;
+  }
+}`
+    : ""
+}
+
 export const API = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BASE_URL
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+  withoutAuth: false,
+  headers: {
+    "Content-Type": "application/json",
+  },
+  /*
+  you can pass common config here.
+  */
 });
 
 /**
@@ -36,7 +76,7 @@ API.interceptors.request.use(
   config => {
     const accessToken = Cookies.get("accessToken"); // Load the access token from cookies or local storage
 
-    if (accessToken) {
+    if (!config.withoutAuth && accessToken) {
       config.headers["Authorization"] = +=+Bearer \${accessToken}+=+;
     }
 
@@ -86,36 +126,15 @@ type PostType = {
 
 //get posts
 export const getPosts = async () =>
-  API.get${isTsProject ? "<PostType[]>" : ""}("/posts").then(res => res.data);
+  API.get${
+    isTsProject ? "<PostType[]>" : ""
+  }("/posts", { withoutAuth: true }).then(res => res.data);
 
 //create post
 export const createPost = (body${
     isTsProject ? ": { heading: string; content: string }" : ""
   }) =>
   API.post("/item/create", body);
-
-//if you have to change the content type (to send the image or video)
-export const imageKitUpload = (body${
-    isTsProject
-      ? `: {
-  useUniqueFileName: boolean;
-  file: string;
-  publicKey: string;
-  fileName: string;
-}`
-      : ""
-  }) =>
-  axios.post${
-    isTsProject
-      ? `<{
-    fileId: string;
-    name: string;
-    url: string;
-  }>`
-      : ""
-  }("APP_IMAGEKIT_UPLOAD_URL_ENDPOINT", body, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
 `
     .replaceAll(/\\/g, "")
     .replaceAll("+=+", "`");

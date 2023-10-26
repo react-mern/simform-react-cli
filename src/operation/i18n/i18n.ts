@@ -57,7 +57,7 @@ async function addI18nInNext() {
 
   fs.writeFileSync(
     path.join(process.cwd(), "src", "app", rootLayoutName),
-    newFileContent
+    newFileContent,
   );
 
   moveAllFilesToSubDir(path.join(process.cwd(), "src", "app"), "[lang]");

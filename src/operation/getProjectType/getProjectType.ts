@@ -10,7 +10,9 @@ export default function getCurrentProject() {
   //getting package json
   try {
     packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
-  } catch (error) {}
+  } catch (error) {
+    /** */
+  }
 
   //detecting project type
   if (packageJson?.dependencies) {

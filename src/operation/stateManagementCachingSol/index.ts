@@ -4,7 +4,7 @@ import addRTKQueryWithRedux from "./rtkQueryRedux";
 import addReactQuery from "./reactQuery";
 
 export default async function stateManagementCachingSolAdder(
-  cachingOption: SupportedStateManagementAndCachingSol
+  cachingOption: SupportedStateManagementAndCachingSol,
 ) {
   switch (cachingOption) {
     case SupportedStateManagementAndCachingSol.RTK_QUERY_REDUX:

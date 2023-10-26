@@ -1,7 +1,7 @@
 import { FileType, PluginConfigType } from "@/types";
 
 //config for the prettier
-let prettierInitialConfig = {
+const prettierInitialConfig = {
   bracketSpacing: true,
   printWidth: 120,
 };

@@ -30,7 +30,7 @@ class GlobalStateUtility {
     projectName: string,
     currentLanguage: SupportedLanguage,
     currentProjectType: SupportedProjectGenerator,
-    configuration?: PluginAppEntryConfigType
+    configuration?: PluginAppEntryConfigType,
   ): GlobalStateUtility {
     if (!GlobalStateUtility.instance) {
       GlobalStateUtility.instance = new GlobalStateUtility();
@@ -39,7 +39,7 @@ class GlobalStateUtility {
         projectName,
         currentLanguage,
         currentProjectType,
-        configuration
+        configuration,
       );
     }
     return GlobalStateUtility.instance;
@@ -50,7 +50,8 @@ class GlobalStateUtility {
     projectName: string,
     currentLanguage: SupportedLanguage,
     currentProjectType: SupportedProjectGenerator,
-    configuration?: PluginAppEntryConfigType
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    configuration?: PluginAppEntryConfigType,
   ): void {
     this.CurrentPackageManager = nodePackageManager;
     this.ProjectName = projectName;
@@ -61,7 +62,7 @@ class GlobalStateUtility {
   static getInstance() {
     if (!GlobalStateUtility.instance)
       throw Error(
-        "\nGlobalStateUtility instance not found ! Please initialize it to get the instance."
+        "\nGlobalStateUtility instance not found ! Please initialize it to get the instance.",
       );
     return GlobalStateUtility.instance;
   }

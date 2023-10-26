@@ -1,21 +1,22 @@
 export function eslintNextConfig(
   hasTypescript: boolean,
   hasPrettier: boolean,
-  hasStorybook: boolean
+  hasStorybook: boolean,
 ) {
   //base config for nextJs
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const baseConfig: Record<string, any> = {
     extends: ["next/core-web-vitals"],
   };
 
-  let initialDependencies = "eslint eslint-config-next";
+  const initialDependencies = "eslint eslint-config-next";
 
   const [config, dependencies] = eslintConfigModifier(
     baseConfig,
     initialDependencies,
     hasTypescript,
     hasPrettier,
-    hasStorybook
+    hasStorybook,
   );
   return [JSON.stringify(config, null, 2), dependencies] as const;
 }
@@ -24,9 +25,10 @@ export function eslintReactConfig(
   hasTypescript: boolean,
   hasPrettier: boolean,
   hasStorybook: boolean,
-  hasVite: boolean
+  hasVite: boolean,
 ) {
   //base config for react js
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const baseConfig: Record<string, any> = {
     root: true,
     env: { browser: true, es2020: true },
@@ -41,7 +43,7 @@ export function eslintReactConfig(
     },
   };
 
-  let initialDependencies =
+  const initialDependencies =
     "eslint eslint-plugin-react eslint-plugin-react-hooks";
 
   const [config, dependencies] = eslintConfigModifier(
@@ -51,19 +53,20 @@ export function eslintReactConfig(
     hasPrettier,
     hasStorybook,
     hasVite,
-    !hasTypescript
+    !hasTypescript,
   );
   return [JSON.stringify(config, null, 2), dependencies] as const;
 }
 
 function eslintConfigModifier(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   baseConfig: Record<string, any>,
   dependencies: string,
   hasTypescript: boolean,
   hasPrettier: boolean,
   hasStorybook: boolean,
   hasVite?: boolean,
-  hasJavascript?: boolean
+  hasJavascript?: boolean,
 ) {
   if (hasTypescript) {
     baseConfig.plugins = ["@typescript-eslint"];

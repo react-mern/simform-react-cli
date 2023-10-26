@@ -2,13 +2,13 @@ import GlobalStateUtility from "@/global";
 import { FileType, PluginConfigType, SupportedProjectGenerator } from "@/types";
 import { isFileExists } from "@/utils/file";
 
-const envExFile = (isTsProject: boolean) => {
+const envExFile = () => {
   const isViteProject = isFileExists(process.cwd(), "vite.config");
   return `${isViteProject ? "VITE_APP" : "REACT_APP"}_BASE_URL`;
 };
 
-const getEnvConfig = (isTsProject: boolean) => {
-  const prefix = envExFile(isTsProject);
+const getEnvConfig = () => {
+  const prefix = envExFile();
   return prefix + "=https://jsonplaceholder.typicode.com/";
 };
 

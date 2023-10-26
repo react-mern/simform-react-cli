@@ -14,6 +14,7 @@ export default async function antDesignAdder() {
       break;
     case SupportedProjectType.REACT:
       await addAntDInReact();
+      break;
     default:
       break;
   }

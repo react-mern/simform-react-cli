@@ -75,7 +75,7 @@ const layoutCss = `.nav {
 `;
 
 export const getPagesComponentReact = (
-  name: string
+  name: string,
 ) => `import React from "react";
 
 const ${name} = () => {

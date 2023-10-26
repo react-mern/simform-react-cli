@@ -10,7 +10,6 @@ import { writeFile } from "@/utils/file";
 type ReadmeGen = {
   prettier?: boolean;
   husky?: boolean;
-  eslint?: boolean;
   storybook?: boolean;
   language?: SupportedLanguage;
   currentPackageManager?: NodePackageManager;
@@ -24,7 +23,6 @@ export default async function readmeGenerator({
   currentProjectType,
   cachingOption,
   currentPackageManager,
-  eslint,
   husky,
   i18n,
   language,
@@ -43,11 +41,11 @@ export default async function readmeGenerator({
       currentProjectType === SupportedProjectGenerator.NEXT
         ? "Next Js"
         : "React Js"
-    } Boilerplate`
+    } Boilerplate`,
   );
 
   readme.push(
-    `This boilerplate is starting point of any project with all batteries included. you can directly start development without spending time on project setup.`
+    `This boilerplate is starting point of any project with all batteries included. you can directly start development without spending time on project setup.`,
   );
 
   //======== TECH STACK ===========//
@@ -86,7 +84,7 @@ export default async function readmeGenerator({
           : selectedLibrary === SupportedUILibrary.MUI
           ? "[Material UI](https://mui.com/material-ui/),"
           : ""
-      } ${storybook ? "[Storybook](https://storybook.js.org/)," : ""} \n`
+      } ${storybook ? "[Storybook](https://storybook.js.org/)," : ""} \n`,
     );
 
   cachingOption === SupportedStateManagementAndCachingSol.REACT_QUERY &&
@@ -94,7 +92,7 @@ export default async function readmeGenerator({
 
   i18n &&
     readme.push(
-      `**Internationalization:** [i18next](https://react.i18next.com/) \n`
+      `**Internationalization:** [i18next](https://react.i18next.com/) \n`,
     );
 
   readme.push(
@@ -102,7 +100,7 @@ export default async function readmeGenerator({
       prettier ? "[Prettier](https://prettier.io/)," : ""
     }  ${
       husky ? "[Husky](https://typicode.github.io/husky)," : ""
-    } [Eslint](https://eslint.org/) \n`
+    } [Eslint](https://eslint.org/) \n`,
   );
 
   //========= Developer Guide =========//
@@ -150,7 +148,7 @@ export default async function readmeGenerator({
       currentProjectType === SupportedProjectGenerator.REACT_CRA
         ? "start"
         : "dev"
-    }\` to run (dev) a project`
+    }\` to run (dev) a project`,
   );
 
   readme.push(`- \`${prefix} build\` to build a project`);
@@ -158,14 +156,14 @@ export default async function readmeGenerator({
   readme.push(`- \`${prefix} preview\` to run preview a project`);
 
   readme.push(
-    `- \`${prefix} lint\` to lint a project \n - \`${prefix} lint:fix\` to lint:fix a project`
+    `- \`${prefix} lint\` to lint a project \n - \`${prefix} lint:fix\` to lint:fix a project`,
   );
 
   prettier && readme.push(`- \`${prefix} format\` to format a project`);
 
   storybook &&
     readme.push(
-      `- \`${prefix} storybook\` to start storybook dev server \n - \`${prefix} build-storybook\` to build storybook`
+      `- \`${prefix} storybook\` to start storybook dev server \n - \`${prefix} build-storybook\` to build storybook`,
     );
 
   const readmeContent = readme.join("\n");

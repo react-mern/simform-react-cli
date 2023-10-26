@@ -25,7 +25,7 @@ describe("Button component", () => {
 `;
 
 const setupTestContent = (
-  isTsProject: boolean
+  isTsProject: boolean,
 ) => `import { expect } from "vitest";
 import * as matchers from "@testing-library/jest-dom/matchers";
 import { TestingLibraryMatchers } from "@testing-library/jest-dom/matchers";

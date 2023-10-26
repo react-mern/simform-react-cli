@@ -7,7 +7,7 @@ import GlobalStateUtility from "@/global";
 export async function toolingAdder(
   addPrettier: boolean,
   addStoryBook: boolean,
-  addHusky: boolean
+  addHusky: boolean,
 ) {
   const currentPackageManager =
     GlobalStateUtility.getInstance().getCurrentPackageManager();

@@ -5,7 +5,6 @@ import { SupportedLanguage, SupportedProjectGenerator } from "@/types";
 import { writeFile, writeFileFromConfig } from "@/utils/file";
 import { VitestReactVitePlugin } from "@/plugins/react/testing";
 import VitestNextPlugin from "@/plugins/nextjs/testing/config";
-import logger from "@/utils/logger";
 
 export default async function addTestingInProject() {
   const projectType =
@@ -22,7 +21,9 @@ export default async function addTestingInProject() {
       default:
         break;
     }
-  } catch (error) {}
+  } catch (error) {
+    /** */
+  }
 }
 
 /**
@@ -51,7 +52,7 @@ async function addTestingInReactViteProject() {
   const viteConfig = fs.readFileSync(viteConfigPath, "utf8");
 
   //modifying vite config
-  let modifiedViteConfig = viteConfig.replace(/(\}\s*\))/s, match => {
+  let modifiedViteConfig = viteConfig.replace(/(\}\s*\))/s, (match) => {
     return configToAdd + match;
   });
 
@@ -69,7 +70,7 @@ async function addTestingInReactViteProject() {
     const viteEnvDeclarationPath = path.join(
       process.cwd(),
       "src",
-      viteEnvDeclarationFileName
+      viteEnvDeclarationFileName,
     );
     const viteEnvDeclaration = fs.readFileSync(viteEnvDeclarationPath, "utf8");
 
@@ -80,7 +81,7 @@ async function addTestingInReactViteProject() {
     writeFile(
       viteEnvDeclarationFileName,
       modifiedViteEnvDeclarationFile,
-      path.join(process.cwd(), "src")
+      path.join(process.cwd(), "src"),
     );
   }
 

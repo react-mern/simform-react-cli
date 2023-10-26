@@ -28,7 +28,7 @@ async function addEslintInNext(currentPackageManager: NodePackageManager) {
   const [config, dependencies] = eslintNextConfig(
     isFileExists(process.cwd(), "tsconfig"),
     isFileExists(process.cwd(), "prettier"),
-    isFileExists(process.cwd(), ".storybook")
+    isFileExists(process.cwd(), ".storybook"),
   );
 
   //adding config file
@@ -57,15 +57,15 @@ async function addEslintInReact(currentPackageManager: NodePackageManager) {
   fs.writeFileSync(
     packageJsonPath,
     JSON.stringify(packageJson, null, 2),
-    "utf8"
+    "utf8",
   );
 
   //adding eslint config to the project
-  let [config, dependencies] = eslintReactConfig(
+  const [config, dependencies] = eslintReactConfig(
     isFileExists(process.cwd(), "tsconfig"),
     isFileExists(process.cwd(), "prettier"),
     isFileExists(process.cwd(), ".storybook"),
-    isFileExists(process.cwd(), "vite")
+    isFileExists(process.cwd(), "vite"),
   );
 
   //adding config file

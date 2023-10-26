@@ -31,21 +31,21 @@ export default async function projectGenerator() {
       await initReactViteProject(
         projectName,
         currentPackageManager,
-        selectedLanguage
+        selectedLanguage,
       );
       break;
     case SupportedProjectGenerator.REACT_CRA:
       await initReactCraProject(
         projectName,
         currentPackageManager,
-        selectedLanguage
+        selectedLanguage,
       );
       break;
     case SupportedProjectGenerator.NEXT:
       await initNextJsProject(
         projectName,
         currentPackageManager,
-        selectedLanguage
+        selectedLanguage,
       );
       break;
     default:
@@ -57,7 +57,7 @@ export default async function projectGenerator() {
 async function initReactViteProject(
   projectName: string,
   packageManager: NodePackageManager,
-  selectedLanguage: SupportedLanguage
+  selectedLanguage: SupportedLanguage,
 ) {
   const viteCommand =
     packageManager === NodePackageManager.NPM ? "vite@latest" : "vite";
@@ -82,7 +82,7 @@ async function initReactViteProject(
 async function initReactCraProject(
   projectName: string,
   packageManager: NodePackageManager,
-  selectedLanguage: SupportedLanguage
+  selectedLanguage: SupportedLanguage,
 ) {
   const commandLine = ["create-react-app", projectName];
 
@@ -99,7 +99,7 @@ async function initReactCraProject(
 async function initNextJsProject(
   projectName: string,
   packageManager: NodePackageManager,
-  selectedLanguage: SupportedLanguage
+  selectedLanguage: SupportedLanguage,
 ) {
   try {
     await cmdRunner("npx", [
@@ -132,7 +132,7 @@ export async function reactRouterAdder() {
 //adds absolute path config in tsconfig.json or creates jsconfig.json if js project
 export function absolutePathConfigAdderInReact(
   selectedLanguage: SupportedLanguage,
-  selectedProjectType: SupportedProjectGenerator
+  selectedProjectType: SupportedProjectGenerator,
 ) {
   try {
     if (selectedProjectType === SupportedProjectGenerator.REACT_VITE) {
@@ -152,7 +152,7 @@ export function absolutePathConfigAdderInReact(
       const viteConfigPath = path.join(process.cwd(), viteConfigFileName);
       const viteConfig = fs.readFileSync(viteConfigPath, "utf8");
 
-      const modifiedConfigString = viteConfig.replace(/(\}\s*\))/s, match => {
+      const modifiedConfigString = viteConfig.replace(/(\}\s*\))/s, (match) => {
         return extraConfig + match;
       });
 
@@ -162,7 +162,7 @@ export function absolutePathConfigAdderInReact(
     if (selectedLanguage === SupportedLanguage.TS) {
       const tsConfigPath = path.join(process.cwd(), "tsconfig.json");
       const tsConfig = parseJsonWithComments(
-        fs.readFileSync(tsConfigPath, "utf8")
+        fs.readFileSync(tsConfigPath, "utf8"),
       );
 
       tsConfig["compilerOptions"]["baseUrl"] = "./";
@@ -173,7 +173,7 @@ export function absolutePathConfigAdderInReact(
       fs.writeFileSync(
         tsConfigPath,
         JSON.stringify(tsConfig, null, 2),
-        "utf-8"
+        "utf-8",
       );
     }
 
@@ -196,7 +196,7 @@ export function absolutePathConfigAdderInReact(
     console.log(error);
     logger(
       "red",
-      "An Error occurred while adding setup related to absolute path !"
+      "An Error occurred while adding setup related to absolute path !",
     );
   }
 }

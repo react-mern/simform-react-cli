@@ -111,7 +111,7 @@ export async function getSelectedStateManagementAndCachingSol() {
  * @returns A Promise that resolves to the selected ui library type.
  */
 export async function getSelectedUiLibrary(
-  selectedProjectType: SupportedProjectGenerator
+  selectedProjectType: SupportedProjectGenerator,
 ) {
   const selectedLibrary = await select<SupportedUILibrary>({
     message: "Select the UI Library",
