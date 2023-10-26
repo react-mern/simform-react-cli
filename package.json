@@ -36,7 +36,9 @@
     "typescript": "^5.2.2"
   },
   "lint-staged": {
-    "format": "pnpm format",
-    "lint": "pnpm lint"
+    "*.ts": [
+      "pnpm format",
+      "pnpm lint"
+    ]
   }
 }
