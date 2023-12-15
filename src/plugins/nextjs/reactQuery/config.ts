@@ -350,6 +350,8 @@ const ReactQueryNextPlugin: PluginConfigType = {
       addAfterMatch: "</Providers>",
       addBeforeMatch: "<Providers>",
       regex: getRegexForRootComponent("body"),
+      examplePath:"/posts",
+      exampleName:"ReactQuery Example"
     },
     Page: {},
   },

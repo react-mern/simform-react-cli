@@ -324,6 +324,8 @@ import Header from "@/components/header";`,
       addAfterMatch: "",
       addBeforeMatch: "<Header lang={params.lang} />",
       regex: /{children}/,
+      examplePath:"/about",
+      exampleName:"ii8n Example"
     },
     Page: {},
   },

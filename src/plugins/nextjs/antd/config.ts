@@ -83,6 +83,8 @@ const AntDNextPlugin: PluginConfigType = {
       addAfterMatch: `</StyledComponentsRegistry>`,
       addBeforeMatch: `<StyledComponentsRegistry>`,
       regex: /{children}/,
+      examplePath:"/antd",
+      exampleName:"AntD Example"
     },
     Page: {},
   },

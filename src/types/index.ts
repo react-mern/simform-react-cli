@@ -73,6 +73,8 @@ export type NextLayoutConfig = {
   addAfterMatch: string;
   innerHooks?: string;
   regex: RegExp;
+  examplePath?:string,
+  exampleName?:string
 };
 
 // Configuration for a Next.js Page
@@ -140,4 +142,5 @@ export type PluginConfigType = {
   initializingMessage?: string;
   successMessage?: string;
   fileModification?: PluginAppEntryConfigType;
+
 };

@@ -96,7 +96,7 @@ import { NextAppDirEmotionCacheProvider } from "./EmotionCache";
 const themeOptions${isTsProject ? ": ThemeOptions" : ""} = {
   palette: {
     background: {
-      default: "#9dc9fd",
+      default: "#white",
     },
   },
 };
@@ -116,6 +116,22 @@ export default function ThemeRegistry({
   );
 }
 `;
+const MuiContent = (isTsProject:boolean)=>`import Switch from "@mui/material/Switch";
+
+const label = { inputProps: { "aria-label": "Switch demo" } };
+
+export default function Home() {
+ return (
+   <div>
+     <div>
+       <span>With default Theme:</span>
+     </div>
+     <Switch {...label} defaultChecked />
+     <Switch {...label} />
+     <Switch {...label} disabled defaultChecked />
+   </div>
+ );
+}`
 
 const MuiNextPlugin: PluginConfigType = {
   initializingMessage: "Adding Material UI ! Please Wait !",
@@ -134,6 +150,12 @@ const MuiNextPlugin: PluginConfigType = {
       fileType: FileType.COMPONENT,
       path: ["src", "theme"],
     },
+    {
+      content: MuiContent,
+      fileName: "page",
+      fileType: FileType.COMPONENT,
+      path: ["src", "app", "mui"],
+    },
   ],
   fileModification: {
     Layout: {
@@ -141,6 +163,8 @@ const MuiNextPlugin: PluginConfigType = {
       addAfterMatch: `</ThemeRegistry>`,
       addBeforeMatch: `<ThemeRegistry>`,
       regex: getRegexForRootComponent("body"),
+      examplePath:"/mui",
+      exampleName:"Mui Example"
     },
     Page: {},
   },

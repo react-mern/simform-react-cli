@@ -290,6 +290,8 @@ const RtkQueryNextPlugin: PluginConfigType = {
       addBeforeMatch: "<StoreProvider>",
       addAfterMatch: "</StoreProvider>",
       regex: getRegexForRootComponent("html"),
+      examplePath:"/users",
+      exampleName:"RTK Query Example"
     },
   },
   successMessage: "Successfully added rtk-query with redux !",

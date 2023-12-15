@@ -31,6 +31,7 @@ import readmeGenerator from "@/operation/readme";
 import cmdRunner from "@/utils/cmdRunner";
 import { NodePackageManager, SupportedProjectType } from "@/types";
 import addTestingInProject from "@/operation/testing";
+import { findFileRecursively, writeFile } from "./utils/file/file";
 
 /**
  * current we are storing the config with code but if we increase the number of features then we can have plugin dir that has it's own config file
@@ -90,7 +91,12 @@ async function main() {
       absolutePathConfigAdderInReact(selectedLanguage, selectedProjectType);
       await reactRouterAdder();
     }
+      // const result = findFileRecursively(projectName,"page");
+      // console.log(result,"sejgfeidg");
 
+      // writeFile(result!.file,"qawfdqwsf",result?.filePath);
+      
+    
     // ESLint or Prettier or Storybook or Husky
     await toolingAdder(addPrettier, addStoryBook, addHusky);
 

@@ -15,6 +15,7 @@ import logger, { initiatorLog } from "@/utils/logger";
 import { addProviderAndImports } from "@/utils/fileManipulation";
 import { getRegexForRootComponent } from "@/utils/fileManipulation";
 import { homePageContent, homePageCss } from "./reactPluginConfig";
+import { nextHomeCssContent, nextHomePageContent } from "./nextPluginConfig";
 
 /**
  * Checks whether the directory is empty or not.
@@ -109,14 +110,13 @@ export function writeFile(
   const writeFilePath = filePath
     ? path.join(filePath, fileName)
     : path.join(process.cwd(), fileName);
-  if (path)
-    try {
-      filePath && fs.mkdirSync(filePath, { recursive: true });
+  try {
+    filePath && fs.mkdirSync(filePath, { recursive: true });
 
-      fs.writeFileSync(writeFilePath, content, "utf8");
-    } catch (error) {
-      console.log(error);
-    }
+    fs.writeFileSync(writeFilePath, content, "utf8");
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 /**
@@ -286,8 +286,7 @@ export async function pluginDependencyAdder() {
       });
 
       await cmdRunner(currentPackageManager, [
-        `${
-          currentPackageManager === NodePackageManager.NPM ? "install" : "add"
+        `${currentPackageManager === NodePackageManager.NPM ? "install" : "add"
         }`,
         ...dependenciesArr,
       ]);
@@ -299,8 +298,7 @@ export async function pluginDependencyAdder() {
       });
 
       await cmdRunner(currentPackageManager, [
-        `${
-          currentPackageManager === NodePackageManager.NPM ? "install" : "add"
+        `${currentPackageManager === NodePackageManager.NPM ? "install" : "add"
         }`,
         "-D",
         ...devDependenciesArr,
@@ -431,6 +429,7 @@ async function pluginEntryAdderInReact(pluginConfigArr: ReactPluginEntry[]) {
  * @param pluginConfigArr - Configuration for Next.js-based projects.
  */
 async function pluginEntryAdderInNext(pluginConfigArr: NextPluginEntry[]) {
+
   const detectedFile = findFileRecursively(
     path.join(process.cwd(), "src", "app"),
     "layout",
@@ -450,6 +449,35 @@ async function pluginEntryAdderInNext(pluginConfigArr: NextPluginEntry[]) {
       addAfterMatch,
     );
   });
+
+  const initialValueComponentValue: {
+    importStatement: string;
+    example: { exampleName: string; examplePath: string }[];
+  } = {
+    importStatement: "",
+    example: [],
+  };
+
+  // Combine import statements and component information from the configuration
+  const importAndComponentValues = pluginConfigArr.reduce((prev, curr) => {
+    const { exampleName,examplePath } = curr.Layout;
+
+    if (  exampleName && examplePath) {
+      // prev.importStatement += "\n" + importStatement ?? "";
+      
+      prev.example.push({ exampleName,examplePath });
+    }
+
+    return prev;
+  }, initialValueComponentValue);
+  // const dep =  
+  const homeContent = nextHomePageContent(true,importAndComponentValues.example);
+  const homePath =  path.join(process.cwd(),"src","app");
+  writeFile(`page.tsx`,homeContent,homePath);
+  writeFile("page.module.css",nextHomeCssContent(),homePath)
+  writeFile("globals.css","",homePath)
+  console.log("THe COde is Finish....................................................")
+
 }
 
 /**

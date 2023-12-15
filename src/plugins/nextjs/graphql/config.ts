@@ -137,6 +137,8 @@ const GraphQlNextPlugin: PluginConfigType = {
       addAfterMatch: "</ApolloWrapper>",
       addBeforeMatch: "<ApolloWrapper>",
       regex: getRegexForRootComponent("body"),
+      examplePath:"/characters",
+      exampleName:"graphQl Example"
     },
     Page: {},
   },
