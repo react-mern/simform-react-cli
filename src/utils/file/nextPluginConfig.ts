@@ -1,9 +1,9 @@
-export const nextHomePageContent = (isTsProject:boolean,componentArr:{exampleName:string,examplePath:string}[])=>`
+export const nextHomePageContent = (isTsProject:boolean,exampleArr:{exampleName:string,examplePath:string}[])=>`
 import styles from "./page.module.css";
 import Link from "next/link";
 export default function Home() {
-  const Components = ${JSON.stringify(
-    componentArr,
+  const Examples = ${JSON.stringify(
+    exampleArr,
   )};
     return (
       <main className={styles.main}>
@@ -18,11 +18,11 @@ export default function Home() {
         <div>
           <div>
             <ul className={styles.navbarItems}>
-              {Components.map((obj) => {
+              {Examples.map((example) => {
                 return (
                   <li className={styles.navItem}>
-                    <Link href={obj.examplePath} className={styles.navItem}>
-                      {obj.exampleName}
+                    <Link href={example.examplePath} className={styles.navItem}>
+                      {example.exampleName}
                     </Link>
                   </li>
                 );

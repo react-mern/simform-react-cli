@@ -5,7 +5,14 @@ export enum SupportedLanguage {
   JS = "js", // JavaScript
   TS = "ts", // TypeScript
 }
-
+export const  deConvertion={
+  "RTK Query Example":"Beispiel für eine Rtk-Abfrage",
+  "Mui Example":"MUI-Beispiel"
+}
+export const enConvertion={
+  "RTK Query Example":"RTK Query Example",
+  "Mui Example":"MUI Example"
+}
 // Supported Project Generator Options
 export enum SupportedProjectGenerator {
   REACT_VITE = "react-vite",

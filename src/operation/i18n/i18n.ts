@@ -31,6 +31,7 @@ async function addI18nInProject() {
 }
 
 async function addI18nInNext() {
+  
   await writeFileFromConfig(i18nNextPlugin);
 
   const isTsProject = isFileExists(process.cwd(), "tsconfig.json");

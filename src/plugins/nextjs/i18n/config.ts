@@ -1,10 +1,21 @@
-import { FileType, PluginConfigType } from "@/types";
-
+import GlobalStateUtility from "@/global/global";
+import { deConvertion, enConvertion, FileType, PluginConfigType } from "@/types";
+const getAllExamples = ()=>{
+  const global  = GlobalStateUtility.getInstance();
+  const examples =  global.getPluginAppEntryConfig().next;
+ const allExample =  examples.map((example)=>{return ({exampleName:example.Layout.exampleName,examplePath:example.Layout.examplePath})});
+ return allExample;
+}
 //dictionaries/de.json
-const i18nDeDictionary = `{
+
+const i18nDeDictionary =()=>
+{
+  const object = JSON.stringify(deConvertion).slice(1,-1).trim();
+return `{
   "navigation": {
     "home": "Startseite",
-    "about": "Über"
+    "about": "Über",
+    ${object}
   },
   "page": {
     "home": {
@@ -17,13 +28,16 @@ const i18nDeDictionary = `{
     }
   }
 }
-`;
+`;}
 
 //dictionaries/en.json
-const i18nEnDictionary = `{
+const i18nEnDictionary =() => {
+  const object = JSON.stringify(enConvertion).slice(1,-1).trim();
+  return `{
   "navigation": {
     "home": "Home",
-    "about": "About"
+    "about": "About",
+    ${object}
   },
   "page": {
     "home": {
@@ -36,7 +50,7 @@ const i18nEnDictionary = `{
     }
   }
 }
-`;
+`;}
 
 //lib/dictionary.ts
 const i18DictionaryConfig = (isTsProject: boolean) => `import "server-only";
@@ -75,24 +89,26 @@ ${isTsProject ? `export type Locale = (typeof i18n)["locales"][number];` : ""}
 
 //middleware.ts
 const nextMiddlewareConfig = (isTsProject: boolean) =>
+
+
   `import { NextResponse } from "next/server";${
     isTsProject ? `\nimport type { NextRequest } from "next/server";` : ""
   }
-import { i18n } from "@/i18n.config";
-import { match as matchLocale } from "@formatjs/intl-localematcher";
-import Negotiator from "negotiator";
-
-function getLocale(request${isTsProject ? ": NextRequest" : ""})${
+  import { i18n } from "@/i18n.config";
+  import { match as matchLocale } from "@formatjs/intl-localematcher";
+  import Negotiator from "negotiator";
+  
+  function getLocale(request${isTsProject ? ": NextRequest" : ""})${
     isTsProject ? ": string | undefined " : ""
   }{
-  const negotiatorHeaders${isTsProject ? ": Record<string, string>" : ""} = {};
-  request.headers.forEach((value, key) => (negotiatorHeaders[key] = value));
-
-  // @ts-ignore locales are readonly
-  const locales${isTsProject ? ": string[]" : ""} = i18n.locales;
-  const languages = new Negotiator({ headers: negotiatorHeaders }).languages();
-
-  const locale = matchLocale(languages, locales, i18n.defaultLocale);
+    const negotiatorHeaders${isTsProject ? ": Record<string, string>" : ""} = {};
+    request.headers.forEach((value, key) => (negotiatorHeaders[key] = value));
+    
+    // @ts-ignore locales are readonly
+    const locales${isTsProject ? ": string[]" : ""} = i18n.locales;
+    const languages = new Negotiator({ headers: negotiatorHeaders }).languages();
+    
+    const locale = matchLocale(languages, locales, i18n.defaultLocale);
   return locale;
 }
 
@@ -100,31 +116,34 @@ export function middleware(request${isTsProject ? ": NextRequest" : ""}) {
   const pathname = request.nextUrl.pathname;
   const pathnameIsMissingLocale = i18n.locales.every(
     locale => !pathname.startsWith(+=+/$\{locale}/+=+) && pathname !== +=+/\${locale}+=+
-  );
-
-  // Redirect if there is no locale
-  if (pathnameIsMissingLocale) {
-    const locale = getLocale(request);
-    return NextResponse.redirect(
-      new URL(
-        +=+/\${locale}\${pathname.startsWith("/") ? "" : "/"}\${pathname}+=+,
-        request.url
-      )
     );
-  }
-}
-
-export const config = {
-  // Matcher ignoring "/_next/" and "/api/"
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
-};
-`
-    .replaceAll(/\\/g, "")
-    .replaceAll("+=+", "`");
-
+    
+    // Redirect if there is no locale
+    if (pathnameIsMissingLocale) {
+      const locale = getLocale(request);
+      return NextResponse.redirect(
+        new URL(
+          +=+/\${locale}\${pathname.startsWith("/") ? "" : "/"}\${pathname}+=+,
+          request.url
+          )
+          );
+        }
+      }
+      
+      export const config = {
+        // Matcher ignoring "/_next/" and "/api/"
+        matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+      };
+      `
+      .replaceAll(/\\/g, "")
+      .replaceAll("+=+", "`")
+    
+      
 //components/header.tsx
-const nextHeaderComponent = (isTsProject: boolean) =>
-  `import Link from "next/link";${
+const nextHeaderComponent = (isTsProject: boolean) =>{
+
+ const allExample = getAllExamples();
+  return `import Link from "next/link";${
     isTsProject ? `\nimport { Locale } from "@/i18n.config";` : ""
   }
 import { getDictionary } from "@/lib/dictionary";
@@ -139,61 +158,78 @@ export default async function Header({ lang }${
     <header className="py-6">
       <nav className="container flex items-center justify-between">
         <ul className="flex gap-x-8">
-          <li>
-            <Link href={+=+/\${lang}+=+}>{navigation.home}</Link>
-          </li>
+        <li>
+        <Link href={+=+/\${lang}/+=+}>{navigation.home}</Link>
+      </li>
           <li>
             <Link href={+=+/\${lang}/about+=+}>{navigation.about}</Link>
           </li>
+          ${allExample.map((example)=>{
+            return` <li>
+            <Link href={+=+/\${lang}/${example.examplePath}+=+}>{navigation["${example.exampleName}"]}</Link>
+          </li>`
+          }).join("")}
         </ul>
         <LocaleSwitcher />
       </nav>
     </header>
-  );
-}
-`
+  );}
+  `
     .replaceAll(/\\/g, "")
     .replaceAll("+=+", "`");
 
+}
+
+
+  
 //components/locale-switcher.tsx
-const nextLocaleSwitcherComponent = (isTsProject: boolean) => `"use client";
+const nextLocaleSwitcherComponent = (isTsProject: boolean) => {
+ 
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+  return`
 
-import { i18n } from "@/i18n.config";
-
-export default function LocaleSwitcher() {
-  const pathName = usePathname();
-
+   ${ `"use client";
+  
+  import Link from "next/link";
+  import { usePathname } from "next/navigation";
+  
+  import { i18n } from "@/i18n.config";
+  
+  export default function LocaleSwitcher() {
+    const pathName = usePathname();
+    
   const redirectedPathName = (locale${isTsProject ? ": string" : ""}) => {
     if (!pathName) return "/";
     const segments = pathName.split("/");
     segments[1] = locale;
     return segments.join("/");
   };
-
+  
   return (
     <ul className="flex gap-x-3">
-      {i18n.locales.map(locale => {
-        return (
-          <li key={locale}>
-            <Link
-              href={redirectedPathName(locale)}
-              className="rounded-md border bg-black px-3 py-2 text-white"
-            >
-              {locale}
-            </Link>
-          </li>
+    {i18n.locales.map(locale => {
+      return (
+        <li key={locale}>
+        <Link
+        href={redirectedPathName(locale)}
+        className="rounded-md border bg-black px-3 py-2 text-white"
+        >
+        {locale}
+        </Link>
+        </li>
         );
       })}
-    </ul>
-  );
-}
-`;
+      </ul>
+      );
+    }
+    `}`
+    ;
+    
+    // root page in app dir
+  }
+const nextRootPageComponent = (isTsProject: boolean) => {
 
-// root page in app dir
-const nextRootPageComponent = (isTsProject: boolean) => `${
+  return `${
   isTsProject ? `import { Locale } from "@/i18n.config";\n` : ""
 }import { getDictionary } from "@/lib/dictionary";
 
@@ -210,17 +246,22 @@ export default async function Home({
 
   return (
     <section className="py-24">
-      <div className="container">
-        <h1 className="text-3xl font-bold">{page.home.title}</h1>
-        <p className="text-gray-500">{page.home.description}</p>
-      </div>
+    <div className="container">
+    <h1 className="text-3xl font-bold">{page.home.title}</h1>
+    <p className="text-gray-500">{page.home.description}</p>
+    </div>
     </section>
-  );
-}
-`;
+    );
+  }
+  `;}
+  
+  // about/page.tsx in app dir
+  const nextAboutPageComponent = (isTsProject: boolean) => {
+    
+    
+   
+    return `${
 
-// about/page.tsx in app dir
-const nextAboutPageComponent = (isTsProject: boolean) => `${
   isTsProject ? `import { Locale } from "@/i18n.config";\n` : ""
 }import { getDictionary } from "@/lib/dictionary";
 
@@ -244,7 +285,7 @@ export default async function About({
     </section>
   );
 }
-`;
+`};
 
 const i18nNextPlugin: PluginConfigType = {
   initializingMessage: "Adding i18n, Please wait !",
@@ -324,12 +365,11 @@ import Header from "@/components/header";`,
       addAfterMatch: "",
       addBeforeMatch: "<Header lang={params.lang} />",
       regex: /{children}/,
-      examplePath:"/about",
+      examplePath:"/ii8n",
       exampleName:"ii8n Example"
     },
     Page: {},
   },
   successMessage: "Successfully added i18n with language routes !",
 };
-
 export default i18nNextPlugin;

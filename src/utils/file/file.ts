@@ -463,20 +463,19 @@ async function pluginEntryAdderInNext(pluginConfigArr: NextPluginEntry[]) {
     const { exampleName,examplePath } = curr.Layout;
 
     if (  exampleName && examplePath) {
-      // prev.importStatement += "\n" + importStatement ?? "";
       
       prev.example.push({ exampleName,examplePath });
     }
 
     return prev;
   }, initialValueComponentValue);
-  // const dep =  
-  const homeContent = nextHomePageContent(true,importAndComponentValues.example);
+  const isTsProject = isFileExists(process.cwd(), "tsconfig.json");
+  console.log(importAndComponentValues)
+  const homeContent = nextHomePageContent(isTsProject,importAndComponentValues.example);
   const homePath =  path.join(process.cwd(),"src","app");
-  writeFile(`page.tsx`,homeContent,homePath);
+  writeFile(`page.${isTsProject ? "tsx" : "js"}`,homeContent,homePath);
   writeFile("page.module.css",nextHomeCssContent(),homePath)
   writeFile("globals.css","",homePath)
-  console.log("THe COde is Finish....................................................")
 
 }
 
