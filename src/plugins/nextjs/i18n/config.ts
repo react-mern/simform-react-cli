@@ -1,7 +1,6 @@
 import GlobalStateUtility from "@/global/global";
 import { deConvertion, enConvertion, FileType, PluginConfigType } from "@/types";
-import { findFileRecursively, isFileExists } from "@/utils/file";
-import logger from "@/utils/logger";
+import {  isFileExists } from "@/utils/file";
 const getAllExamples = ()=>{
   const global  = GlobalStateUtility.getInstance();
   const examples =  global.getPluginAppEntryConfig().next;
@@ -10,7 +9,6 @@ const getAllExamples = ()=>{
 }
 const getGlobalCssContent = ()=>{
   const isTailwind = isFileExists(process.cwd(), "tailwind.config.ts");
-  logger("redBright",isFileExists(process.cwd(), "tailwind.config.ts")+"jhdddddddddjjjjjjjjjjjjjjdjkjdjdjdjdjdjd")
   if(isTailwind){
     return globalTailwindStyle;
   }else{

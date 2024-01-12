@@ -204,11 +204,12 @@ type PostType = {
     : ""
 }
 export const Posts = () => {
-  const { data } = useQuery${isTsProject ? "<PostType[]>" : ""}({
+  const { data, isLoading } = useQuery${isTsProject ? "<PostType[]>" : ""}({
     queryKey: ["posts"],
     queryFn: getPosts,
   });
 
+  if (isLoading) return <div>Loading....</div>;
   if (!data) return <div>Not found</div>;
 
   return (
