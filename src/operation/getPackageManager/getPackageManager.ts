@@ -29,6 +29,7 @@ export default async function getCurrentPackageManager() {
       "red",
       `${selectedPackageMng} package manager not found ! please install it or select appropriate one.`,
     );
+    
     process.exit(1);
   }
   return selectedPackageMng || NodePackageManager.NPM;

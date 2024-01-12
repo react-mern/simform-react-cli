@@ -215,7 +215,7 @@ const RtkQueryExample = () => {
   if (isLoading) return <div>Loading.....</div>;
 
   return (
-    <div>
+    <section>
       {data?.map(user => {
         return (
           <div key={user.id}>
@@ -225,7 +225,7 @@ const RtkQueryExample = () => {
           </div>
         );
       })}
-    </div>
+    </section>
   );
 };
 

@@ -212,11 +212,13 @@ export const Posts = () => {
   if (!data) return <div>Not found</div>;
 
   return (
+    <section>
     <div className="divide-y">
       {data.map(post => (
         <Post post={post} key={post.id} />
       ))}
     </div>
+    </section>
   );
 };
 `;
@@ -264,11 +266,9 @@ export const Providers = ({ children }${isTsProject ? ": Props" : ""}) => {
 
 const ReactQueryHydrate = (isTsProject: boolean) => `"use client";
 
-import { Hydrate as RQHydrate, HydrateProps } from "@tanstack/react-query";
+import { HydrationBoundary as RQHydrate, HydrationBoundaryProps } from "@tanstack/react-query";
 
-export const ReactQueryHydrate = (props${
-  isTsProject ? ": HydrateProps" : ""
-}) => {
+export const ReactQueryHydrate = (props: HydrationBoundaryProps) => {
   return <RQHydrate {...props} />;
 };
 `;

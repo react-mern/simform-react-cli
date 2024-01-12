@@ -7,11 +7,19 @@ export enum SupportedLanguage {
 }
 export const  deConvertion={
   "RTK Query Example":"Beispiel für eine Rtk-Abfrage",
-  "Mui Example":"MUI-Beispiel"
+  "Mui Example":"MUI-Beispiel",
+  "AntD Example":"Antd-Beispiel",
+  "ReactQuery Example":"ReactQuery-Beispiel",
+  "graphQl Example":"Apollo-GraphQl-Beispiel"
+
 }
 export const enConvertion={
   "RTK Query Example":"RTK Query Example",
-  "Mui Example":"MUI Example"
+  "Mui Example":"MUI Example",
+  "AntD Example":"AntD-Example",
+  "ReactQuery Example":"ReactQuery-Example",
+  "graphQl Example":"Apollo-GraphQl Example"
+
 }
 // Supported Project Generator Options
 export enum SupportedProjectGenerator {

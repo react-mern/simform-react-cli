@@ -24,10 +24,8 @@ async function addHuskyInProject(currentPackageManager: NodePackageManager) {
   await cmdRunner("npx", [
     "husky",
     "add",
-    ".husky/pre-commit",
-    "npx lint-staged",
-  ]);
-
+    ".husky/pre-commit"  ]);4
+    await cmdRunner("npx",["lint-staged"])
   //based on project type run the configuration
   switch (projectType) {
     case SupportedProjectType.NEXT:

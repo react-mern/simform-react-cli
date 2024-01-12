@@ -42,12 +42,17 @@ export default StyledComponentsRegistry;
 const antdExampleNext = `import React from "react";
 import { Button, ConfigProvider } from "antd";
 import theme from "@/theme/themeConfig";
+import Title from "antd/es/typography/Title";
 
 const HomePage = () => (
   <ConfigProvider theme={theme}>
+  <section>
     <div className="App">
+    <Title level={1}>AntD Example</Title>
+
       <Button type="primary">Button</Button>
     </div>
+    </section>
   </ConfigProvider>
 );
 

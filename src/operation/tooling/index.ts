@@ -14,7 +14,7 @@ export async function toolingAdder(
 
   if (addPrettier) await addPrettierInProject();
 
-  // if (addStoryBook) await addStoryBookInProject(currentPackageManager);
+  if (addStoryBook) await addStoryBookInProject(currentPackageManager);
 
   if (addHusky) await addHuskyInProject(currentPackageManager);
 

@@ -77,7 +77,7 @@ async function main() {
     const addI18n = await getI18n();
 
     //generate the project based on usr's selection (react [vite or cra] or nextJs)
-    await projectGenerator();
+    await projectGenerator(selectedLibrary);
 
     //changing directory and checking project exists or not (if exist from child process then starting boilerplate is not there)
     await changeDirAndDetectProject();

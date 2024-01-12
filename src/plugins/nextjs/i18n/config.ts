@@ -1,10 +1,21 @@
 import GlobalStateUtility from "@/global/global";
 import { deConvertion, enConvertion, FileType, PluginConfigType } from "@/types";
+import { findFileRecursively, isFileExists } from "@/utils/file";
+import logger from "@/utils/logger";
 const getAllExamples = ()=>{
   const global  = GlobalStateUtility.getInstance();
   const examples =  global.getPluginAppEntryConfig().next;
  const allExample =  examples.map((example)=>{return ({exampleName:example.Layout.exampleName,examplePath:example.Layout.examplePath})});
  return allExample;
+}
+const getGlobalCssContent = ()=>{
+  const isTailwind = isFileExists(process.cwd(), "tailwind.config.ts");
+  logger("redBright",isFileExists(process.cwd(), "tailwind.config.ts")+"jhdddddddddjjjjjjjjjjjjjjdjkjdjdjdjdjdjd")
+  if(isTailwind){
+    return globalTailwindStyle;
+  }else{
+    return globalCustomStyle
+  }
 }
 //dictionaries/de.json
 
@@ -148,7 +159,6 @@ const nextHeaderComponent = (isTsProject: boolean) =>{
   }
 import { getDictionary } from "@/lib/dictionary";
 import LocaleSwitcher from "./locale-switcher";
-
 export default async function Header({ lang }${
     isTsProject ? ": { lang: Locale }" : ""
   }) {
@@ -156,17 +166,18 @@ export default async function Header({ lang }${
 
   return (
     <header className="py-6">
+    
       <nav className="container flex items-center justify-between">
-        <ul className="flex gap-x-8">
+        <ul className="flex gap-x-8 list-none">
         <li>
-        <Link href={+=+/\${lang}/+=+}>{navigation.home}</Link>
+        <Link className="text-black no-underline" href={+=+/\${lang}/+=+}>{navigation.home}</Link>
       </li>
           <li>
-            <Link href={+=+/\${lang}/about+=+}>{navigation.about}</Link>
+            <Link className="text-black no-underline" href={+=+/\${lang}/about+=+}>{navigation.about}</Link>
           </li>
           ${allExample.map((example)=>{
             return` <li>
-            <Link href={+=+/\${lang}/${example.examplePath}+=+}>{navigation["${example.exampleName}"]}</Link>
+            <Link className="text-black no-underline" href={+=+/\${lang}/${example.examplePath}+=+}>{navigation["${example.exampleName}"]}</Link>
           </li>`
           }).join("")}
         </ul>
@@ -206,7 +217,7 @@ const nextLocaleSwitcherComponent = (isTsProject: boolean) => {
   };
   
   return (
-    <ul className="flex gap-x-3">
+    <ul className="flex gap-x-3 list-none">
     {i18n.locales.map(locale => {
       return (
         <li key={locale}>
@@ -287,6 +298,115 @@ export default async function About({
 }
 `};
 
+const globalTailwindStyle = `@tailwind base;
+@tailwind components;
+@tailwind utilities;
+* {
+  padding: 0 0.5rem;
+}`;
+const globalCustomStyle = `.container {
+  width: 80vw;
+}
+
+.flex {
+  display: flex;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+.py-6 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+.gap-x-8 {
+  column-gap: 2rem;
+}
+.gap-x-3 {
+  column-gap: 1.75rem;
+}
+.rounded-md {
+  border-radius: 0.375rem;
+}
+
+.border {
+  border-width: 1px;
+  border-style: solid;
+}
+.text-black {
+  color: #000;
+}
+.py-24 {
+  padding: 6rem, 1.5rem;
+}
+.bg-black {
+  background-color: #000;
+}
+
+.px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.text-white {
+  color: #fff;
+}
+.text-3xl {
+  font-size: 1.875rem;
+}
+
+.font-bold {
+  font-weight: bold;
+}
+.text-gray-500 {
+  color: #718096;
+}
+.list-none {
+  list-style-type: none;
+}
+.no-underline {
+  text-decoration: none;
+}
+.rounded-md {
+  border-radius: 0.375rem;
+}
+
+.border {
+  border: 1px solid;
+}
+
+.bg-black {
+  background-color: #000;
+}
+
+.px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.text-white {
+  color: #fff;
+}
+section {
+  padding: 0rem 2.5rem;
+}
+
+
+`
 const i18nNextPlugin: PluginConfigType = {
   initializingMessage: "Adding i18n, Please wait !",
   dependencies: function (isTsProject: boolean) {
@@ -308,9 +428,7 @@ const i18nNextPlugin: PluginConfigType = {
       path: ["src", "dictionaries"],
     },
     {
-      content: `@tailwind base;
-@tailwind components;
-@tailwind utilities;`,
+      content: getGlobalCssContent,
       fileName: "globals.css",
       fileType: FileType.SIMPLE,
       path: ["src", "app"],

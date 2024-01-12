@@ -55,7 +55,9 @@ lerna-debug.log*
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts`;
+next-env.d.ts
+# Sentry Config File
+.env.sentry-build-plugin`;
 
 const gitInitPlugin: PluginConfigType = {
   files: [

@@ -4,6 +4,7 @@ import {
   NodePackageManager,
   SupportedLanguage,
   SupportedProjectGenerator,
+  SupportedUILibrary,
 } from "@/types";
 import cmdRunner from "@/utils/cmdRunner";
 import logger, { initiatorLog } from "@/utils/logger";
@@ -17,7 +18,7 @@ import GlobalStateUtility from "@/global";
 import ReactRouterDomReactPlugin from "@/plugins/react/reactRouterDom";
 
 //Main function to init project generation
-export default async function projectGenerator() {
+export default async function projectGenerator(selectedUILibrary:SupportedUILibrary) {
   initiatorLog("Generating Boilerplate, Please wait !");
 
   const globalState = GlobalStateUtility.getInstance();
@@ -46,6 +47,7 @@ export default async function projectGenerator() {
         projectName,
         currentPackageManager,
         selectedLanguage,
+        selectedUILibrary
       );
       break;
     default:
@@ -100,6 +102,7 @@ async function initNextJsProject(
   projectName: string,
   packageManager: NodePackageManager,
   selectedLanguage: SupportedLanguage,
+  isSelectedUILibrary:SupportedUILibrary
 ) {
   try {
     await cmdRunner("npx", [
@@ -110,6 +113,7 @@ async function initNextJsProject(
       "@/*",
       "--src-dir",
       `${selectedLanguage === "ts" ? "--ts" : "--js"}`,
+      `${isSelectedUILibrary ? "--no-tailwind":""}`,
       "--app",
     ]);
     logger("green", "😊 NextJs boilerplate generated successfully !");

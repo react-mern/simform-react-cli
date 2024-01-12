@@ -470,7 +470,6 @@ async function pluginEntryAdderInNext(pluginConfigArr: NextPluginEntry[]) {
     return prev;
   }, initialValueComponentValue);
   const isTsProject = isFileExists(process.cwd(), "tsconfig.json");
-  console.log(importAndComponentValues)
   const homeContent = nextHomePageContent(isTsProject,importAndComponentValues.example);
   const homePath =  path.join(process.cwd(),"src","app");
   writeFile(`page.${isTsProject ? "tsx" : "js"}`,homeContent,homePath);

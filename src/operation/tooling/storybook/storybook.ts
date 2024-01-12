@@ -7,7 +7,7 @@ async function addStoryBookInProject(
 ) {
   try {
     initiatorLog("Adding Storybook, Please wait !");
-    await cmdRunner("npx", ["sb", "init", "-y", "-s"]);
+    await cmdRunner("npx", ["storybook@latest", "init", "-y", "-s"],false);
     logger(
       "yellow",
       `Successfully added storybook ! Run : ${currentPackageManager}${

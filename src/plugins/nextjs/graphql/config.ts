@@ -87,11 +87,11 @@ export default function Character() {
   if (error) return <div>error occurred</div>;
 
   return (
-    <div>
+    <section>
       {data?.characters?.results?.map((character) => {
         return <div key={character?.id}>{character?.name}</div>;
       })}
-    </div>
+    </section>
   );
 }
 `.replaceAll("+=+", "`");

@@ -45,8 +45,8 @@ export const nextHomeCssContent = ()=>`
 }
 .navbarContainer {
   background-color: #ea495c;
-  padding: 10px 50px;
-  width: 100%;
+  padding: 15px 50px;
+  width: 95%;
 
   display: flex;
   flex-direction: row;
@@ -70,4 +70,10 @@ export const nextHomeCssContent = ()=>`
   text-decoration: none;
 }
 
+`
+export const nextGlobalContent = ()=>`
+*{
+  margin:0,
+  padding:0
+}
 `
