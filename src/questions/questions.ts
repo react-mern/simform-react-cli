@@ -98,6 +98,10 @@ export async function getSelectedStateManagementAndCachingSol() {
         value: SupportedStateManagementAndCachingSol.GRAPHQL,
       },
       {
+        name: "Add Redux thunk with axios",
+        value: SupportedStateManagementAndCachingSol.REDUX_THUNK_AXIOS,
+      },
+      {
         name: "None",
         value: SupportedStateManagementAndCachingSol.NONE,
       },

@@ -53,6 +53,7 @@ export enum SupportedStateManagementAndCachingSol {
   RTK_QUERY_REDUX = "rtk-query-redux",
   REACT_QUERY = "react-query",
   GRAPHQL = "graphql",
+  REDUX_THUNK_AXIOS="redux-thunk-axios",
   NONE = "", // None
 }
 

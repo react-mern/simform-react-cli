@@ -2,6 +2,7 @@ import { SupportedStateManagementAndCachingSol } from "@/types";
 import addGraphQL from "./graphql";
 import addRTKQueryWithRedux from "./rtkQueryRedux";
 import addReactQuery from "./reactQuery";
+import addReduxThunkWithAxios from "./reduxThunkAxios";
 
 export default async function stateManagementCachingSolAdder(
   cachingOption: SupportedStateManagementAndCachingSol,
@@ -16,6 +17,9 @@ export default async function stateManagementCachingSolAdder(
     case SupportedStateManagementAndCachingSol.REACT_QUERY:
       await addReactQuery();
       break;
+    case SupportedStateManagementAndCachingSol.REDUX_THUNK_AXIOS:
+        await addReduxThunkWithAxios();
+        break;
     default:
       break;
   }
