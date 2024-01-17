@@ -94,7 +94,7 @@ function getPostSlice(isTsProject: boolean) {
   return `import { createAsyncThunk, createSlice ${
     isTsProject ? ", PayloadAction " : ""
   } } from "@reduxjs/toolkit";
-  import { getPosts } from "src/utils/api";
+  import { getPosts ${isTsProject?",PostType":""} } from "src/utils/api";
   export const getPostApi = createAsyncThunk("posts", async () => {
     try {
       const response = await getPosts();
