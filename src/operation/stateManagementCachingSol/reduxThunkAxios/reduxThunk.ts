@@ -2,6 +2,7 @@ import { writeFileFromConfig } from "@/utils/file";
 import getCurrentProject from "@/operation/getProjectType";
 import { SupportedProjectType } from "@/types";
 import ReduxAxiosReactPlugin from "@/plugins/react/reduxThunkAxios/config";
+import ReduxThunkNextPlugin from "@/plugins/nextjs/reduxThunkAxios/config";
 
 export default async function addReduxThunkWithAxios() {
   const projectType = getCurrentProject();
@@ -23,4 +24,5 @@ async function addReduxInReact() {
 }
 
 async function addReduxInNext() {
+  await writeFileFromConfig(ReduxThunkNextPlugin)
 }

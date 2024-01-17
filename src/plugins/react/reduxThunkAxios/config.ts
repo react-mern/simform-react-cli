@@ -18,10 +18,7 @@ function getStoreConfig(isTsProject: boolean) {
   import counterSlice from "src/store/features/counterSlice";
   import postSlice from "./features/postSlice";
 
-${
-  isTsProject
-    ? `import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";`
-    : ""
+${isTsProject? `import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";`: ""
 }
 export const store = configureStore({
     reducer: {
@@ -29,17 +26,12 @@ export const store = configureStore({
       post: postSlice,
     },
   });
-
-
-${
-  isTsProject
-    ? `export type RootState = ReturnType<typeof store.getState>;
+${isTsProject? `export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
 // Use throughout your app instead of plain "useDispatch" and "useSelector"
 export const useAppDispatch = () => useDispatch<AppDispatch>();
-export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;`
-    : ""
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;`: ""
 }
 `;
 }
@@ -48,14 +40,11 @@ function getCounterSliceConfig(isTsProject: boolean) {
   return `import { createSlice${
     isTsProject ? ", PayloadAction " : ""
   }} from "@reduxjs/toolkit";
-${
-  isTsProject
-    ? `
+${isTsProject? `
 export interface CounterState {
   value: number;
   incrementAmount: number;
-}`
-    : ""
+}`: ""
 }
 
 const initialState${isTsProject ? ": CounterState " : ""}= {
@@ -269,7 +258,7 @@ const getApiContent = (isTsProject:boolean)=>{
     
           // Update the original request with the new access token
           const originalRequest = error.config;
-          originalRequest.headers["Authorization"] =+=+Bearer \${accessToken}+=+;
+          originalRequest.headers["Authorization"] =+=+Bearer \${newAccessToken}+=+;
     
           // Retry the original request
           return axios(originalRequest);
