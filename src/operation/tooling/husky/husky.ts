@@ -19,13 +19,14 @@ async function addHuskyInProject(currentPackageManager: NodePackageManager) {
     "lint-staged",
   ]);
 
-  await cmdRunner("npx", ["husky", "install"]);
+  await cmdRunner("npx", ["husky", "init"]);
 
-  await cmdRunner("npx", [
-    "husky",
-    "add",
-    ".husky/pre-commit"  ]);4
-    await cmdRunner("npx",["lint-staged"])
+  fs.writeFileSync(
+    path.join(process.cwd(), ".husky", "pre-commit"),
+    "npx lint-staged",
+    "utf8",
+  );
+
   //based on project type run the configuration
   switch (projectType) {
     case SupportedProjectType.NEXT:
@@ -57,7 +58,7 @@ async function addHuskyInReact(currentPackageManager: NodePackageManager) {
     stagedCommand.push(prefixForCmd + "lint");
 
   packageJson["lint-staged"] = {
-    "*.{ts,tsx}": stagedCommand,
+    "*.{jsx,js,ts,tsx}": stagedCommand,
   };
 
   fs.writeFileSync(

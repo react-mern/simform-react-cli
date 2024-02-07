@@ -1,6 +1,6 @@
 {
-  "name": "create-sld-app",
-  "version": "1.0.1",
+  "name": "simform-react-cli",
+  "version": "1.0.0",
   "description": "A interactive cli that generates the boilerplate as per your projects requirement",
   "type": "module",
   "main": "lib/index.js",
@@ -9,14 +9,28 @@
     "lib"
   ],
   "scripts": {
-    "build": "tsc && (concurrently \"tsc -w\" \"tsc-alias -w\")",
+    "build": "tsc && tsc-alias",
+    "dev": "tsc && (concurrently \"tsc -w\" \"tsc-alias -w\")",
     "lint": "eslint . --ext ts,tsx",
     "lint:fix": "eslint . --ext ts --fix",
-    "format": "prettier --write --parser typescript '**/*.ts'"
+    "format": "prettier --write --parser typescript '**/*.ts'",
+    "release": "semantic-release"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "react",
+    "boilerplate",
+    "cli"
+  ],
+  "author": "Simform Solutions",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/react-mern/simform-react-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/react-mern/simform-react-cli/issues"
+  },
+  "homepage": "https://github.com/react-mern/simform-react-cli",
   "dependencies": {
     "@inquirer/prompts": "^3.1.1",
     "@inquirer/select": "^1.2.11",
@@ -24,6 +38,8 @@
     "ora": "^7.0.1"
   },
   "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
     "@types/node": "^20.10.4",
     "@typescript-eslint/eslint-plugin": "^6.9.0",
     "@typescript-eslint/parser": "^6.9.0",
@@ -32,6 +48,7 @@
     "husky": "^8.0.3",
     "lint-staged": "^15.0.2",
     "prettier": "^3.0.3",
+    "semantic-release": "^23.0.0",
     "tsc-alias": "^1.8.8",
     "typescript": "^5.2.2"
   },
