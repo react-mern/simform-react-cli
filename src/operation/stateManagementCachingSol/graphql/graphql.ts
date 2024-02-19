@@ -71,7 +71,7 @@ async function codegenAdder(currentPackageManager: NodePackageManager) {
     ...codegenDependencies.split(" "),
   ]);
 
-  writeFile("codegen.ts", reactCodeGenConfig, process.cwd());
+  await writeFile("codegen.ts", reactCodeGenConfig, process.cwd());
 
   const packageJsonPath = path.join(process.cwd(), "package.json");
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));

@@ -1,4 +1,5 @@
 import fs, { readdirSync, unlinkSync } from "fs";
+import fsPromise from 'fs/promises'
 import path from "path";
 import {
   PluginConfigType,
@@ -107,16 +108,21 @@ export function writeFile(
   content: string,
   filePath?: string,
 ) {
+  return new Promise<string>((resolve,reject) =>{
   const writeFilePath = filePath
     ? path.join(filePath, fileName)
     : path.join(process.cwd(), fileName);
   try {
     filePath && fs.mkdirSync(filePath, { recursive: true });
 
-    fs.writeFileSync(writeFilePath, content, "utf8");
+   fsPromise.writeFile(writeFilePath,content,{encoding: "utf8"}).then(() =>{
+     resolve('done')
+   }).catch(err => reject(err))
   } catch (error) {
     console.log(error);
+    reject(error)
   }
+  })
 }
 
 /**
@@ -182,6 +188,7 @@ export async function writeFileFromConfig(baseConfig: PluginConfigType) {
     : { component: "jsx", native: "js" };
 
   //writing file from base config
+  const writeFilePromises: Promise<string>[] = []
   baseConfig.files.forEach((fileDetail) => {
     const content =
       typeof fileDetail.content === "function"
@@ -193,8 +200,10 @@ export async function writeFileFromConfig(baseConfig: PluginConfigType) {
         ? `${fileDetail.fileName}.${fileType[fileDetail.fileType]}`
         : fileDetail.fileName;
 
-    writeFile(fileName, content, path.join(process.cwd(), ...fileDetail.path));
+   writeFilePromises.push(writeFile(fileName, content, path.join(process.cwd(), ...fileDetail.path)));
   });
+
+  await Promise.allSettled(writeFilePromises)
 
   // If there are file modifications defined in the configuration, set them in the global state
   if (baseConfig?.fileModification) {
@@ -416,12 +425,13 @@ async function pluginEntryAdderInReact(pluginConfigArr: ReactPluginEntry[]) {
   const homePagePath = path.join(process.cwd(), "src", "components", "home");
 
   // Write the home page content and its CSS
+  await Promise.allSettled([
   writeFile(
     `Home.${isTsProject ? "tsx" : "jsx"}`,
     HomePageContent,
-    homePagePath,
-  );
-  writeFile("Home.module.css", homePageCss, homePagePath);
+    homePagePath,),
+    writeFile("Home.module.css", homePageCss, homePagePath)
+    ])
 }
 
 /**
@@ -472,10 +482,11 @@ async function pluginEntryAdderInNext(pluginConfigArr: NextPluginEntry[]) {
   const isTsProject = isFileExists(process.cwd(), "tsconfig.json");
   const homeContent = nextHomePageContent(isTsProject,importAndComponentValues.example);
   const homePath =  path.join(process.cwd(),"src","app");
-  writeFile(`page.${isTsProject ? "tsx" : "js"}`,homeContent,homePath);
-  writeFile("page.module.css",nextHomeCssContent(),homePath)
-  writeFile("globals.css","",homePath)
-
+  await Promise.allSettled([
+  writeFile(`page.${isTsProject ? "tsx" : "js"}`,homeContent,homePath),
+  writeFile("page.module.css",nextHomeCssContent(),homePath),
+  writeFile("globals.css","",homePath),
+  ])
 }
 
 /**

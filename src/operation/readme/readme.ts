@@ -169,5 +169,5 @@ export default async function readmeGenerator({
   const readmeContent = readme.join("\n");
 
   //writing readme file with the dynamically generated readme content
-  writeFile("README.md", readmeContent);
+  await writeFile("README.md", readmeContent);
 }

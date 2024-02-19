@@ -32,7 +32,7 @@ async function addEslintInNext(currentPackageManager: NodePackageManager) {
   );
 
   //adding config file
-  writeFile(".eslintrc.json", config);
+  await writeFile(".eslintrc.json", config);
 
   // installing necessary dependencies
   await cmdRunner(currentPackageManager, [
@@ -69,7 +69,7 @@ async function addEslintInReact(currentPackageManager: NodePackageManager) {
   );
 
   //adding config file
-  writeFile(".eslintrc.json", config);
+  await writeFile(".eslintrc.json", config);
 
   // installing necessary dependencies
   await cmdRunner(currentPackageManager, [

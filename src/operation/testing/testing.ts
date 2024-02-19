@@ -62,7 +62,7 @@ async function addTestingInReactViteProject() {
       `/// <reference types="vitest" /> \n` + modifiedViteConfig;
 
   //writing modified content in vite config
-  writeFile(viteConfigFileName, modifiedViteConfig);
+ await writeFile(viteConfigFileName, modifiedViteConfig);
 
   //adding type definition if language is typescript
   if (selectedLanguage === SupportedLanguage.TS) {
@@ -78,7 +78,7 @@ async function addTestingInReactViteProject() {
       viteEnvDeclaration +
       `\n/// <reference types="@testing-library/jest-dom" />`;
 
-    writeFile(
+   await writeFile(
       viteEnvDeclarationFileName,
       modifiedViteEnvDeclarationFile,
       path.join(process.cwd(), "src"),

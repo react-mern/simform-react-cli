@@ -134,7 +134,7 @@ export async function reactRouterAdder() {
 }
 
 //adds absolute path config in tsconfig.json or creates jsconfig.json if js project
-export function absolutePathConfigAdderInReact(
+export async function absolutePathConfigAdderInReact(
   selectedLanguage: SupportedLanguage,
   selectedProjectType: SupportedProjectGenerator,
 ) {
@@ -160,7 +160,7 @@ export function absolutePathConfigAdderInReact(
         return extraConfig + match;
       });
 
-      writeFile(viteConfigFileName, modifiedConfigString);
+     await writeFile(viteConfigFileName, modifiedConfigString);
     }
 
     if (selectedLanguage === SupportedLanguage.TS) {
@@ -194,7 +194,7 @@ export function absolutePathConfigAdderInReact(
         },
       };
 
-      writeFile("jsconfig.json", JSON.stringify(absolutePathConfigForJs));
+    await writeFile("jsconfig.json", JSON.stringify(absolutePathConfigForJs));
     }
   } catch (error) {
     console.log(error);
