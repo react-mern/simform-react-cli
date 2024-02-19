@@ -86,13 +86,26 @@ async function initReactCraProject(
   packageManager: NodePackageManager,
   selectedLanguage: SupportedLanguage,
 ) {
-  const commandLine = ["create-react-app", projectName];
+  const packageManagerToUse = packageManager === NodePackageManager.NPM ? "npx" : packageManager;
 
-  if (selectedLanguage === "ts") commandLine.push("--template", "typescript");
+  const commandLine = [];
+
+  if (packageManager === "npm") {
+    commandLine.push("create-react-app");
+  } else {
+    commandLine.push("create");
+    commandLine.push("react-app");
+  }
+  commandLine.push(projectName);
+
+  if (selectedLanguage === SupportedLanguage.TS) {
+    commandLine.push("--template typescript");
+  }
 
   try {
-    await cmdRunner("npx", commandLine);
+    await cmdRunner(packageManagerToUse, commandLine);
   } catch (error) {
+    console.log({ error11: error });
     process.exit(1);
   }
 }

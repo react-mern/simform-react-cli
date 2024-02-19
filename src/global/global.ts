@@ -98,7 +98,7 @@ class GlobalStateUtility {
   }
 
   setDependencies(dependencies: string) {
-    this.dependencies += dependencies + " ";
+    this.dependencies += `${dependencies} `;
   }
 
   getDependencies() {
@@ -106,7 +106,7 @@ class GlobalStateUtility {
   }
 
   setDevDependencies(devDependencies: string) {
-    this.devDependencies += devDependencies + " ";
+    this.devDependencies += `${devDependencies} `;
   }
 
   getDevDependencies() {
