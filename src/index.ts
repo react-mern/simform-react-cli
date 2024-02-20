@@ -31,7 +31,6 @@ import readmeGenerator from "@/operation/readme";
 import cmdRunner from "@/utils/cmdRunner";
 import { NodePackageManager, SupportedProjectType } from "@/types";
 import addTestingInProject from "@/operation/testing";
-import { findFileRecursively, writeFile } from "./utils/file/file";
 
 /**
  * current we are storing the config with code but if we increase the number of features then we can have plugin dir that has it's own config file
@@ -88,7 +87,7 @@ async function main() {
     //getting project types if react then config related to react projects
     const projectType = getCurrentProject();
     if (projectType === SupportedProjectType.REACT) {
-      absolutePathConfigAdderInReact(selectedLanguage, selectedProjectType);
+      await absolutePathConfigAdderInReact(selectedLanguage, selectedProjectType);
       await reactRouterAdder();
     }
       // const result = findFileRecursively(projectName,"page");

@@ -86,13 +86,25 @@ async function initReactCraProject(
   packageManager: NodePackageManager,
   selectedLanguage: SupportedLanguage,
 ) {
-  const commandLine = ["create-react-app", projectName];
+  const packageManagerToUse = packageManager === NodePackageManager.NPM ? "npx" : packageManager;
 
-  if (selectedLanguage === "ts") commandLine.push("--template", "typescript");
+  const commandLine = [];
+
+  if (packageManager === "npm") {
+    commandLine.push("create-react-app");
+  } else {
+    commandLine.push("create","react-app");
+  }
+  commandLine.push(projectName);
+
+  if (selectedLanguage === SupportedLanguage.TS) {
+    commandLine.push("--template","typescript");
+  }
 
   try {
-    await cmdRunner("npx", commandLine);
+    await cmdRunner(packageManagerToUse, commandLine);
   } catch (error) {
+    console.log({ error11: error });
     process.exit(1);
   }
 }
@@ -134,7 +146,7 @@ export async function reactRouterAdder() {
 }
 
 //adds absolute path config in tsconfig.json or creates jsconfig.json if js project
-export function absolutePathConfigAdderInReact(
+export async function absolutePathConfigAdderInReact(
   selectedLanguage: SupportedLanguage,
   selectedProjectType: SupportedProjectGenerator,
 ) {
@@ -160,7 +172,7 @@ export function absolutePathConfigAdderInReact(
         return extraConfig + match;
       });
 
-      writeFile(viteConfigFileName, modifiedConfigString);
+     await writeFile(viteConfigFileName, modifiedConfigString);
     }
 
     if (selectedLanguage === SupportedLanguage.TS) {
@@ -194,7 +206,7 @@ export function absolutePathConfigAdderInReact(
         },
       };
 
-      writeFile("jsconfig.json", JSON.stringify(absolutePathConfigForJs));
+    await writeFile("jsconfig.json", JSON.stringify(absolutePathConfigForJs));
     }
   } catch (error) {
     console.log(error);
