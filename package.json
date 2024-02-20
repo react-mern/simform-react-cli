@@ -1,6 +1,6 @@
 {
   "name": "simform-react-cli",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A interactive cli that generates the boilerplate as per your projects requirement",
   "type": "module",
   "main": "lib/index.js",
