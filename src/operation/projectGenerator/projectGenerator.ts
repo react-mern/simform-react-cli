@@ -93,13 +93,12 @@ async function initReactCraProject(
   if (packageManager === "npm") {
     commandLine.push("create-react-app");
   } else {
-    commandLine.push("create");
-    commandLine.push("react-app");
+    commandLine.push("create","react-app");
   }
   commandLine.push(projectName);
 
   if (selectedLanguage === SupportedLanguage.TS) {
-    commandLine.push("--template typescript");
+    commandLine.push("--template","typescript");
   }
 
   try {
