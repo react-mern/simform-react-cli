@@ -86,7 +86,7 @@ export default ${name};
 `;
 
 export const layoutAuth = `import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 const LayoutAuth = () => {
   return (
@@ -103,6 +103,7 @@ const LayoutAuth = () => {
           </ul>
         </div>
       </div>
+      <Outlet/>
     </div>
   );
 };

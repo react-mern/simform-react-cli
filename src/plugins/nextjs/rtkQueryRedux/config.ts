@@ -140,7 +140,7 @@ const baseQuery = fetchBaseQuery({
 //if you have access and refresh token both and access token is begin stored in memory(session)
 //then add logic to generate the new access token with refresh token
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line ${isTsProject ? "@typescript-eslint/no-explicit-any" : ""}
 const baseQueryWithReAuth = async (args${isTsProject ? ": any" : ""}, api${
     isTsProject ? ": any" : ""
   }, extraOptions${isTsProject ? ": any" : ""}) => {
