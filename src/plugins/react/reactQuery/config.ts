@@ -31,15 +31,14 @@ const axiosApiReact = (
   projectType?: SupportedProjectGenerator,
 ) =>
   `import axios from "axios";
-import Cookies from "js-cookie";
+  import { getLocalStorage,setLocalStorage } from "src/utils/storage";
 
 
 /*
-Best practice to store access-token and refresh-token is
-cookie not a local storage. 
+
 
 Here I've created request interceptors to intercept
-request and add token into request header from cookie.
+request and add token into request header from localstorage.
 You can update this logic as well create response interceptors based on project requirements.
 
 I've added custom config called withoutAuth in axios instance
@@ -91,16 +90,16 @@ export const API = axios.create({
 
 /**
  * If your backend has refresh and access token then to refresh the access token you can add logic to the below function
- * can save access token in memory and refresh token in cookie
+ * can save access token in memory and refresh token in localStorage
  */
 // Define a function to refresh the token
 const refreshToken = async () => {
   //   try {
   //     const response = await axios.post("YOUR_REFRESH_TOKEN_ENDPOINT", {
-  //       refreshToken: Cookies.get("refreshToken"), // Load the refreshToken from cookies or if https cookie then just make get request to your endpoint
+  //       refreshToken: getLocalStorage("refreshToken"), // Load the refreshToken from localStorage or if https cookie then just make get request to your endpoint
   //     });
   //     const newAccessToken = response.data.accessToken;
-  //     Cookies.set("accessToken", newAccessToken, { path: "/" });
+  //     setLocalStorage("accessToken", newAccessToken);
   //     return newAccessToken;
   //   } catch (error) {
   //     throw error;
@@ -110,7 +109,7 @@ const refreshToken = async () => {
 // A request interceptor to inject the access token into requests
 API.interceptors.request.use(
   config => {
-    const accessToken = Cookies.get("accessToken"); // Load the access token from cookies or local storage
+    const accessToken = getLocalStorage("accessToken"); // Load the access token from local storage
 
     if (!config.withoutAuth && accessToken) {
       config.headers["Authorization"] = +=+Bearer \${accessToken}+=+;
@@ -195,14 +194,45 @@ const ReactQueryExample = () => {
 
 export default ReactQueryExample;
 `;
-
+function storageFileContent(isTsProject:boolean){
+  return `
+  import { EncryptStorage } from "encrypt-storage";
+  
+  export const encryptStorage = new EncryptStorage("secret-key-value", {
+    prefix: "authService",
+  });
+  
+  export const getLocalStorage = ${
+    isTsProject
+      ? ` (key: string): string | null`
+      : "(key)"}
+   => {
+    try {
+      const encryptValue = encryptStorage.getItem(key);
+      const value = encryptStorage.decryptValue(encryptValue);
+      return value;
+    } catch (error) {
+      console.error(\`Error retrieving local storage item: \${key}\`, error);
+      return null;
+    }
+  };
+  
+  export const setLocalStorage = ${
+    isTsProject
+      ? ` (key: string,value:string): void`
+      : "(key,value)"} => {
+    try {
+      const encryptedValue = encryptStorage.encryptValue(value);
+      encryptStorage.setItem(key, encryptedValue);
+    } catch (error) {
+      console.error(\`Error setting local storage item: \${key}\`, error);
+    }
+  };
+  `;
+}
 const ReactQueryReactPlugin: PluginConfigType = {
   initializingMessage: "Adding React Query, Please wait !",
-  dependencies: function (isTsProject: boolean) {
-    return `@tanstack/react-query @tanstack/react-query-devtools axios js-cookie ${
-      isTsProject ? "@types/js-cookie" : ""
-    }`;
-  },
+  dependencies: `@tanstack/react-query @tanstack/react-query-devtools axios encrypt-storage`,
   files: [
     {
       content: getEnvConfig,
@@ -234,6 +264,12 @@ const ReactQueryReactPlugin: PluginConfigType = {
       fileType: FileType.COMPONENT,
       path: ["src", "components", "reactQueryExample"],
     },
+    {
+      content:storageFileContent,
+      fileName:"storage",
+      fileType:FileType.NATIVE,
+      path:["src","utils"]
+    }
   ],
   fileModification: {
     App: {
