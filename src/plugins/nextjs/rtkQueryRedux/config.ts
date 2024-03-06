@@ -84,7 +84,7 @@ export default counterSlice.reducer;
 
 function getUserApi(isTsProject: boolean) {
   return `import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import cookies from "js-cookie";
+  import { getLocalStorage } from "@/utils/storage";
 
 ${
   isTsProject
@@ -127,7 +127,7 @@ const baseQuery = fetchBaseQuery({
      * const token = (getState() as RootState).auth.accessToken;
      */
     // const token = (getState() as RootState).auth.accessToken;
-    const accessToken = cookies.get("accessToken");
+    const accessToken = getLocalStorage("accessToken");
     if (accessToken) {
       headers.set("Content-type", "application/json");
       headers.set("Accept", "application/json");
@@ -204,7 +204,6 @@ export default function StoreProvider({
   return <Provider store={store}>{children}</Provider>;
 }
 `;
-
 export const rtkQueryExampleNext = `"use client";
 import React from "react";
 import { userApi } from "@/store/api/userApi";
@@ -231,7 +230,42 @@ const RtkQueryExample = () => {
 
 export default RtkQueryExample;
 `;
-
+function storageFileContent(isTsProject:boolean){
+  return `
+  import { EncryptStorage } from "encrypt-storage";
+  
+  export const encryptStorage = new EncryptStorage("secret-key-value", {
+    prefix: "authService",
+  });
+  
+  export const getLocalStorage = ${
+    isTsProject
+      ? ` (key: string): string | null`
+      : "(key)"}
+   => {
+    try {
+      const encryptValue = encryptStorage.getItem(key);
+      const value = encryptStorage.decryptValue(encryptValue);
+      return value;
+    } catch (error) {
+      console.error(\`Error retrieving local storage item: \${key}\`, error);
+      return null;
+    }
+  };
+  
+  export const setLocalStorage = ${
+    isTsProject
+      ? ` (key: string,value:string): void`
+      : "(key,value)"} => {
+    try {
+      const encryptedValue = encryptStorage.encryptValue(value);
+      encryptStorage.setItem(key, encryptedValue);
+    } catch (error) {
+      console.error(\`Error setting local storage item: \${key}\`, error);
+    }
+  };
+  `;
+}
 const RtkQueryNextPlugin: PluginConfigType = {
   initializingMessage: "Adding Rtk Query with Redux Store, Please wait !",
   files: [
@@ -277,12 +311,14 @@ const RtkQueryNextPlugin: PluginConfigType = {
       fileType: FileType.COMPONENT,
       path: ["src", "app", "users"],
     },
+    {
+      content:storageFileContent,
+      fileName:"storage",
+      fileType:FileType.NATIVE,
+      path:["src","utils"]
+    }
   ],
-  dependencies: function (isTsProject: boolean) {
-    return `@reduxjs/toolkit react-redux js-cookie ${
-      isTsProject ? "@types/js-cookie" : ""
-    }`;
-  },
+  dependencies: `@reduxjs/toolkit react-redux encrypt-storage`,
   fileModification: {
     Page: {},
     Layout: {

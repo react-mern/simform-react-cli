@@ -167,11 +167,11 @@ const reduxThunkExample =(isTsProject:boolean)=>{
 }
 const getApiContent = (isTsProject:boolean)=>{
     return `import axios from "axios";
-    import Cookies from "js-cookie";
+    import { getLocalStorage,setLocalStorage } from "src/utils/storage";
+
     
     /*
-    Best practice to store access-token and refresh-token is
-    cookie not a local storage. 
+   
     
     Here I've created request interceptors to intercept
     request and add token into request header from cookie.
@@ -217,10 +217,10 @@ const getApiContent = (isTsProject:boolean)=>{
     const refreshToken = async () => {
       //   try {
       //     const response = await axios.post("YOUR_REFRESH_TOKEN_ENDPOINT", {
-      //       refreshToken: Cookies.get("refreshToken"), // Load the refreshToken from cookies or if https cookie then just make get request to your endpoint
+      //       refreshToken: getLocalStorage("refreshToken"), // Load the refreshToken from cookies or if https cookie then just make get request to your endpoint
       //     });
       //     const newAccessToken = response.data.accessToken;
-      //     Cookies.set("accessToken", newAccessToken, { path: "/" });
+      //     setLocalStorage("accessToken", newAccessToken);
       //     return newAccessToken;
       //   } catch (error) {
       //     throw error;
@@ -230,7 +230,7 @@ const getApiContent = (isTsProject:boolean)=>{
     // A request interceptor to inject the access token into requests
     API.interceptors.request.use(
       (config) => {
-        const accessToken = Cookies.get("accessToken"); // Load the access token from cookies or local storage
+        const accessToken = getLocalStorage("accessToken"); // Load the access token from cookies or local storage
     
         if (!config.withoutAuth && accessToken) {
           config.headers["Authorization"] = +=+Bearer \${accessToken}+=+;
@@ -283,6 +283,42 @@ const getApiContent = (isTsProject:boolean)=>{
     export const createPost = (body${ isTsProject?`: { heading: string; content: string }`:""}) => API.post("/item/create", body);
     `.replaceAll("+=+", "`");
 }
+function storageFileContent(isTsProject:boolean){
+  return `
+  import { EncryptStorage } from "encrypt-storage";
+  
+  export const encryptStorage = new EncryptStorage("secret-key-value", {
+    prefix: "authService",
+  });
+  
+  export const getLocalStorage = ${
+    isTsProject
+      ? ` (key: string): string | null`
+      : "(key)"}
+   => {
+    try {
+      const encryptValue = encryptStorage.getItem(key);
+      const value = encryptStorage.decryptValue(encryptValue);
+      return value;
+    } catch (error) {
+      console.error(\`Error retrieving local storage item: \${key}\`, error);
+      return null;
+    }
+  };
+  
+  export const setLocalStorage = ${
+    isTsProject
+      ? ` (key: string,value:string): void`
+      : "(key,value)"} => {
+    try {
+      const encryptedValue = encryptStorage.encryptValue(value);
+      encryptStorage.setItem(key, encryptedValue);
+    } catch (error) {
+      console.error(\`Error setting local storage item: \${key}\`, error);
+    }
+  };
+  `;
+}
 const ReduxAxiosReactPlugin: PluginConfigType = {
   initializingMessage: "Adding Redux Axios with Redux Store, Please wait !",
   files: [
@@ -329,12 +365,14 @@ const ReduxAxiosReactPlugin: PluginConfigType = {
         fileType: FileType.NATIVE,
         path: ["src", "utils"],
     },
+    {
+      content:storageFileContent,
+      fileName:"storage",
+      fileType:FileType.NATIVE,
+      path:["src","utils"]
+    }
   ],
-  dependencies: function (isTsProject: boolean) {
-    return `@reduxjs/toolkit react-redux js-cookie axios ${
-      isTsProject ? "@types/js-cookie" : ""
-    }`;
-  },
+  dependencies: `@reduxjs/toolkit react-redux encrypt-storage axios`,
   fileModification: {
     App: {
       importStatement: `import ReduxThunkExample from "src/components/reduxThunkExample/ReduxThunkExample"`,
