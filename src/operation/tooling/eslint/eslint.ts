@@ -3,8 +3,14 @@ import fs from "fs";
 import cmdRunner from "@/utils/cmdRunner";
 import { NodePackageManager, SupportedProjectType } from "@/types";
 import getCurrentProject from "@/operation/getProjectType";
-import { deleteFile, isFileExists, writeFile } from "@/utils/file";
-import { eslintNextConfig, eslintReactConfig } from "./eslintConfig.js";
+import {
+  deleteFile,
+  isFileExists,
+  writeFile,
+  writeFileFromConfig,
+} from "@/utils/file";
+import { eslintNextConfig } from "./eslintConfig.js";
+import EslintReactPlugin from "@/plugins/react/eslint/config.js";
 
 async function addEslintInProject(currentPackageManager: NodePackageManager) {
   const projectType = getCurrentProject();
@@ -61,22 +67,7 @@ async function addEslintInReact(currentPackageManager: NodePackageManager) {
   );
 
   //adding eslint config to the project
-  const [config, dependencies] = eslintReactConfig(
-    isFileExists(process.cwd(), "tsconfig"),
-    isFileExists(process.cwd(), "prettier"),
-    isFileExists(process.cwd(), ".storybook"),
-    isFileExists(process.cwd(), "vite"),
-  );
-
-  //adding config file
-  await writeFile(".eslintrc.json", config);
-
-  // installing necessary dependencies
-  await cmdRunner(currentPackageManager, [
-    `${currentPackageManager === NodePackageManager.NPM ? "install" : "add"}`,
-    "-D",
-    ...dependencies.split(" "),
-  ]);
+  await writeFileFromConfig(EslintReactPlugin);
 }
 
 export default addEslintInProject;
