@@ -21,43 +21,6 @@ export function eslintNextConfig(
   return [JSON.stringify(config, null, 2), dependencies] as const;
 }
 
-export function eslintReactConfig(
-  hasTypescript: boolean,
-  hasPrettier: boolean,
-  hasStorybook: boolean,
-  hasVite: boolean,
-) {
-  //base config for react js
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const baseConfig: Record<string, any> = {
-    root: true,
-    env: { browser: true, es2020: true },
-    ignorePatterns: ["dist", "src/__generated__"],
-    extends: [
-      "plugin:react/recommended",
-      "plugin:react-hooks/recommended",
-      "eslint:recommended",
-    ],
-    rules: {
-      "react/react-in-jsx-scope": "off",
-    },
-  };
-
-  const initialDependencies =
-    "eslint eslint-plugin-react eslint-plugin-react-hooks";
-
-  const [config, dependencies] = eslintConfigModifier(
-    baseConfig,
-    initialDependencies,
-    hasTypescript,
-    hasPrettier,
-    hasStorybook,
-    hasVite,
-    !hasTypescript,
-  );
-  return [JSON.stringify(config, null, 2), dependencies] as const;
-}
-
 function eslintConfigModifier(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   baseConfig: Record<string, any>,
@@ -65,7 +28,6 @@ function eslintConfigModifier(
   hasTypescript: boolean,
   hasPrettier: boolean,
   hasStorybook: boolean,
-  hasVite?: boolean,
   hasJavascript?: boolean,
 ) {
   if (hasTypescript) {
@@ -95,8 +57,5 @@ function eslintConfigModifier(
     baseConfig.extends.push("plugin:storybook/recommended");
   }
 
-  if (hasVite) {
-    baseConfig.plugins = ["react-refresh"];
-  }
   return [baseConfig, dependencies] as const;
 }
